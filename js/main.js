@@ -1,6 +1,5 @@
 /* Author: Zhongpeng Lin
 
 */
-
-new Canvas2D("main-container", 900, 500);
+new Canvas2D("canvas2d", $("#canvas2d").width(), $("#canvas2d").height());
 
