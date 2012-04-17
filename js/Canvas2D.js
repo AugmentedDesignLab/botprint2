@@ -2,22 +2,25 @@
  * @author Zhongpeng Lin
  */
 
-function Canvas2D(elem, width, height) {
-	this.draw = Raphael(elem, width, height);
-	var pos = jQuery('#'+elem).offset();
+function Canvas2D(elemID) {
+	var elem = $('#'+elemID);
+	var width = elem.width();
+	var height = elem.height();
+	this.draw = Raphael(elemID, width, height);
+	var pos = elem.offset();
 	this.offset = [pos.left, pos.top];
 	var self = this;
-	$('#'+elem).mousedown(function(event){
+	elem.mousedown(function(event){
       event.preventDefault();
       self.onMouseDown(self.translateX(event.clientX), self.translateY(event.clientY));
     });
 
-	$('#'+elem).mousemove(function(event){
+	elem.mousemove(function(event){
       event.preventDefault();
       self.onMouseMove(self.translateX(event.clientX), self.translateY(event.clientY));
     });
 
-	$('#'+elem).mouseup(function(event){
+	elem.mouseup(function(event){
       event.preventDefault();
       self.onMouseUp(self.translateX(event.clientX), self.translateY(event.clientY));
     });
