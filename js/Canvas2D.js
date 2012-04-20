@@ -9,6 +9,7 @@ function Canvas2D(elemID) {
 	this.draw = Raphael(elemID, width, height);
 	var pos = elem.offset();
 	this.offset = [pos.left, pos.top];
+	
 	var self = this;
 	elem.mousedown(function(event){
       event.preventDefault();
@@ -24,6 +25,9 @@ function Canvas2D(elemID) {
       event.preventDefault();
       self.onMouseUp(self.translateX(event.clientX), self.translateY(event.clientY));
     });
+    
+    this.width = width;
+    this.height = height;
   }
 
 Canvas2D.prototype.onMouseDown = function(x, y){
@@ -41,6 +45,7 @@ Canvas2D.prototype.onMouseUp = function(x, y){
 	if(this.selected){
 		var path = this.selected.attrs.path;
 		this.selected.attr('path', path +' Z');
+		this.current = this.selected;
 		this.selected = null;
 	}
 };

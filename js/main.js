@@ -1,15 +1,20 @@
 /* Author: Zhongpeng Lin
 
 */
-new Canvas2D('canvas2d');
+var canvas = new Canvas2D('canvas2d');
 var preview = new Preview3D('preview3d');
+new SidePanel('side-container', canvas, preview);
 
-//Create mock object
-var geometry = new THREE.CubeGeometry( 20, 20, 20 );
-var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+//Create default object
+var geometry = new THREE.CubeGeometry( 100, 100, 100 );
+var material = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe: true } );
 
 var mesh = new THREE.Mesh( geometry, material );
-//end creating mock object
-
 preview.setObject(mesh);
+//end creating default object
+
 preview.animate();
+
+
+
+

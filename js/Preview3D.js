@@ -4,7 +4,7 @@ function Preview3D(elemID) {
 	var height = this.stage.height();
 	this.scene = new THREE.Scene();
 	this.camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
-	this.rotation = 0;
+	this.rotation = Math.PI/2;
 	this.scene.add(this.camera);
 	this.renderer = new THREE.WebGLRenderer();
 	this.renderer.setSize(width, height);
@@ -12,14 +12,14 @@ function Preview3D(elemID) {
 }
 
 Preview3D.prototype.updateCameraPosition = function() {
-	this.camera.position.x = Math.cos(this.rotation)*150;
-	this.camera.position.z = Math.sin(this.rotation)*150;
+	this.camera.position.x = Math.cos(this.rotation)*500;
+	this.camera.position.z = Math.sin(this.rotation)*500;
 	this.camera.position.y = 50;
-	this.camera.lookAt(this.scene.position);
+	this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 };
 
 Preview3D.prototype.animate = function() {
-	this.rotation += Math.PI / 100;
+	this.rotation += Math.PI / 200;
 	this.render();
 	var self = this;
 	requestAnimationFrame( function() {self.animate();} );
