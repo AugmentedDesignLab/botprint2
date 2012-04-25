@@ -12,8 +12,8 @@ SVG2Shape.prototype.convert = function(elem) {
 	return shape;
 };
 
-SVG2Shape.prototype.fromPath = function(elem) {
-	var path = elem.attrs.path;
+SVG2Shape.prototype.fromArray = function(path) {
+	//var path = elem;
 	var shape = new THREE.Shape();
 	var start = new THREE.Vector2();
 	for(var i = 0; i < path.length; i++)
@@ -35,6 +35,10 @@ SVG2Shape.prototype.fromPath = function(elem) {
 				break;
 		}
 	}
-	
+
 	return shape;
+};
+
+SVG2Shape.prototype.fromPath = function(elem) {
+	return this.fromArray(elem.attrs.path);
 };
