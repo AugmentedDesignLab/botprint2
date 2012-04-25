@@ -38,3 +38,16 @@ SVG2Shape.prototype.fromPath = function(elem) {
 	
 	return shape;
 };
+
+
+SVG2Shape.prototype.fromRect = function(elem) {
+	var shape = new THREE.Shape();
+	var attrs = elem.attrs;
+	shape.moveTo(attrs.x, attrs.y);
+	shape.lineTo(attrs.x + attrs.width, attrs.y);
+	shape.lineTo(attrs.x + attrs.width, attrs.y + attrs.height);
+	shape.lineTo(attrs.x, attrs.y + attrs.height);
+	shape.lineTo(attrs.x, attrs.y);
+	
+	return shape;
+}
