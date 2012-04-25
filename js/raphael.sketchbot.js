@@ -23,6 +23,7 @@
 	var SketchaBot = function(paper, options) {
 		// Use self to reduce confusion about 'this'
 		var self = this;
+		// TODO(Huascar) include one more option called threeD
 		var _options = {
 			width: 100,
 			height: 100,
@@ -52,6 +53,10 @@
 		// The HTML element that contains the canvas.
 		var _container = $(_canvas).parent();
 
+		// The HTML element that contains the 3D preview
+		var _preview3D   = new Preview3D('viewer3D');
+
+
 		// The default Pen object
 		var _pen = new Pen();
 
@@ -66,6 +71,10 @@
 
 		self.container = function(){
 			return _container;
+		};
+
+		self.preview3D = function(){
+			return _preview3D;
 		};
 
 		self.pen = function(value) {
@@ -112,11 +121,6 @@
 			if(path === undefined) { return new THREE.Shape(); }
 			return toShape.convert(path);
 		}
-
-		// Converts our created sketch into a 3D shape.
-		self.shape = function(value) {
-		 	// TODO(Huascar) add ZP stuff in here
-		};
 
 		// Save our created shape into json for later viewing.
 		// This way we could save our models for future use.
@@ -313,7 +317,21 @@
 				_paper[type]()
 					.attr(stroke)
 					.click(_pathclick);
+				_preview_3D_strokes(stroke);
+
 			}
+		}
+
+		function _preview_3D_strokes(stroke) {
+			var toShape = new SvgToShape();
+			var svg = stroke;
+			if(svg){
+				var shape = toShape.convert(svg);
+				var mesh = new Chassis(shape, 50);
+				mesh.rotation.x = Math.PI/2;
+				_preview3D.setObject(mesh);
+			}
+			_preview3D.render();
 		}
 
 		function _disable_user_select() {
@@ -422,7 +440,8 @@
 
 
 		// App Bootstrapping
-		var _action_history= new ActionHistory();
+		var _action_history = new ActionHistory();
+
 
 		// path data
 		var _strokes = _options.strokes;
@@ -438,6 +457,100 @@
 		}
 
 		self.editing(_options.editing);
+	};
+
+	/**
+	 * It renders a 3D representation of the drawn sketch...
+	 * @param cont name of the HTML element that will contain the 3D representation.
+	 */
+	var Preview3D = function(cont) {
+		var self = this;
+		var container = $('#' + cont);
+		var width = container.width();
+		var height = container.height();
+		var scene = new THREE.Scene();
+		var camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+		var rotation = Math.PI/2;
+			scene.add(camera);
+		var renderer = new THREE.WebGLRenderer();
+			renderer.setSize(width, height);
+		container.append(renderer.domElement);
+
+		self.updateCameraPosition = function() {
+			camera.position.x = Math.cos(rotation)*500;
+			camera.position.z = Math.sin(rotation)*500;
+			camera.position.y = 50;
+			camera.lookAt(new THREE.Vector3(0, 0, 0));
+		};
+
+		self.animate = function(){
+			rotation += Math.PI / 200;
+			this.render();
+			var self = this;
+			requestAnimationFrame( function() {self.animate();} );
+		};
+
+		self.render = function(){
+			this.updateCameraPosition();
+			renderer.render(scene, camera);
+		};
+
+		self.setObject = function(mesh) {
+			if(this.object) {
+				scene.remove(this.object);
+			}
+
+			scene.add(mesh);
+			this.object = mesh;
+		};
+	};
+
+	/**
+	 * Svg to Shape converter.
+	 */
+	var SvgToShape = function(){
+		self = this;
+		self.convert = function(elem){
+			var shape;
+			switch(elem.type) {
+				case 'path': shape = this.fromPath(elem); break;
+				case 'rect': shape = this.fromRect(elem); break;
+				case 'circle': shape = this.fromCircle(elem); break;
+			}
+			return shape;
+		};
+
+		self.fromArray = function(path) {
+			//var path = elem;
+			var shape = new THREE.Shape();
+			var start = new THREE.Vector2();
+			for(var i = 0; i < path.length; i++)
+			{
+				var action = path[i];
+				switch(action[0]){
+					case 'M':
+					case 'm':
+						shape.moveTo(action[1], action[2]);
+						start.set(action[1], action[2]);
+						break;
+					case 'L':
+					case 'l':
+						shape.lineTo(action[1], action[2]);
+						break;
+					case 'Z':
+					case 'z':
+						shape.lineTo(start.x, start.y);
+						break;
+				}
+			}
+
+			return shape;
+		};
+
+		self.fromPath = function(elem){
+			return this.fromArray(elem.path);
+		};
+
 	};
 
 	/**

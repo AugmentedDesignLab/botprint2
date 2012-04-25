@@ -25,7 +25,7 @@
         <h3>Viewer</h3>
         <p>
             <a href="javascript:void(0);" id="update_sketchbot_viewer">Click</a>
-            to display the JSON data in the viewer.
+            to display the JSON data in 2D/3D viewers.
         </p>
         <div style="height:260px;" class="widget">
             <div id="viewer"></div>
@@ -46,12 +46,8 @@
         <br/>
         <br/>
         <h3>3D Viewer</h3>
-        <p>
-            <a href="javascript:void(0);" id="update_sketchbot_3D_viewer">Click</a>
-            to display the JSON data in the viewer.
-        </p>
         <div style="height:260px;" class="widget">
-            <div id="sketchbot_3D_viewer"></div>
+            <div id="viewer3D"></div>
         </div>
     </div>
 </div>
@@ -61,6 +57,8 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/vendor/raphael.js"></script>
 <script type="text/javascript" src="js/vendor/json2.js"></script>
+<script src="js/vendor/ThreeDebug.js"></script>
+<script src="js/Chassis.js"></script>
 <script type="text/javascript" src="js/raphael.sketchbot.js"></script>
 
 <script type="text/javascript">
