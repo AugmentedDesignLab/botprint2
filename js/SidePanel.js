@@ -10,7 +10,7 @@ function SidePanel(containerID, canvas, preview) {
 
 SidePanel.prototype.preview = function() {
 	var toShape = new SVG2Shape();
-	var svg = this.canvas2D.current;
+	var svg = this.canvas2D.getCurrentShape();
 	if(svg){
 		var shape = toShape.convert(svg);
 		var mesh = new Chassis(shape, 50);

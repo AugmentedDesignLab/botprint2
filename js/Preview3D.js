@@ -14,7 +14,7 @@ function Preview3D(elemID) {
 Preview3D.prototype.updateCameraPosition = function() {
 	this.camera.position.x = Math.cos(this.rotation)*500;
 	this.camera.position.z = Math.sin(this.rotation)*500;
-	this.camera.position.y = 50;
+	this.camera.position.y = 150;
 	this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 };
 
