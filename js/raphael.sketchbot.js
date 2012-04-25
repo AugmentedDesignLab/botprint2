@@ -1,7 +1,5 @@
 /**
  * TODO(Huascar) create a project in github with the SketchaBot name.
- *
- * @author hsanchez@cs.ucsc.edu
  */
 (function(Raphael){
 	/**
@@ -23,7 +21,7 @@
 	var SketchaBot = function(paper, options) {
 		// Use self to reduce confusion about 'this'
 		var self = this;
-		// TODO(Huascar) include one more option called threeD
+		// TODO(Huascar) include one more option called 'extrude'
 		var _options = {
 			width: 100,
 			height: 100,
@@ -548,7 +546,11 @@
 		};
 
 		self.fromPath = function(elem){
-			return this.fromArray(elem.path);
+			if(elem.attrs === undefined) {
+				return this.fromArray(elem.path);
+			} else {
+				return this.fromArray(elem.attrs.path);
+			}
 		};
 
 	};
