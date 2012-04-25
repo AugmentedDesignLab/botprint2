@@ -10,7 +10,7 @@ function Canvas2D(elemID) {
 	var pos = this.elem.offset();
 	this.offset = [pos.left, pos.top];
 	
-	this.setHandler(new FreeShapeHandler(draw));
+	this.setHandler(new RectangleHandler(draw));
     
     this.width = width;
     this.height = height;
@@ -39,26 +39,6 @@ Canvas2D.prototype.setHandler = function(handler) {
 Canvas2D.prototype.getCurrentShape = function() {
 	return this.handler.current;
 };
-
-// Canvas2D.prototype.onMouseDown = function(x, y){
-	// this.selected = this.draw.path('M '+x+' '+y);
-// };
-// 
-// Canvas2D.prototype.onMouseMove = function(x, y){
-	// if(this.selected){
-		// var path = this.selected.attrs.path;
-		// this.selected.attr('path', path +' L ' + x + ' ' + y);
-	// }
-// };
-// 
-// Canvas2D.prototype.onMouseUp = function(x, y){
-	// if(this.selected){
-		// var path = this.selected.attrs.path;
-		// this.selected.attr('path', path +' Z');
-		// this.current = this.selected;
-		// this.selected = null;
-	// }
-// };
 
 Canvas2D.prototype.translateX = function(x) {
 	return x - this.offset[0];
