@@ -6,18 +6,23 @@ function Canvas2D(elemID) {
 	this.elem = $('#'+elemID);
 	var width = this.elem.width();
 	var height = this.elem.height();
-	var draw = Raphael(elemID, width, height);
+	this.draw = Raphael(elemID, width, height);
 	var pos = this.elem.offset();
 	this.offset = [pos.left, pos.top];
 	
-	this.setHandler(new RectangleHandler(draw));
+	this.setHandler(RectangleHandler);
     
     this.width = width;
     this.height = height;
 }
 
-Canvas2D.prototype.setHandler = function(handler) {
+Canvas2D.prototype.setHandler = function(handlerClass) {
+	var handler = new handlerClass(this.draw);
 	var self = this;
+	// unbind all event handlers
+	this.elem.unbind();
+	
+	// bind new event handlers
 	this.elem.mousedown(function(event){
       event.preventDefault();
       handler.onMouseDown(self.translateX(event.clientX), self.translateY(event.clientY));
