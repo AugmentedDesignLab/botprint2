@@ -19,6 +19,9 @@ function SidePanel(containerID, canvas, preview) {
 	
 	var rectangle = tools.add(this, 'rectangle');
 	rectangle.name('Rectangle');
+
+	var rectangle = tools.add(this, 'polygon');
+	rectangle.name('Polygon');
 }
 
 SidePanel.prototype.preview = function() {
@@ -38,4 +41,8 @@ SidePanel.prototype.freeShape = function() {
 
 SidePanel.prototype.rectangle = function() {
 	this.canvas2D.setHandler(RectangleHandler);	
-}
+};
+
+SidePanel.prototype.polygon = function() {
+	this.canvas2D.setHandler(PolygonHandler);
+};

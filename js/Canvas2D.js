@@ -10,7 +10,7 @@ function Canvas2D(elemID) {
 	var pos = this.elem.offset();
 	this.offset = [pos.left, pos.top];
 	
-	this.setHandler(RectangleHandler);
+	this.setHandler(PolygonHandler);
     
     this.width = width;
     this.height = height;
@@ -38,8 +38,14 @@ Canvas2D.prototype.setHandler = function(handlerClass) {
       handler.onMouseUp(self.translateX(event.clientX), self.translateY(event.clientY));
     });
     
+    this.elem.dblclick(function(event){
+      event.preventDefault();
+      handler.onDoubleClick(self.translateX(event.clientX), self.translateY(event.clientY));    	
+    });
+    
     this.handler = handler;
 };
+
 
 Canvas2D.prototype.getCurrentShape = function() {
 	return this.handler.current;

@@ -4,6 +4,7 @@ function RectangleHandler(draw) {
 
 RectangleHandler.prototype.onMouseDown = function(x, y){
 	this.selected = this.draw.rect(x, y, 0, 0);
+	this.selected.attr('fill', '#00FF00');
 };
 
 RectangleHandler.prototype.onMouseMove = function(x, y){
@@ -22,3 +23,4 @@ RectangleHandler.prototype.onMouseUp = function(x, y) {
 	}
 };
 
+RectangleHandler.prototype.onDoubleClick = function(x, y) {};
