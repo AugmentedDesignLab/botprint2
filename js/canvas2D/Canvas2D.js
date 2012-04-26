@@ -10,7 +10,7 @@ function Canvas2D(elemID) {
 	var pos = this.elem.offset();
 	this.offset = [pos.left, pos.top];
 	
-	this.setHandler(PolygonHandler);
+	this.setHandler(RectangleHandler);
     
     this.width = width;
     this.height = height;

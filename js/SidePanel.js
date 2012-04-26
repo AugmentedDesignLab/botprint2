@@ -22,6 +22,9 @@ function SidePanel(containerID, canvas, preview) {
 
 	var rectangle = tools.add(this, 'polygon');
 	rectangle.name('Polygon');
+	
+	var ellipse = tools.add(this, 'ellipse');
+	ellipse.name('Ellipse');
 }
 
 SidePanel.prototype.preview = function() {
@@ -45,4 +48,8 @@ SidePanel.prototype.rectangle = function() {
 
 SidePanel.prototype.polygon = function() {
 	this.canvas2D.setHandler(PolygonHandler);
+};
+
+SidePanel.prototype.ellipse = function() {
+	this.canvas2D.setHandler(EllipseHandler);
 };
