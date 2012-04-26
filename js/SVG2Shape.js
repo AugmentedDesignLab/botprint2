@@ -48,7 +48,6 @@ SVG2Shape.prototype.fromPath = function(elem) {
 	return shape;
 };
 
-
 SVG2Shape.prototype.fromRect = function(elem) {
 	var shape = new THREE.Shape();
 	var attrs = elem.attrs;
@@ -65,16 +64,10 @@ SVG2Shape.prototype.fromEllipse = function(elem) {
 	var shape = new THREE.Shape();
 	var attrs = elem.attrs;
 	var cx = attrs.cx, cy = attrs.cy, rx = attrs.rx, ry = attrs.ry;
-	// move to bottom of Ellipse
-	shape.moveTo(cx, cy - ry);
-	// curve to right
-	shape.quadraticCurveTo(cx + rx, cy - ry, cx + rx, cy);
-	// curve to top
-	shape.quadraticCurveTo(cx + rx, cy + ry, cx, cy + ry);
-	// curve to left
-	shape.quadraticCurveTo(cx - rx, cy + ry, cx - rx, cy);
-	// curve to bottom
-	shape.quadraticCurveTo(cx - rx, cy - ry, cx, cy - ry);
+	// move to left of Ellipse
+	shape.moveTo(cx-rx, cy);
+	shape.bezierCurveTo(cx-rx, cy-ry, cx+rx, cy-ry, cx+rx, cy);
+	shape.bezierCurveTo(cx+rx, cy+ry, cx-rx, cy+ry, cx-rx, cy);
 	
 	return shape;
 };
