@@ -8,6 +8,7 @@ SVG2Shape.prototype.convert = function(elem) {
 		case 'path': shape = this.fromPath(elem); break;
 		case 'rect': shape = this.fromRect(elem); break;
 		case 'circle': shape = this.fromCircle(elem); break;
+		case 'ellipse': shape = this.fromEllipse(elem); break;
 	}
 	return shape;
 };
@@ -58,4 +59,22 @@ SVG2Shape.prototype.fromRect = function(elem) {
 	shape.lineTo(attrs.x, attrs.y);
 	
 	return shape;
-}
+};
+
+SVG2Shape.prototype.fromEllipse = function(elem) {
+	var shape = new THREE.Shape();
+	var attrs = elem.attrs;
+	var cx = attrs.cx, cy = attrs.cy, rx = attrs.rx, ry = attrs.ry;
+	// move to bottom of Ellipse
+	shape.moveTo(cx, cy - ry);
+	// curve to right
+	shape.quadraticCurveTo(cx + rx, cy - ry, cx + rx, cy);
+	// curve to top
+	shape.quadraticCurveTo(cx + rx, cy + ry, cx, cy + ry);
+	// curve to left
+	shape.quadraticCurveTo(cx - rx, cy + ry, cx - rx, cy);
+	// curve to bottom
+	shape.quadraticCurveTo(cx - rx, cy - ry, cx, cy - ry);
+	
+	return shape;
+};
