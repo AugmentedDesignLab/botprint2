@@ -10,5 +10,5 @@ function Chassis(shape, height) {
 	this.boundingBox = geometry.boundingBox;
 	var bb = this.boundingBox;
 	THREE.GeometryUtils.center( geometry );
-	THREE.Mesh.call(this,  geometry, new THREE.MeshBasicMaterial({color: 0x00ff00}));
+	THREE.Mesh.call(this,  geometry, new THREE.MeshPhongMaterial());
 }

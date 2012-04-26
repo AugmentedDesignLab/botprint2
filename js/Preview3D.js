@@ -2,10 +2,21 @@ function Preview3D(elemID) {
 	this.stage = $('#'+elemID);
 	var width = this.stage.width();
 	var height = this.stage.height();
+	// Set up scene
 	this.scene = new THREE.Scene();
+	// Add camera
 	this.camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
 	this.rotation = Math.PI/2;
 	this.scene.add(this.camera);
+	// Setup point lighting
+	var pointLight = new THREE.PointLight(0x008800);
+	pointLight.position.set(500, 500, 500);
+	pointLight.castShadow = true;
+	this.scene.add(pointLight);
+	// Setup ambient lighting
+	var ambientLight = new THREE.AmbientLight(0x002222);
+	this.scene.add(ambientLight);
+	
 	this.renderer = new THREE.WebGLRenderer();
 	this.renderer.setSize(width, height);
 	this.stage.append(this.renderer.domElement);
