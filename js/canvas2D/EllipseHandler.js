@@ -22,7 +22,7 @@ EllipseHandler.prototype.onMouseMove = function(x, y){
 
 EllipseHandler.prototype.onMouseUp = function(x, y) {
 	if(this.selected){
-		this.current = this.selected;
-		this.selected = null;		
+		this.addSVG(this.selected);
+		this.selected = null;
 	}
 };

@@ -25,7 +25,7 @@ RectangleHandler.prototype.onMouseMove = function(x, y){
 
 RectangleHandler.prototype.onMouseUp = function(x, y) {
 	if(this.selected){
-		this.current = this.selected;
+		this.addSVG(this.selected);
 		this.selected = null;		
 	}
 };

@@ -14,14 +14,12 @@ function Canvas2D(elemID) {
     
     this.width = width;
     this.height = height;
+    
+    this.svgs = [];
 }
 
 Canvas2D.prototype.setHandler = function(handlerClass) {
     this.handler = new handlerClass(this);
-};
-
-Canvas2D.prototype.getCurrentShape = function() {
-	return this.handler.current;
 };
 
 Canvas2D.prototype.translateX = function(x) {

@@ -22,7 +22,7 @@ FreeShapeHandler.prototype.onMouseUp = function(x, y){
 	if(this.selected){
 		var path = this.selected.attrs.path;
 		this.selected.attr('path', path +'Z');
-		this.current = this.selected;
+		this.addSVG(this.selected);
 		this.selected = null;
 	}
 };
