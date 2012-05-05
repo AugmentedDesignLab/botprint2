@@ -17,35 +17,8 @@ function Canvas2D(elemID) {
 }
 
 Canvas2D.prototype.setHandler = function(handlerClass) {
-	var handler = new handlerClass(this.draw);
-	var self = this;
-	// unbind all event handlers
-	this.elem.unbind();
-	
-	// bind new event handlers
-	this.elem.mousedown(function(event){
-      event.preventDefault();
-      handler.onMouseDown(self.translateX(event.clientX), self.translateY(event.clientY));
-    });
-
-	this.elem.mousemove(function(event){
-      event.preventDefault();
-      handler.onMouseMove(self.translateX(event.clientX), self.translateY(event.clientY));
-    });
-
-	this.elem.mouseup(function(event){
-      event.preventDefault();
-      handler.onMouseUp(self.translateX(event.clientX), self.translateY(event.clientY));
-    });
-    
-    this.elem.dblclick(function(event){
-      event.preventDefault();
-      handler.onDoubleClick(self.translateX(event.clientX), self.translateY(event.clientY));    	
-    });
-    
-    this.handler = handler;
+    this.handler = new handlerClass(this);
 };
-
 
 Canvas2D.prototype.getCurrentShape = function() {
 	return this.handler.current;

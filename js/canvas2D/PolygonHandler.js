@@ -1,5 +1,9 @@
-function PolygonHandler(draw) {
-	this.draw = draw;
+PolygonHandler.prototype = new DrawHandlerBase();
+PolygonHandler.prototype.constructor = PolygonHandler;
+
+function PolygonHandler(canvas) {
+	DrawHandlerBase.call(this, canvas);
+	this.draw = canvas.draw;
 }
 
 PolygonHandler.prototype.onMouseDown = function(x, y) {
@@ -24,8 +28,6 @@ PolygonHandler.prototype.onMouseMove = function(x, y) {
 		this.selected.attr('path', path);
 	}
 };
-
-PolygonHandler.prototype.onMouseUp = function(x, y) {};
 
 PolygonHandler.prototype.onDoubleClick = function(x, y){
 	if(this.selected){

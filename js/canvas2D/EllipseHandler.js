@@ -1,5 +1,9 @@
-function EllipseHandler(draw) {
-	this.draw = draw;
+EllipseHandler.prototype = new DrawHandlerBase();
+EllipseHandler.prototype.constructor = EllipseHandler;
+
+function EllipseHandler(canvas) {
+	DrawHandlerBase.call(this, canvas);
+	this.draw = canvas.draw;
 }
 
 EllipseHandler.prototype.onMouseDown = function(x, y){
@@ -22,5 +26,3 @@ EllipseHandler.prototype.onMouseUp = function(x, y) {
 		this.selected = null;		
 	}
 };
-
-EllipseHandler.prototype.onDoubleClick = function(x, y) {};

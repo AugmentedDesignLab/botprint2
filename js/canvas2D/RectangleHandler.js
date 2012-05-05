@@ -1,5 +1,9 @@
-function RectangleHandler(draw) {
-	this.draw = draw;
+RectangleHandler.prototype = new DrawHandlerBase();
+RectangleHandler.prototype.constructor = RectangleHandler;
+
+function RectangleHandler(canvas) {
+	DrawHandlerBase.call(this, canvas);
+	this.draw = canvas.draw;
 }
 
 RectangleHandler.prototype.onMouseDown = function(x, y){

@@ -1,5 +1,9 @@
-function FreeShapeHandler(draw) {
-	this.draw = draw;
+FreeShapeHandler.prototype = new DrawHandlerBase();
+FreeShapeHandler.prototype.constructor = FreeShapeHandler;
+
+function FreeShapeHandler(canvas) {
+	DrawHandlerBase.call(this, canvas);
+	this.draw = canvas.draw;
 }
 
 FreeShapeHandler.prototype.onMouseDown = function(x, y){
@@ -22,5 +26,3 @@ FreeShapeHandler.prototype.onMouseUp = function(x, y){
 		this.selected = null;
 	}
 };
-
-FreeShapeHandler.prototype.onDoubleClick = function(x, y) {};
