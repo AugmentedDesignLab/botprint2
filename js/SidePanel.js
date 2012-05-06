@@ -31,6 +31,8 @@ function SidePanel(containerID, canvas, preview) {
 	edit.open();
 	var del = edit.add(this, 'del');
 	del.name('Delete');
+	var ed = edit.add(this, 'ed');
+	ed.name('Edit');
 }
 
 SidePanel.prototype.preview = function() {
@@ -60,4 +62,8 @@ SidePanel.prototype.ellipse = function() {
 
 SidePanel.prototype.del = function() {
 	this.canvas2D.setHandler(DeleteHandler);
+};
+
+SidePanel.prototype.ed = function() {
+	this.canvas2D.setHandler(EditHandler);
 };
