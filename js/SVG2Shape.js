@@ -1,6 +1,4 @@
-function SVG2Shape() {
-	
-}
+function SVG2Shape() {}
 
 SVG2Shape.prototype.convert = function(elem) {
 	var shape;
