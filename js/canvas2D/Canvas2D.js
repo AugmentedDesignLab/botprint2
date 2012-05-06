@@ -10,12 +10,14 @@ function Canvas2D(elemID) {
 	var pos = this.elem.offset();
 	this.offset = [pos.left, pos.top];
 	
-	this.setHandler(EllipseHandler);
     
     this.width = width;
     this.height = height;
     
     this.svgs = [];
+    
+	// set default handler
+	this.setHandler(EllipseHandler);
 }
 
 Canvas2D.prototype.setHandler = function(handlerClass) {

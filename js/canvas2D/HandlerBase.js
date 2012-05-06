@@ -7,6 +7,17 @@ function HandlerBase(canvas) {
 		var elem = canvas.elem;
 		// unbind all event handlers
 		elem.unbind();
+		$.each(canvas.svgs, function(index, value){
+			var events = value.events;
+			if(events)
+			{
+				var ev = events.pop();
+				while(ev){
+					ev.unbind();
+					ev = events.pop();
+				}
+			}
+		});
 		// $.each(elem.children(), function(index, value){
 			// if(value instanceof SVGSVGElement){
 				// value.unbind();
@@ -17,18 +28,7 @@ function HandlerBase(canvas) {
 
 
 HandlerBase.prototype.addSVG = function(svg) {
-	// Add dragging listener
-	var ox, oy;
-	svg.drag(function(dx, dy, x, y, event){
-		// onMove
-		svg.translate(dx - ox, dy - oy);
-		ox = dx;
-		oy = dy;
-	}, function(x, y, event){
-		// onStart
-		ox = 0;
-		oy = 0;
-	});
+
 	
 	var draw = this.canvas.draw;
 	

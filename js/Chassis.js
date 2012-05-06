@@ -7,11 +7,22 @@ Chassis.constructor = Chassis;
 function Chassis(svgs, height) {
 	var toShape = new SVG2Shape();
 	var geometry = new THREE.Geometry();
+	var material = new THREE.MeshPhongMaterial();
 	$.each(svgs, function(index, value){
 		var s = toShape.convert(value);
 		var g = s.extrude({amount: height});
+		// replay transforms in original SVG
+		var matrix = new THREE.Matrix4();
+		$.each(s.transforms, function(index, t){
+			switch(t[0]){
+				case 'T':
+					matrix.translate(new THREE.Vector3(t[1], t[2], 0));
+					break;
+			}
+		});
+		g.applyMatrix(matrix);
 		THREE.GeometryUtils.merge(geometry, g);
 	});
 	THREE.GeometryUtils.center( geometry );
-	THREE.Mesh.call(this,  geometry, new THREE.MeshPhongMaterial());
+	THREE.Mesh.call(this,  geometry, material);
 }

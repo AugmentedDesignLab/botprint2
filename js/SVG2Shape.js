@@ -10,6 +10,8 @@ SVG2Shape.prototype.convert = function(elem) {
 		case 'circle': shape = this.fromCircle(elem); break;
 		case 'ellipse': shape = this.fromEllipse(elem); break;
 	}
+	// save transforms to be replayed later at Chassis.js
+	shape.transforms = elem.transform();
 	return shape;
 };
 
