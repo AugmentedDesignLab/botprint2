@@ -8,21 +8,11 @@ function HandlerBase(canvas) {
 		// unbind all event handlers
 		elem.unbind();
 		$.each(canvas.svgs, function(index, value){
-			var events = value.events;
-			if(events)
-			{
-				var ev = events.pop();
-				while(ev){
-					ev.unbind();
-					ev = events.pop();
-				}
-			}
+			var rotator = value.rotator;
+			if(rotator)
+				rotator.disable();
+			unbindAll(value);
 		});
-		// $.each(elem.children(), function(index, value){
-			// if(value instanceof SVGSVGElement){
-				// value.unbind();
-			// }
-		// });
 	}
 }
 

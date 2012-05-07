@@ -17,7 +17,7 @@ function Canvas2D(elemID) {
     this.svgs = [];
     
 	// set default handler
-	this.setHandler(EllipseHandler);
+	this.setHandler(RectangleHandler);
 }
 
 Canvas2D.prototype.setHandler = function(handlerClass) {

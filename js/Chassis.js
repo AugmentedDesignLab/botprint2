@@ -14,10 +14,15 @@ function Chassis(svgs, height) {
 		// replay transforms in original SVG
 		var matrix = new THREE.Matrix4();
 		$.each(s.transforms, function(index, t){
-			switch(t[0]){
-				case 'T':
-					matrix.translate(new THREE.Vector3(t[1], t[2], 0));
-					break;
+			if(t[0] == 'T')
+			{
+				matrix.translate(new THREE.Vector3(t[1], t[2], 0));
+			}
+		});
+		$.each(s.transforms, function(index, t){
+			if(t[0] == 'R')
+			{
+				matrix.rotateZ(t[1]);
 			}
 		});
 		g.applyMatrix(matrix);
