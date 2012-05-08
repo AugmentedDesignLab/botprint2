@@ -11,23 +11,37 @@ function Chassis(svgs, height) {
 	$.each(svgs, function(index, value){
 		var s = toShape.convert(value);
 		var g = s.extrude({amount: height});
+		
+		g.computeBoundingBox();
+		var bBox = g.boundingBox;
+		var position = new THREE.Vector3((bBox.min.x+bBox.max.x)*.5, 
+			(bBox.min.y+bBox.max.y)*.5, 0);
+		THREE.GeometryUtils.center(g);
+		var mesh = new THREE.Mesh(g, material);
+		mesh.position = position;
+		
 		// replay transforms in original SVG
-		var matrix = new THREE.Matrix4();
 		$.each(s.transforms, function(index, t){
 			if(t[0] == 'T')
 			{
-				matrix.translate(new THREE.Vector3(t[1], t[2], 0));
+				mesh.translateX(t[1]);
+				mesh.translateY(t[2]);
+			}else if(t[0] == 'R'){
+				mesh.rotation.z += t[1] * Math.PI /180;
 			}
 		});
-		$.each(s.transforms, function(index, t){
-			if(t[0] == 'R')
-			{
-				matrix.rotateZ(t[1]);
-			}
-		});
-		g.applyMatrix(matrix);
-		THREE.GeometryUtils.merge(geometry, g);
+		
+		THREE.GeometryUtils.merge(geometry, mesh);
 	});
 	THREE.GeometryUtils.center( geometry );
 	THREE.Mesh.call(this,  geometry, material);
+}
+
+function rotateAroundObjectAxis( object, axis, radians ) {
+
+    var rotationMatrix = new THREE.Matrix4();
+
+    rotationMatrix.setRotationAxis( axis.normalize(), radians );
+    object.matrix.multiplySelf( rotationMatrix );                       // post-multiply
+    object.rotation.getRotationFromMatrix( object.matrix );
 }

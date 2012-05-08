@@ -64,10 +64,7 @@ SVG2Shape.prototype.fromEllipse = function(elem) {
 	var shape = new THREE.Shape();
 	var attrs = elem.attrs;
 	var cx = attrs.cx, cy = attrs.cy, rx = attrs.rx, ry = attrs.ry;
-	// move to left of Ellipse
-	shape.moveTo(cx-rx, cy);
-	shape.bezierCurveTo(cx-rx, cy-ry, cx+rx, cy-ry, cx+rx, cy);
-	shape.bezierCurveTo(cx+rx, cy+ry, cx-rx, cy+ry, cx-rx, cy);
-	
+
+	shape.absellipse(cx, cy, rx, ry, 0, 2*Math.PI);	
 	return shape;
 };
