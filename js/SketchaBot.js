@@ -168,11 +168,8 @@ BOTPRINT.SketchaBot = new function() {
 	 */
 	callbacks = {
 		windowResize: function() {
-			if(camera)
-			{
-				width			= $container.width(),
-				height			= $container.height()
-			}
+			width			= $container.width();
+			height			= $container.height();
 		},
 
 		guiClick:function() {
