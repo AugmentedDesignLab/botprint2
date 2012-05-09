@@ -9,9 +9,11 @@ BOTPRINT.SketchaBot = new function() {
 	var self 	 = this;
 
 	// internal vars
-	var canvas  = new Canvas2D('canvas2d');
-	var preview = new Preview3D('preview3d');
-	var running = true;
+	var canvas  	= new Canvas2D('canvas2d');
+	var preview 	= new Preview3D('preview3d');
+	var running 	= true;
+	var previewing 	= true;
+
 	var vars	= []; // this will contain the choices we have made in the side bar
 
 	var $container 	= $('#container');
@@ -48,17 +50,26 @@ BOTPRINT.SketchaBot = new function() {
 		} else {
 			preview.animate();
 		}
+
+		setInterval(function(){
+			//  Previews the 3d shape as long as it is indicated.
+			// 	This interval will give the browser chance to
+			//  extrude the shape object
+			if(previewing){
+				self.preview();
+			}
+		}, 100);
 	};
 
 	/**
 	 * previews the sketch in 3D.
 	 */
 	self.preview = function(){
-		var toShape = new SVG2Shape();
 		var svg = canvas.getCurrentShape();
 		if(svg){
-			var shape = toShape.convert(svg);
-			var mesh = new Chassis(shape, 50);
+			var toShape = new SVG2Shape();
+			var shape 	= toShape.convert(svg);
+			var mesh 	= new Chassis(shape, 50);
 			mesh.rotation.x = Math.PI/2;
 			preview.setObject(mesh);
 		}
@@ -131,6 +142,9 @@ BOTPRINT.SketchaBot = new function() {
 			"stroke-linecap": "round",
 			"stroke-linejoin": "round"
 		};
+
+		previewing = preview;
+
 		switch(shape){
 			case "Free":
 				canvas.setOptions(opts);
