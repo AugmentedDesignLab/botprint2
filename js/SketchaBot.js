@@ -144,19 +144,18 @@ BOTPRINT.SketchaBot = new function() {
 		};
 
 		previewing = preview;
-
 		switch(shape){
 			case "Free":
 				canvas.setOptions(opts);
-				canvas.setHandler(wheels ? CircleHandler : FreeShapeHandler);
+				canvas.setHandler(wheels && canvas.getCurrentShape() ? CircleHandler : FreeShapeHandler);
 				break;
 			case "Square":
 				canvas.setOptions(opts);
-				canvas.setHandler(wheels ? CircleHandler : RectangleHandler);
+				canvas.setHandler(wheels && canvas.getCurrentShape() ? CircleHandler : RectangleHandler);
 				break;
 			case "Polygon":
 				canvas.setOptions(opts);
-				canvas.setHandler(wheels ? CircleHandler : PolygonHandler);
+				canvas.setHandler(wheels && canvas.getCurrentShape() ? CircleHandler : PolygonHandler);
 				break;
 			default : alert("Unable to find selected shape.");
 		}
@@ -181,7 +180,16 @@ BOTPRINT.SketchaBot = new function() {
 				varName	= $this.data("guivar"),
 				varVal	= $this.data("guival");
 			if(vars[varName] !== null) {
-				vars[varName] = varVal;
+				if(varName == "wheelsLocation") {
+					vars[varName] = varVal;
+					if(vars[varName] && !canvas.getCurrentShape()){
+						vars[varName] = false;
+						alert("You must sketch chassis first!")
+						return false;
+					}
+				} else {
+					vars[varName] = varVal;
+				}
 			}
 
 			$this.siblings().addClass('disabled');
@@ -190,6 +198,7 @@ BOTPRINT.SketchaBot = new function() {
 			// TODO(Huascar) refactor this....there is a better way to do this.
 			updateCanvasHandler(vars["shape"], vars["color"], vars["wheelsLocation"], vars["show3dPreview"]);
 
+			$this.used = true;
 			return false;
 		}
 	};
