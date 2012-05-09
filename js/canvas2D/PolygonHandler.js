@@ -1,5 +1,6 @@
-function PolygonHandler(draw) {
+function PolygonHandler(draw, options) {
 	this.draw = draw;
+	this._options = options;
 }
 
 PolygonHandler.prototype.onMouseDown = function(x, y) {
@@ -10,7 +11,8 @@ PolygonHandler.prototype.onMouseDown = function(x, y) {
 	}else{
 		// Create a new path
 		this.selected = this.draw.path('M '+x+' '+y + ' L ' + x + ' ' + y);
-		this.selected.attr('fill', '#00FF00');
+		this.selected.attr(this._options);
+		//this.selected.attr('fill', '#00FF00');
 	}
 };
 

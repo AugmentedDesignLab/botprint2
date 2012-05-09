@@ -1,5 +1,6 @@
-function RectangleHandler(draw) {
+function RectangleHandler(draw, options) {
 	this.draw = draw;
+	this._options = options;
 }
 
 RectangleHandler.prototype.onMouseDown = function(x, y){
@@ -8,11 +9,11 @@ RectangleHandler.prototype.onMouseDown = function(x, y){
 };
 
 RectangleHandler.prototype.onMouseMove = function(x, y){
-	if(this.selected)
-	{
+	if(this.selected){
 		var attrs = this.selected.attrs;
 		this.selected.attr('width', x - attrs.x);
 		this.selected.attr('height', y - attrs.y);
+		this.selected.attr(this._options);
 	}
 };
 

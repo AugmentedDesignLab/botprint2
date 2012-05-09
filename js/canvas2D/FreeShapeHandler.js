@@ -1,5 +1,6 @@
-function FreeShapeHandler(draw) {
+function FreeShapeHandler(draw, options) {
 	this.draw = draw;
+	this._options = options;
 }
 
 FreeShapeHandler.prototype.onMouseDown = function(x, y){
@@ -11,6 +12,7 @@ FreeShapeHandler.prototype.onMouseMove = function(x, y){
 	if(this.selected){
 		var path = this.selected.attrs.path;
 		this.selected.attr('path', path +'L' + x + ',' + y);
+		this.selected.attr(this._options);
 	}
 };
 

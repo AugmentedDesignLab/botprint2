@@ -14,10 +14,27 @@ function Canvas2D(elemID) {
     
     this.width = width;
     this.height = height;
+	this._options = {
+		stroke: "#F8F8F8 ",
+		"stroke-opacity": 1,
+		fill: "#00FF00",
+		"stroke-width": 2,
+		"stroke-linecap": "round",
+		"stroke-linejoin": "round"
+	};
 }
 
+Canvas2D.prototype.setOptions = function(options) {
+	if(options === undefined){
+		return false;
+	} else {
+		this._options = options;
+		return true;
+	}
+};
+
 Canvas2D.prototype.setHandler = function(handlerClass) {
-	var handler = new handlerClass(this.draw);
+	var handler = new handlerClass(this.draw, this._options);
 	var self = this;
 	// unbind all event handlers
 	this.elem.unbind();
