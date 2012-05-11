@@ -18,7 +18,7 @@ function Preview3D(elemID) {
 	this.scene.add(pointLight);
 	
 	// Setup ambient lighting
-	var ambientLight = new THREE.AmbientLight(0x002222);
+	var ambientLight = new THREE.AmbientLight(0x001111);
 	this.scene.add(ambientLight);
 	
 	this.renderer = new THREE.WebGLRenderer();
@@ -29,7 +29,7 @@ function Preview3D(elemID) {
 Preview3D.prototype.updateCameraPosition = function() {
 	this.camera.position.x = Math.cos(this.rotation)*500;
 	this.camera.position.z = Math.sin(this.rotation)*500;
-	this.camera.position.y = 150;
+	this.camera.position.y = 300;
 	this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 };
 
