@@ -49,7 +49,7 @@ SVG2Shape.prototype.fromArray = function(path) {
 
 SVG2Shape.prototype.fromPath = function(elem) {
 	return this.fromArray(elem.attrs.path);
-}
+};
 
 SVG2Shape.prototype.fromRect = function(elem) {
 	var shape = new THREE.Shape();
@@ -61,4 +61,17 @@ SVG2Shape.prototype.fromRect = function(elem) {
 	shape.lineTo(attrs.x, attrs.y);
 	
 	return shape;
-}
+};
+
+SVG2Shape.prototype.fromCircle = function(elem) {
+	// todo(Huascar) there must be a better way to do this.
+	var shape = new THREE.Shape();
+	var attrs = elem.attrs;
+	var circleRadius = attrs.r;
+	shape.moveTo( 0, circleRadius );
+	shape.quadraticCurveTo( circleRadius, circleRadius, circleRadius, 0 );
+	shape.quadraticCurveTo( circleRadius, -circleRadius, 0, -circleRadius );
+	shape.quadraticCurveTo( -circleRadius, -circleRadius, -circleRadius, 0 );
+	shape.quadraticCurveTo( -circleRadius, circleRadius, 0, circleRadius );
+	return shape;
+};
