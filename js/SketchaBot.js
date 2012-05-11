@@ -136,19 +136,6 @@
 			// todo(Huascar) improve UI
 		}
 
-		/**
-		 * Simple handler function for the events we don't care about.
-		 * //todo(Huascar) use this method for DnD functionality....to code soon.
-		 */
-		function cancel(event) {
-			if(event.preventDefault) {
-				event.preventDefault();
-			}
-
-			return false;
-		}
-
-
 		function updateCanvasHandler (shape, color, wheels, preview){
 			var opts = {
 				stroke: "#F8F8F8 ",
