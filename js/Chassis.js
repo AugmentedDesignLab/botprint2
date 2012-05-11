@@ -42,12 +42,3 @@ function Chassis(svgs, height) {
 	THREE.GeometryUtils.center( geometry );
 	THREE.Mesh.call(this,  geometry, material);
 }
-
-function rotateAroundObjectAxis( object, axis, radians ) {
-
-    var rotationMatrix = new THREE.Matrix4();
-
-    rotationMatrix.setRotationAxis( axis.normalize(), radians );
-    object.matrix.multiplySelf( rotationMatrix );                       // post-multiply
-    object.rotation.getRotationFromMatrix( object.matrix );
-}
