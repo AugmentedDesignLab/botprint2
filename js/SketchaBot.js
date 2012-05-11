@@ -147,20 +147,19 @@
 			};
 
 			previewing = preview;
-			var wheelsWithoutChassis = wheels && canvas.getCurrentShape();
 
 			switch(shape){
 				case "Free":
 					canvas.setOptions(opts);
-					canvas.setHandler(wheelsWithoutChassis ? CircleHandler : FreeShapeHandler);
+					canvas.setHandler(wheels ? CircleHandler : FreeShapeHandler);
 					break;
 				case "Square":
 					canvas.setOptions(opts);
-					canvas.setHandler(wheelsWithoutChassis ? CircleHandler : RectangleHandler);
+					canvas.setHandler(wheels ? CircleHandler : RectangleHandler);
 					break;
 				case "Polygon":
 					canvas.setOptions(opts);
-					canvas.setHandler(wheelsWithoutChassis ? CircleHandler : PolygonHandler);
+					canvas.setHandler(wheels ? CircleHandler : PolygonHandler);
 					break;
 				default : alert("Unable to find selected shape.");
 			}
@@ -180,8 +179,16 @@
 			guiClick:function() {
 				var $this 	= $(this),
 					varName	= $this.data("guivar");
+				var varVal  = $this.data ("guival");
 
-				vars[varName] = $this.data ("guival");
+				if(canvas.getCurrentShape() === undefined){
+					if(varName == "wheelsLocation" && varVal == true){
+						alert("You must sketch a chassis before providing wheels.");
+						return false;
+					}
+				}
+
+				vars[varName] = varVal;
 
 				$this.siblings().addClass('disabled');
 				$this.removeClass('disabled');
