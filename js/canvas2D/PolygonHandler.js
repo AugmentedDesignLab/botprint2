@@ -1,5 +1,9 @@
-function PolygonHandler(draw, options) {
-	this.draw = draw;
+PolygonHandler.prototype = new DrawHandlerBase();
+PolygonHandler.prototype.constructor = PolygonHandler;
+
+function PolygonHandler(canvas, options) {
+	DrawHandlerBase.call(this, canvas);
+	this.draw = canvas.draw;
 	this._options = options;
 }
 
@@ -27,13 +31,11 @@ PolygonHandler.prototype.onMouseMove = function(x, y) {
 	}
 };
 
-PolygonHandler.prototype.onMouseUp = function(x, y) {};
-
 PolygonHandler.prototype.onDoubleClick = function(x, y){
 	if(this.selected){
 		var path = this.selected.attrs.path;
 		this.selected.attr('path', path +'Z');
-		this.current = this.selected;
+		this.addSVG(this.selected);
 		this.selected = null;
 	}
 };

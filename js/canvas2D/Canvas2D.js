@@ -10,7 +10,6 @@ function Canvas2D(elemID) {
 	var pos = this.elem.offset();
 	this.offset = [pos.left, pos.top];
 	
-	this.setHandler(PolygonHandler);
     
     this.width = width;
     this.height = height;
@@ -22,6 +21,7 @@ function Canvas2D(elemID) {
 		"stroke-linecap": "round",
 		"stroke-linejoin": "round"
 	};
+    this.svgs = [];
 }
 
 Canvas2D.prototype.setOptions = function(options) {
@@ -34,38 +34,7 @@ Canvas2D.prototype.setOptions = function(options) {
 };
 
 Canvas2D.prototype.setHandler = function(handlerClass) {
-	var handler = new handlerClass(this.draw, this._options);
-	var self = this;
-	// unbind all event handlers
-	this.elem.unbind();
-	
-	// bind new event handlers
-	this.elem.mousedown(function(event){
-      event.preventDefault();
-      handler.onMouseDown(self.translateX(event.clientX), self.translateY(event.clientY));
-    });
-
-	this.elem.mousemove(function(event){
-      event.preventDefault();
-      handler.onMouseMove(self.translateX(event.clientX), self.translateY(event.clientY));
-    });
-
-	this.elem.mouseup(function(event){
-      event.preventDefault();
-      handler.onMouseUp(self.translateX(event.clientX), self.translateY(event.clientY));
-    });
-    
-    this.elem.dblclick(function(event){
-      event.preventDefault();
-      handler.onDoubleClick(self.translateX(event.clientX), self.translateY(event.clientY));    	
-    });
-    
-    this.handler = handler;
-};
-
-
-Canvas2D.prototype.getCurrentShape = function() {
-	return this.handler.current;
+    this.handler = new handlerClass(this, this._options);
 };
 
 Canvas2D.prototype.translateX = function(x) {

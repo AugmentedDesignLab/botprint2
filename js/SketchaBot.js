@@ -76,11 +76,9 @@
 		 * Previews the sketch in 3D.
 		 */
 		self.preview = function(){
-			var svg = canvas.getCurrentShape();
-			if(svg){
-				var toShape = new SVG2Shape();
-				var shape 	= toShape.convert(svg);
-				var mesh 	= new Chassis(shape, 50);
+			var svgs = canvas.svgs;
+			if(svgs.length > 0){
+				var mesh = new Chassis(svgs, 50);
 				mesh.rotation.x = Math.PI/2;
 				preview.setObject(mesh);
 			}
@@ -185,7 +183,7 @@
 					varName	= $this.data("guivar");
 				var varVal  = $this.data ("guival");
 
-				if(canvas.getCurrentShape() === undefined){
+				if(canvas.svgs.length == 0){
 					if(varName == "wheelsLocation" && varVal == true){
 						alert("You must sketch a chassis before providing wheels.");
 						return false;

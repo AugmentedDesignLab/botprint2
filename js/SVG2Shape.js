@@ -1,6 +1,4 @@
-function SVG2Shape() {
-	
-}
+function SVG2Shape() {}
 
 SVG2Shape.prototype.convert = function(elem) {
 	var shape;
@@ -8,7 +6,10 @@ SVG2Shape.prototype.convert = function(elem) {
 		case 'path': shape = this.fromPath(elem); break;
 		case 'rect': shape = this.fromRect(elem); break;
 		case 'circle': shape = this.fromCircle(elem); break;
+		case 'ellipse': shape = this.fromEllipse(elem); break;
 	}
+	// save transforms to be replayed later at Chassis.js
+	shape.transforms = elem.transform();
 	return shape;
 };
 
@@ -68,5 +69,14 @@ SVG2Shape.prototype.fromCircle = function(elem) {
 	shape.quadraticCurveTo( circleRadius, -circleRadius, 0, -circleRadius );
 	shape.quadraticCurveTo( -circleRadius, -circleRadius, -circleRadius, 0 );
 	shape.quadraticCurveTo( -circleRadius, circleRadius, 0, circleRadius );
+	return shape;
+};
+
+SVG2Shape.prototype.fromEllipse = function(elem) {
+	var shape = new THREE.Shape();
+	var attrs = elem.attrs;
+	var cx = attrs.cx, cy = attrs.cy, rx = attrs.rx, ry = attrs.ry;
+
+	shape.absellipse(cx, cy, rx, ry, 0, 2*Math.PI);	
 	return shape;
 };

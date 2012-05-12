@@ -1,5 +1,9 @@
-function FreeShapeHandler(draw, options) {
-	this.draw = draw;
+FreeShapeHandler.prototype = new DrawHandlerBase();
+FreeShapeHandler.prototype.constructor = FreeShapeHandler;
+
+function FreeShapeHandler(canvas, options) {
+	DrawHandlerBase.call(this, canvas);
+	this.draw = canvas.draw;
 	this._options = options;
 }
 
@@ -20,9 +24,8 @@ FreeShapeHandler.prototype.onMouseUp = function(x, y){
 	if(this.selected){
 		var path = this.selected.attrs.path;
 		this.selected.attr('path', path +'Z');
-		this.current = this.selected;
+		
+		this.addSVG(this.selected);
 		this.selected = null;
 	}
 };
-
-FreeShapeHandler.prototype.onDoubleClick = function(x, y) {};
