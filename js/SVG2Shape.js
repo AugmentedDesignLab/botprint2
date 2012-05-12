@@ -60,7 +60,6 @@ SVG2Shape.prototype.fromRect = function(elem) {
 };
 
 SVG2Shape.prototype.fromCircle = function(elem) {
-	// todo(Huascar) there must be a better way to do this.
 	var shape = new THREE.Shape();
 	var attrs = elem.attrs;
 	var circleRadius = attrs.r;
