@@ -2,17 +2,16 @@
  * SketchaBot functionality
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-(function(Raphael){
-
+(function(){
 	/**
-	 * factory method for creating a new sketchabot object
+	 * @return SketchaBot object
 	 */
-	Raphael.sketchabot = function() {
+	sketchabot = function(){
 		return new SketchaBot();
 	};
 
 	// Current version.
-	Raphael.sketchabot.VERSION = '0.0.1';
+	sketchabot.VERSION = '0.0.1';
 
 	/**
 	 * The SketchaBot object.
@@ -27,14 +26,13 @@
 		var running 	= true;
 		var previewing 	= true;
 
-		var vars	= []; // this will contain the choices we have made in the side bar
-
+		var vars		= []; // this will contain the choices we have made in the side bar
 		var $container 	= $('#container');
 
-		var width			= $container.width(),
-			height			= $container.height();
+		var width		= $container.width(),
+			height		= $container.height();
 
-		var $gui		= $('#gui');
+		var $gui		= $('#palette');
 
 		// predefined shape to be previewed by the SketchaBot app
 		var geometry = new THREE.CubeGeometry( 100, 100, 100 );
@@ -125,18 +123,24 @@
 			$(window).resize(callbacks.windowResize);
 
 			// GUI events
-			$(".gui-set a").click(callbacks.guiClick);
-			$(".gui-set a.default").trigger('click');
+			$(".palette-set a").click(callbacks.guiClick);
+			$(".palette-set a.default").trigger('click');
 		}
 
 		/**
 		 * Creates the objects we need to make the UI nicer.
 		 */
 		function setupUIComponents() {
-			// todo(Huascar) improve UI
+			// todo(Huascar) improve UI. low priority
 		}
 
-		function updateCanvasHandler (shape, color, wheels, preview){
+		function updateCanvasHandler (){
+			var color, shape, wheels, preview;
+			shape   = vars["shape"];
+			color   = vars["color"];
+			wheels  = vars["wheelsLocation"];
+			preview = vars["show3dPreview"];
+
 			var opts = {
 				stroke: "#F8F8F8 ",
 				"stroke-opacity": 1,
@@ -193,24 +197,19 @@
 				$this.siblings().addClass('disabled');
 				$this.removeClass('disabled');
 
-				// TODO(Huascar) refactor this....there is a better way to do this.
-				updateCanvasHandler(
-					vars["shape"],
-					vars["color"],
-					vars["wheelsLocation"],
-					vars["show3dPreview"]
-				);
+				updateCanvasHandler();
 
 				return false;
 			}
 		};
 	};
-})(window.Raphael);
+})();
 
 // Surfaceize!
 $(document).ready(function(){
 	if(Modernizr.webgl) {
 		// Go!
-		Raphael.sketchabot().play();
+		var sketchaBot = sketchabot();
+		sketchaBot.play();
 	}
 });
