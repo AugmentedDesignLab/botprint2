@@ -12,14 +12,14 @@ SVG2Shape.prototype.convert = function(elem) {
 	return shape;
 };
 
-SVG2Shape.prototype.fromArray = function(path) {
-	//var path = elem;
+SVG2Shape.prototype.fromPath = function(elem) {
+	var path  = elem.attrs.path;
 	var shape = new THREE.Shape();
 	var start = new THREE.Vector2();
-	
+
 	// used to remove duplicate actions
 	var existingActions = {};
-	
+
 	for(var i = 0; i < path.length; i++)
 	{
 		var action = path[i];
@@ -40,15 +40,11 @@ SVG2Shape.prototype.fromArray = function(path) {
 					shape.lineTo(start.x, start.y);
 					break;
 			}
-			
+
 		}
 	}
 
 	return shape;
-};
-
-SVG2Shape.prototype.fromPath = function(elem) {
-	return this.fromArray(elem.attrs.path);
 };
 
 SVG2Shape.prototype.fromRect = function(elem) {
