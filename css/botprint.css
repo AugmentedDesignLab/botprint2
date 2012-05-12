@@ -78,12 +78,12 @@ p {
     width: 180px;
 }
 
-#gui {
+#palette {
     display: none;
     width: 300px;
 }
 
-#gui.live {
+#palette.live {
     display: block;
 }
 
@@ -92,16 +92,16 @@ a {
     font-weight: bold;
 }
 
-.gui-set {
+.palette-set {
     display:block;
     padding: 5px 0 10px 0;
 }
 
-.gui-set a.disabled {
+.palette-set a.disabled {
     opacity: 0.2;
 }
 
-.gui-set a {
+.palette-set a {
     display:block;
     background-color: #FFF;
     color: #2b2b2b;

@@ -32,7 +32,7 @@
 		var width		= $container.width(),
 			height		= $container.height();
 
-		var $gui		= $('#gui');
+		var $gui		= $('#palette');
 
 		// predefined shape to be previewed by the SketchaBot app
 		var geometry = new THREE.CubeGeometry( 100, 100, 100 );
@@ -123,8 +123,8 @@
 			$(window).resize(callbacks.windowResize);
 
 			// GUI events
-			$(".gui-set a").click(callbacks.guiClick);
-			$(".gui-set a.default").trigger('click');
+			$(".palette-set a").click(callbacks.guiClick);
+			$(".palette-set a.default").trigger('click');
 		}
 
 		/**
