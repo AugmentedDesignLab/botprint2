@@ -42,7 +42,8 @@ CircleHandler.prototype.onMouseMove = function(x, y){
 
 CircleHandler.prototype.onMouseUp = function(x, y) {
 	if(this.selected){
-		this.current = this.selected;
+		// add this.selected to the canvas.svgs list
+		this.addSVG(this.selected);
 		this.selected = null;
 	}
 };

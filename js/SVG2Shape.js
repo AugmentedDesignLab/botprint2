@@ -64,11 +64,16 @@ SVG2Shape.prototype.fromCircle = function(elem) {
 	var shape = new THREE.Shape();
 	var attrs = elem.attrs;
 	var circleRadius = attrs.r;
-	shape.moveTo( 0, circleRadius );
-	shape.quadraticCurveTo( circleRadius, circleRadius, circleRadius, 0 );
-	shape.quadraticCurveTo( circleRadius, -circleRadius, 0, -circleRadius );
-	shape.quadraticCurveTo( -circleRadius, -circleRadius, -circleRadius, 0 );
-	shape.quadraticCurveTo( -circleRadius, circleRadius, 0, circleRadius );
+	var centerX = attrs.cx;
+	var centerY = attrs.cy;
+	/*
+	 * circles drawn by quadratic curves are not actually
+	 * circles, need to use arc instead. Also, the center
+	 * of circle should be set according to the original
+	 * center so that the relative position to other shapes
+	 * would be kept.
+	 */
+	shape.absarc(centerX, centerY, circleRadius, 0, 2*Math.PI);
 	return shape;
 };
 
@@ -77,6 +82,13 @@ SVG2Shape.prototype.fromEllipse = function(elem) {
 	var attrs = elem.attrs;
 	var cx = attrs.cx, cy = attrs.cy, rx = attrs.rx, ry = attrs.ry;
 
+	/*
+	 * absellipse is added to three.js by Zhongpeng Lin. To the date of
+	 * 2012-05-12, the changes have not been accepted by official
+	 * three.js repository, unfornately. In order to make this work,
+	 * the three.js built from https://github.com/linzhp/three.js
+	 * should be used.
+	 */
 	shape.absellipse(cx, cy, rx, ry, 0, 2*Math.PI);	
 	return shape;
 };
