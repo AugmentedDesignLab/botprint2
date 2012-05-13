@@ -1,5 +1,9 @@
-function CircleHandler(draw, options) {
-	this.draw 		= draw;
+CircleHandler.prototype = new DrawHandlerBase();
+CircleHandler.prototype.constructor = CircleHandler;
+
+function CircleHandler(canvas, options) {
+	DrawHandlerBase.call(this, canvas);
+	this.draw 		= canvas.draw;
 	this._options 	= options;
 
 	this.end        = {
