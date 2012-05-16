@@ -93,7 +93,7 @@
 			vars["color"]				= "#00FF00";
 			vars["wheelsLocation"]		= false;
 			vars["show3dPreview"]		= true;
-			vars["transform"]			= true;
+			vars["sketching"]			= true;
 
 			// create our stuff
 			if(bootstrapCanvas2D()) {
@@ -150,40 +150,38 @@
 		}
 
 		function updateCanvasHandler (){
-			var color, shape, wheels, preview, transform;
-			shape   	= vars["shape"];
-			color   	= vars["color"];
-			wheels  	= vars["wheelsLocation"];
-			preview 	= vars["show3dPreview"];
-			transform	= vars["transform"];
-
 			var opts = {
 				stroke: "#F8F8F8 ",
 				"stroke-opacity": 1,
-				fill: color,
+				fill: vars["color"],
 				"stroke-width": 2,
 				"stroke-linecap": "round",
 				"stroke-linejoin": "round"
 			};
 
-			previewing = preview;
-
-			switch(shape){
-				case "Free":
-					canvas.setOptions(opts);
-					canvas.setHandler(wheels ? CircleHandler : FreeShapeHandler);
-					break;
-				case "Square":
-					canvas.setOptions(opts);
-					canvas.setHandler(wheels ? CircleHandler : RectangleHandler);
-					break;
-				case "Polygon":
-					canvas.setOptions(opts);
-					canvas.setHandler(wheels ? CircleHandler : PolygonHandler);
-					break;
-				default : alert("Unable to find selected shape.");
-			}
+			previewing = vars["show3dPreview"];
+			
+			var handler =  pickHandler(vars["shape"], vars["wheelsLocation"], vars["sketching"]);
+			canvas.setOptions(opts);
+			canvas.setHandler(handler);
 		}
+		
+		function pickHandler(shape, wheels, sketching){
+			if(sketching){
+				if(wheels) {
+					return CircleHandler;
+				} else {
+					switch(shape) {
+						case "Free": return FreeShapeHandler;
+						case "Square": return RectangleHandler;
+						case "Polygon": return PolygonHandler;
+					}
+				}
+			} else {
+				return EditHandler;
+			}
+		}	
+
 
 		/**
 		 * Our internal callbacks object - a neat
