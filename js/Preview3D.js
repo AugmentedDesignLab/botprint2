@@ -10,12 +10,12 @@ function Preview3D(elemID) {
 	this.scene.add(this.camera);
 	
 	// Setup point lighting
-	var pointLight = new THREE.PointLight(0x000088);
+	this.pointLight = new THREE.PointLight(0xFFFFFF);
 	// by assigning the reference of camera.position, 
 	// pointLight.position will be updated as camera.position
-	pointLight.position = this.camera.position;
-	pointLight.castShadow = true;
-	this.scene.add(pointLight);
+	this.pointLight.position = this.camera.position;
+	this.pointLight.castShadow = true;
+	this.scene.add(this.pointLight);
 	
 	// Setup ambient lighting
 	var ambientLight = new THREE.AmbientLight(0x001111);
