@@ -11,7 +11,7 @@
 	};
 
 	// Current version.
-	sketchabot.VERSION = '0.0.1';
+	sketchabot.VERSION = '0.0.2';
 
 	/**
 	 * The SketchaBot object.
