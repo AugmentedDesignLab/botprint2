@@ -93,6 +93,7 @@
 			vars["color"]				= "#00FF00";
 			vars["wheelsLocation"]		= false;
 			vars["show3dPreview"]		= true;
+			vars["transform"]			= true;
 
 			// create our stuff
 			if(bootstrapCanvas2D()) {
@@ -132,12 +133,29 @@
 			// todo(Huascar) improve UI. low priority
 		}
 
+		function checkforChassisExistence(elems, varName, varVal) {
+			if(elems.length == 0){
+				if(varName == "wheelsLocation" && varVal == true){
+					alert("You must sketch a chassis before providing wheels.");
+					return false;
+				}
+
+				if(varName == "transform" && varVal == false){
+					alert("You must sketch a shape before start editing.");
+					return false;
+				}
+			}
+
+			return true;
+		}
+
 		function updateCanvasHandler (){
-			var color, shape, wheels, preview;
-			shape   = vars["shape"];
-			color   = vars["color"];
-			wheels  = vars["wheelsLocation"];
-			preview = vars["show3dPreview"];
+			var color, shape, wheels, preview, transform;
+			shape   	= vars["shape"];
+			color   	= vars["color"];
+			wheels  	= vars["wheelsLocation"];
+			preview 	= vars["show3dPreview"];
+			transform	= vars["transform"];
 
 			var opts = {
 				stroke: "#F8F8F8 ",
@@ -183,12 +201,8 @@
 					varName	= $this.data("guivar");
 				var varVal  = $this.data ("guival");
 
-				if(canvas.svgs.length == 0){
-					if(varName == "wheelsLocation" && varVal == true){
-						alert("You must sketch a chassis before providing wheels.");
-						return false;
-					}
-				}
+
+				checkforChassisExistence(canvas.svgs, varName, varVal);
 
 				vars[varName] = varVal;
 
