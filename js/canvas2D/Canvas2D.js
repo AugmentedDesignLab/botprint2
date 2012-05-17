@@ -34,7 +34,38 @@ Canvas2D.prototype.setOptions = function(options) {
 };
 
 Canvas2D.prototype.setHandler = function(handlerClass) {
+	this.disableHandlers();
     this.handler = new handlerClass(this, this._options);
+};
+
+/*
+ * Disable all current handlers
+ */
+Canvas2D.prototype.disableHandlers = function() {
+	this.elem.unbind();
+	$.each(this.svgs, function(index, svg){
+		var rotator = svg.rotator;
+		if(rotator)
+			rotator.disable();
+		svg.unbindAll();
+	});
+	
+};
+
+Canvas2D.prototype.addSVG = function(svg) {
+	svg.unbindAll = function(){
+		// Add this function to svg so that it can be called to unbind events later
+		var events = this.events;
+		if(events)
+		{
+			var ev = events.pop();
+			while(ev){
+				ev.unbind();
+				ev = events.pop();
+			}
+		}
+	};
+	this.svgs.push(svg);
 };
 
 Canvas2D.prototype.translateX = function(x) {
