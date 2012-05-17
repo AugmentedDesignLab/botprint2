@@ -3,12 +3,13 @@ FreeShapeHandler.prototype.constructor = FreeShapeHandler;
 
 function FreeShapeHandler(canvas, options) {
 	DrawHandlerBase.call(this, canvas);
-	this.draw = canvas.draw;
+	this.canvas = canvas;
 	this._options = options;
 }
 
 FreeShapeHandler.prototype.onMouseDown = function(x, y){
-	this.selected = this.draw.path('M '+x+','+y);
+	var draw = this.canvas.draw;
+	this.selected = draw.path('M '+x+','+y);
 	this.selected.attr('fill', '#00FF00');
 };
 
@@ -25,7 +26,7 @@ FreeShapeHandler.prototype.onMouseUp = function(x, y){
 		var path = this.selected.attrs.path;
 		this.selected.attr('path', path +'Z');
 		
-		this.addSVG(this.selected);
+		this.canvas.addSVG(this.selected);
 		this.selected = null;
 	}
 };

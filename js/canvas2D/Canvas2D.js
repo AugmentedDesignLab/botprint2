@@ -1,18 +1,17 @@
 /**
  * @author Zhongpeng Lin
+ * The 2D drawing area. DO NOT confuse this with
  */
 
 function Canvas2D(elemID) {
 	this.elem = $('#'+elemID);
-	var width = this.elem.width();
-	var height = this.elem.height();
-	this.draw = Raphael(elemID, width, height);
+	this.width = this.elem.width();
+	this.height = this.elem.height();
+	this.draw = Raphael(elemID, this.width, this.height);
 	var pos = this.elem.offset();
 	this.offset = [pos.left, pos.top];
 	
     
-    this.width = width;
-    this.height = height;
 	this._options = {
 		stroke: "#F8F8F8 ",
 		"stroke-opacity": 1,
@@ -34,7 +33,38 @@ Canvas2D.prototype.setOptions = function(options) {
 };
 
 Canvas2D.prototype.setHandler = function(handlerClass) {
+	this.disableHandlers();
     this.handler = new handlerClass(this, this._options);
+};
+
+/*
+ * Disable all current handlers
+ */
+Canvas2D.prototype.disableHandlers = function() {
+	this.elem.unbind();
+	$.each(this.svgs, function(index, svg){
+		var rotator = svg.rotator;
+		if(rotator)
+			rotator.disable();
+		svg.unbindAll();
+	});
+	
+};
+
+Canvas2D.prototype.addSVG = function(svg) {
+	svg.unbindAll = function(){
+		// Add this function to svg so that it can be called to unbind events later
+		var events = this.events;
+		if(events)
+		{
+			var ev = events.pop();
+			while(ev){
+				ev.unbind();
+				ev = events.pop();
+			}
+		}
+	};
+	this.svgs.push(svg);
 };
 
 Canvas2D.prototype.translateX = function(x) {

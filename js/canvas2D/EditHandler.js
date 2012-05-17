@@ -1,12 +1,8 @@
 /**
  * @author Zhongpeng Lin
  */
-EditHandler.prototype = new HandlerBase();
-EditHandler.prototype.constructor = EditHandler;
 
 function EditHandler(canvas, options){
-	HandlerBase.call(this, canvas);
-	
 	$.each(canvas.svgs, function(index, svg){
 		// Add rotator
 		if(!svg.rotator){
