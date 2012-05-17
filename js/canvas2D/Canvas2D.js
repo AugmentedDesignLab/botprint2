@@ -1,18 +1,17 @@
 /**
  * @author Zhongpeng Lin
+ * The 2D drawing area. DO NOT confuse this with
  */
 
 function Canvas2D(elemID) {
 	this.elem = $('#'+elemID);
-	var width = this.elem.width();
-	var height = this.elem.height();
-	this.draw = Raphael(elemID, width, height);
+	this.width = this.elem.width();
+	this.height = this.elem.height();
+	this.draw = Raphael(elemID, this.width, this.height);
 	var pos = this.elem.offset();
 	this.offset = [pos.left, pos.top];
 	
     
-    this.width = width;
-    this.height = height;
 	this._options = {
 		stroke: "#F8F8F8 ",
 		"stroke-opacity": 1,
