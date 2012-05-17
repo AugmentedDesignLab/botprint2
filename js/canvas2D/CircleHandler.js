@@ -3,7 +3,7 @@ CircleHandler.prototype.constructor = CircleHandler;
 
 function CircleHandler(canvas, options) {
 	DrawHandlerBase.call(this, canvas);
-	this.draw 		= canvas.draw;
+	this.canvas 	= canvas;
 	this._options 	= options;
 
 	this.end        = {
@@ -18,7 +18,8 @@ CircleHandler.prototype.onMouseDown = function(x, y){
 		_w: this.end.w
 	};
 
-	this.selected = this.draw.circle(
+	var draw = this.canvas.draw;
+	this.selected = draw.circle(
 		this.start._x,
 		this.start._y,
 		this.start._w
@@ -43,7 +44,7 @@ CircleHandler.prototype.onMouseMove = function(x, y){
 CircleHandler.prototype.onMouseUp = function(x, y) {
 	if(this.selected){
 		// add this.selected to the canvas.svgs list
-		this.addSVG(this.selected);
+		this.canvas.addSVG(this.selected);
 		this.selected = null;
 	}
 };

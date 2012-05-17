@@ -3,11 +3,12 @@ EllipseHandler.prototype.constructor = EllipseHandler;
 
 function EllipseHandler(canvas, options) {
 	DrawHandlerBase.call(this, canvas);
-	this.draw = canvas.draw;
+	this.canvas = canvas;
 }
 
 EllipseHandler.prototype.onMouseDown = function(x, y){
-	this.selected = this.draw.ellipse(x, y, 0, 0);
+	var draw = this.canvas.draw;
+	this.selected = draw.ellipse(x, y, 0, 0);
 	this.selected.attr('fill', '#00FF00');
 	//FIXME use options
 };
@@ -23,7 +24,7 @@ EllipseHandler.prototype.onMouseMove = function(x, y){
 
 EllipseHandler.prototype.onMouseUp = function(x, y) {
 	if(this.selected){
-		this.addSVG(this.selected);
+		this.canvas.addSVG(this.selected);
 		this.selected = null;
 	}
 };

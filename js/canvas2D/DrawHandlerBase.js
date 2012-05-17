@@ -1,12 +1,8 @@
 /**
  * @author Zhongpeng Lin
  */
-DrawHandlerBase.prototype = new HandlerBase();
-DrawHandlerBase.prototype.constructor = DrawHandlerBase;
-
 function DrawHandlerBase(canvas) {
 	if(canvas){
-		HandlerBase.call(this, canvas);
 		var elem = canvas.elem;
 		// bind new event handlers
 		var self = this;
