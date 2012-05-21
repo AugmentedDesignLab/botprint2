@@ -173,8 +173,9 @@
 				} else {
 					switch(shape) {
 						case "Free": return freeShapeHandler;
-						case "Square": return RectangleHandler;
+						case "Square": return rectangleHandler;
 						case "Polygon": return polygonHandler;
+						case "Ellipse": return ellipseHandler;
 					}
 				}
 			} else {
