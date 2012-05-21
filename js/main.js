@@ -69,7 +69,7 @@
 				if(previewing){
 					self.preview();
 				}
-			}, 100);
+			}, 1000);
 		};
 
 		/**
@@ -179,7 +179,7 @@
 					}
 				}
 			} else {
-				return EditHandler;
+				return editHandler;
 			}
 		}	
 

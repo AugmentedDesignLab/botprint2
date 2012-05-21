@@ -1,15 +1,15 @@
 /**
  * @author Zhongpeng Lin
  */
-
-function EditHandler(canvas, options){
-	$.each(canvas.svgs, function(index, svg){
+var editHandler = function(spec) {
+	var handler = spec;
+	$.each(handler.canvas.svgs, function(index, svg){
 		// Add rotator
 		if(!svg.rotator){
 			new Rotator(svg);
 		}
 		svg.rotator.enable();
-
+	
 		// Add dragging listener
 		var tstr, ox, oy;
 		svg.drag(function(dx, dy, x, y, event){
@@ -35,6 +35,6 @@ function EditHandler(canvas, options){
 			oy = svg.rotator.getY();
 		});
 	});
-	
-	
-}
+
+	return handler;
+};

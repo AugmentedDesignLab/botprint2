@@ -8,7 +8,6 @@ var ellipseHandler = function(spec) {
 		var draw = this.canvas.draw;
 		this.selected = draw.ellipse(x, y, 0, 0);
 		this.selected.attr(spec.options);
-		//FIXME use options
 	};
 	
 	handler.mousemove = function(x, y){
