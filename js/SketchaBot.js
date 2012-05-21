@@ -169,7 +169,7 @@
 		function pickHandlerConstructor(shape, wheels, sketching){
 			if(sketching){
 				if(wheels) {
-					return CircleHandler;
+					return circleHandler;
 				} else {
 					switch(shape) {
 						case "Free": return freeShapeHandler;
