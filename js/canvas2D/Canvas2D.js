@@ -1,6 +1,8 @@
 /**
  * @author Zhongpeng Lin
- * The 2D drawing area. DO NOT confuse this with
+ * The 2D drawing area. DO NOT confuse this with HTML5 canvas element.
+ * In fact, Canvas2D uses SVG under the hood, instead of HTML5 canvas
+ * 2D context.
  */
 
 function Canvas2D(elemID) {
@@ -10,31 +12,22 @@ function Canvas2D(elemID) {
 	this.draw = Raphael(elemID, this.width, this.height);
 	var pos = this.elem.offset();
 	this.offset = [pos.left, pos.top];
-	
-    
-	this._options = {
-		stroke: "#F8F8F8 ",
-		"stroke-opacity": 1,
-		fill: "#00FF00",
-		"stroke-width": 2,
-		"stroke-linecap": "round",
-		"stroke-linejoin": "round"
-	};
     this.svgs = [];
 }
 
-Canvas2D.prototype.setOptions = function(options) {
-	if(options === undefined){
-		return false;
-	} else {
-		this._options = options;
-		return true;
-	}
-};
-
-Canvas2D.prototype.setHandler = function(handlerClass) {
+Canvas2D.prototype.setHandler = function(handler) {
 	this.disableHandlers();
-    this.handler = new handlerClass(this, this._options);
+	var self = this;
+	// bind new event handlers
+	var events = ['mousedown', 'mousemove', 'mouseup', 'dblclick'];
+	$.each(events, function(index, ev){
+		if(handler[ev]){
+			self.elem.bind(ev, function(event){
+		      event.preventDefault();
+		      handler[ev](self.translateX(event.clientX), self.translateY(event.clientY));
+		    });
+		}
+	});
 };
 
 /*

@@ -161,20 +161,20 @@
 
 			previewing = vars["show3dPreview"];
 			
-			var handler =  pickHandler(vars["shape"], vars["wheelsLocation"], vars["sketching"]);
-			canvas.setOptions(opts);
+			var constructor =  pickHandlerConstructor(vars["shape"], vars["wheelsLocation"], vars["sketching"]);
+			var handler = constructor({options:opts, canvas: canvas});
 			canvas.setHandler(handler);
 		}
 		
-		function pickHandler(shape, wheels, sketching){
+		function pickHandlerConstructor(shape, wheels, sketching){
 			if(sketching){
 				if(wheels) {
 					return CircleHandler;
 				} else {
 					switch(shape) {
-						case "Free": return FreeShapeHandler;
+						case "Free": return freeShapeHandler;
 						case "Square": return RectangleHandler;
-						case "Polygon": return PolygonHandler;
+						case "Polygon": return polygonHandler;
 					}
 				}
 			} else {
