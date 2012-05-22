@@ -37,9 +37,8 @@
 		// predefined shape to be previewed by the SketchaBot app
 		var geometry = new THREE.CubeGeometry( 100, 100, 100 );
 		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe: true } );
-		var mesh 	 = new THREE.Mesh( geometry, material );
+		var defaultMesh 	 = new THREE.Mesh( geometry, material );
 
-		preview.setObject(mesh);
 
 
 		/**
@@ -81,6 +80,8 @@
 				var mesh = new Chassis(svgs, 50);
 				mesh.rotation.x = Math.PI/2;
 				preview.setObject(mesh);
+			}else{
+				preview.setObject(defaultMesh);
 			}
 		};
 

@@ -2,7 +2,7 @@
  * @author Zhongpeng Lin
  */
 var ellipseHandler = function(spec) {
-	var handler = spec;
+	var handler = abstractDrawHandler(spec);
 	
 	handler.mousedown = function(x, y){
 		var draw = this.canvas.draw;

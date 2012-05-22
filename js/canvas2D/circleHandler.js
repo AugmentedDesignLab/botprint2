@@ -2,7 +2,7 @@
  * @author Zhongpeng Lin
  */
 var circleHandler = function(spec) {
-	var handler = spec;
+	var handler = abstractDrawHandler(spec);
 	handler.end = {
 		w: 5
 	};

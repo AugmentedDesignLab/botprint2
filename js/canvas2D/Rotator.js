@@ -5,10 +5,10 @@ function Rotator(svg) {
 		debugger;
 	var circle = draw.circle((bBox.x+bBox.x2)/2, bBox.y-14, 5);
 	circle.attr({'fill': 'white'});
+	// circle.unbindAll = svg.unbindAll;
 	
 	this.svg = svg;
 	this.circle = circle;
-	svg.rotator = this;
 }
 
 Rotator.prototype.enable = function(){
@@ -47,7 +47,7 @@ Rotator.prototype.enable = function(){
 };
 
 Rotator.prototype.disable = function() {
-	unbindAll(this.circle);
+	this.circle.unbindAll();
 	this.circle.hide();
 };
 

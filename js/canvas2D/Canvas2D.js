@@ -16,47 +16,29 @@ function Canvas2D(elemID) {
 }
 
 Canvas2D.prototype.setHandler = function(handler) {
-	this.disableHandlers();
-	var self = this;
-	// bind new event handlers
-	var events = ['mousedown', 'mousemove', 'mouseup', 'dblclick'];
-	$.each(events, function(index, ev){
-		if(handler[ev]){
-			self.elem.bind(ev, function(event){
-		      event.preventDefault();
-		      handler[ev](self.translateX(event.clientX), self.translateY(event.clientY));
-		    });
-		}
-	});
-};
-
-/*
- * Disable all current handlers
- */
-Canvas2D.prototype.disableHandlers = function() {
-	this.elem.unbind();
-	$.each(this.svgs, function(index, svg){
-		var rotator = svg.rotator;
-		if(rotator)
-			rotator.disable();
-		svg.unbindAll();
-	});
-	
+	if(this.handler)
+	{
+		this.handler.disable();
+	}
+	this.handler = handler;
+	this.handler.enable();
 };
 
 Canvas2D.prototype.addSVG = function(svg) {
-	svg.unbindAll = function(){
-		// Add this function to svg so that it can be called to unbind events later
-		var events = this.events;
-		if(events)
-		{
-			var ev = events.pop();
-			while(ev){
-				ev.unbind();
-				ev = events.pop();
+	if(!svg.__proto__.unbindAll){
+		svg.__proto__.unbindAll = function(){
+			// Add this function to svg so that it can be called to unbind events later
+			var events = this.events;
+			if(events)
+			{
+				var ev = events.pop();
+				while(ev){
+					ev.unbind();
+					ev = events.pop();
+				}
 			}
-		}
-	};
+		};	
+	}
 	this.svgs.push(svg);
 };
 

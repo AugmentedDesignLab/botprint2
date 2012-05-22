@@ -2,7 +2,7 @@
  * @author Zhongpeng Lin
  */
 var rectangleHandler = function(spec) {
-	var handler = spec;
+	var handler = abstractDrawHandler(spec);
 	
 	handler.mousedown = function(x, y){
 		this.start = new THREE.Vector2(x, y);

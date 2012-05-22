@@ -3,7 +3,7 @@
  */
 
 var polygonHandler = function(spec) {
-	var handler = spec;
+	var handler = abstractDrawHandler(spec);
 	
 	handler.mousedown = function(x, y) {
 		if(this.selected){
