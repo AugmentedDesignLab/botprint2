@@ -8,7 +8,7 @@ var editHandler = function(spec) {
 		$.each(handler.canvas.svgs, function(index, svg){
 			// Add rotator
 			if(!svg.rotator){
-				svg.rotator = new Rotator(svg);
+				svg.rotator = rotator(svg);
 			}
 			svg.rotator.enable();
 		
@@ -18,7 +18,8 @@ var editHandler = function(spec) {
 			svg.remover.enable();
 		
 			// Add dragging listener
-			var tstr, ox, oy;
+			var svgStr, oCord, removerStr;
+			
 			svg.drag(function(dx, dy, x, y, event){
 				/* onMove
 				 * Transformation will not change the x and y
@@ -30,16 +31,17 @@ var editHandler = function(spec) {
 				 * are being extruded, they need to be transformed
 				 * as well.
 				*/
-				svg.transform(tstr+'T'+dx+','+dy);
+				svg.transform(svgStr+'T'+dx+','+dy);
 				
 				// Rotator (circle) can be easily moved
-				svg.rotator.setX(ox + dx);
-				svg.rotator.setY(oy + dy);
+				svg.rotator.Cord({x: oCord.x + dx, y: oCord.y + dy});
+				
+				svg.remover.transform(removerStr+'T'+dx+','+dy);
 			}, function(x, y, event){
 				// onStart
-				tstr = svg.transform();
-				ox = svg.rotator.getX();
-				oy = svg.rotator.getY();
+				svgStr = svg.transform();
+				oCord = svg.rotator.getCord();
+				removerStr = svg.remover.getTransformStr();
 			});
 		});
 			

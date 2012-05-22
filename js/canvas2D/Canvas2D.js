@@ -26,6 +26,10 @@ Canvas2D.prototype.setHandler = function(handler) {
 
 Canvas2D.prototype.addSVG = function(svg) {
 	if(!svg.__proto__.unbindAll){
+		/*
+		 * HACKING: add unbindAll method to
+		 * Raphael's Element class
+		 */
 		svg.__proto__.unbindAll = function(){
 			// Add this function to svg so that it can be called to unbind events later
 			var events = this.events;

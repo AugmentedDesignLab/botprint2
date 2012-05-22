@@ -54,5 +54,13 @@ var remover = function(svg, canvas) {
 		that.cross.hide();
 	};
 	
+	that.getTransformStr = function() {
+		return that.cross.transform();
+	};
+	
+	that.transform = function(str) {
+		that.cross.transform(str);
+	};
+	
 	return that;
 };
