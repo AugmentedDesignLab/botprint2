@@ -18,7 +18,7 @@ var editHandler = function(spec) {
 			svg.remover.enable();
 		
 			// Add dragging listener
-			var svgStr, oCord, removerStr;
+			var svgStr, orignalCoordinatesForRotator, removerStr;
 			
 			svg.drag(function(dx, dy, x, y, event){
 				/* onMove
@@ -32,15 +32,14 @@ var editHandler = function(spec) {
 				 * as well.
 				*/
 				svg.transform(svgStr+'T'+dx+','+dy);
-				
 				// Rotator (circle) can be easily moved
-				svg.rotator.Cord({x: oCord.x + dx, y: oCord.y + dy});
+				svg.rotator.setCoordinates({x: orignalCoordinatesForRotator.x + dx, y: orignalCoordinatesForRotator.y + dy});
 				
 				svg.remover.transform(removerStr+'T'+dx+','+dy);
 			}, function(x, y, event){
 				// onStart
 				svgStr = svg.transform();
-				oCord = svg.rotator.getCord();
+				orignalCoordinatesForRotator = svg.rotator.getCoordinates();
 				removerStr = svg.remover.getTransformStr();
 			});
 		});

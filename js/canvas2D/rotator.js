@@ -12,12 +12,12 @@ function rotator(svg) {
 	var that = {};
 	that.enable = function(){
 		var svgStr, removerStr;
-		var oCord, oDeg = 0, deg;
+		var orignalCoordinatesForCircle, oDeg = 0, deg;
 		circle.drag(function(dx, dy, x, y, event){
 			/* onDrag, x and y here are both relative to upper-left corner of
 			 * the BROWSER!
 			 */
-			circle.attr({'cx': oCord.x+dx, 'cy': oCord.y+dy});
+			circle.attr({'cx': orignalCoordinatesForCircle.x+dx, 'cy': orignalCoordinatesForCircle.y+dy});
 			var box = svg.getBBox();
 			var center = {x: box.x+box.width/2, y: box.y + box.height/2};
 		    var rad = Math.atan2(center.x-circle.attrs.cx, circle.attrs.cy-center.y);
@@ -30,7 +30,7 @@ function rotator(svg) {
 		}, function(x, y, event){
 			// onStart
 			svgStr = svg.transform();
-			oCord = {x: circle.attrs.cx, y: circle.attrs.cy};
+			orignalCoordinatesForCircle = {x: circle.attrs.cx, y: circle.attrs.cy};
 			removerStr = svg.remover.getTransformStr();
 		}, function(event) {
 			// onEnd
@@ -38,11 +38,11 @@ function rotator(svg) {
 		});
 		
 		circle.mouseover(function(){
-			this.attr({'fill':'blue'});
+			this.attr({fill:'blue'});
 		});
 		
 		circle.mouseout(function(){
-			this.attr({'fill':'white'});
+			this.attr({fill:'white'});
 		})
 		circle.show();
 	};
@@ -52,12 +52,12 @@ function rotator(svg) {
 		circle.hide();
 	};
 
-	that.setCord = function(cord) {
-		circle.attr({'cx': cord.x, 'cy': cord.y});
+	that.setCoordinates = function(coord) {
+		circle.attr({cx: coord.x, cy: coord.y});
 	}
 	
-	that.getCord = function() {
-		return {x: circle.attrs.cy, y: circle.attrs.cy};
+	that.getCoordinates = function() {
+		return {x: circle.attrs.cx, y: circle.attrs.cy};
 	}
 	
 	that.remove = function() {
