@@ -23,8 +23,7 @@ var remover = function(svg, canvas) {
 				var index = canvas.svgs.indexOf(svg);
 				canvas.svgs.splice(index, 1);
 				svg.unbindAll();
-				svg.rotator.disable();
-				svg.rotator.circle.remove();
+				svg.rotator.remove();
 				
 				that.disable();
 				that.cross.remove();

@@ -59,5 +59,10 @@ function rotator(svg) {
 	that.getCord = function() {
 		return {x: circle.attrs.cy, y: circle.attrs.cy};
 	}
+	
+	that.remove = function() {
+		that.disable();
+		circle.remove();
+	};
 	return that;	
 }

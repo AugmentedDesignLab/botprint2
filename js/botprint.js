@@ -1,22 +1,22 @@
 /**
- * SketchaBot functionality
+ * Botprint functionality
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
 (function(){
 	/**
-	 * @return SketchaBot object
+	 * @return Botprint object
 	 */
-	sketchabot = function(){
-		return new SketchaBot();
+	botprint = function(){
+		return new Botprint();
 	};
 
 	// Current version.
-	sketchabot.VERSION = '0.0.2';
+	botprint.VERSION = '0.0.2';
 
 	/**
-	 * The SketchaBot object.
+	 * The Botprint object.
 	 */
-	var SketchaBot = function() {
+	var Botprint = function() {
 		// Use self to reduce confusion about 'this'
 		var self 	 = this;
 
@@ -34,7 +34,7 @@
 
 		var $gui		= $('#palette');
 
-		// predefined shape to be previewed by the SketchaBot app
+		// predefined shape to be previewed by the Botprint app
 		var geometry = new THREE.CubeGeometry( 100, 100, 100 );
 		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe: true } );
 		var defaultMesh 	 = new THREE.Mesh( geometry, material );
@@ -68,7 +68,7 @@
 				if(previewing){
 					self.preview();
 				}
-			}, 1000);
+			}, 100);
 		};
 
 		/**
@@ -86,7 +86,7 @@
 		};
 
 		/**
-		 * Initializes the SketchaBot experiment and kicks everything off. Yay!
+		 * Initializes the Botprint experiment and kicks everything off. Yay!
 		 */
 		self.init = function() {
 			// set up our initial vars
@@ -221,7 +221,7 @@
 $(document).ready(function(){
 	if(Modernizr.webgl) {
 		// Go!
-		var sketchaBot = sketchabot();
-		sketchaBot.play();
+		var main = botprint();
+		main.play();
 	}
 });
