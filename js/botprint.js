@@ -1,22 +1,22 @@
 /**
- * SketchaBot functionality
+ * Botprint functionality
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
 (function(){
 	/**
-	 * @return SketchaBot object
+	 * @return Botprint object
 	 */
-	sketchabot = function(){
-		return new SketchaBot();
+	botprint = function(){
+		return new Botprint();
 	};
 
 	// Current version.
-	sketchabot.VERSION = '0.0.2';
+	botprint.VERSION = '0.0.2';
 
 	/**
-	 * The SketchaBot object.
+	 * The Botprint object.
 	 */
-	var SketchaBot = function() {
+	var Botprint = function() {
 		// Use self to reduce confusion about 'this'
 		var self 	 = this;
 
@@ -34,12 +34,11 @@
 
 		var $gui		= $('#palette');
 
-		// predefined shape to be previewed by the SketchaBot app
+		// predefined shape to be previewed by the Botprint app
 		var geometry = new THREE.CubeGeometry( 100, 100, 100 );
 		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe: true } );
 		var mesh 	 = new THREE.Mesh( geometry, material );
 
-		preview.setObject(mesh);
 
 
 		/**
@@ -78,14 +77,16 @@
 		self.preview = function(){
 			var svgs = canvas.svgs;
 			if(svgs.length > 0){
-				var mesh = new Chassis(svgs, 50);
-				mesh.rotation.x = Math.PI/2;
+				var chassis = new Chassis(svgs, 50);
+				chassis.rotation.x = Math.PI/2;
+				preview.setObject(chassis);
+			}else{
 				preview.setObject(mesh);
 			}
 		};
 
 		/**
-		 * Initializes the SketchaBot experiment and kicks everything off. Yay!
+		 * Initializes the Botprint experiment and kicks everything off. Yay!
 		 */
 		self.init = function() {
 			// set up our initial vars
@@ -161,25 +162,40 @@
 
 			previewing = vars["show3dPreview"];
 			
-			var handler =  pickHandler(vars["shape"], vars["wheelsLocation"], vars["sketching"]);
-			canvas.setOptions(opts);
+			var handler =  pickHandler({
+				shape: vars["shape"], 
+				wheels: vars["wheelsLocation"],
+				sketching: vars["sketching"],
+				shapeAttributes: opts,
+				canvas: canvas});
 			canvas.setHandler(handler);
 		}
 		
-		function pickHandler(shape, wheels, sketching){
-			if(sketching){
-				if(wheels) {
-					return CircleHandler;
+		function pickHandler(options){
+			var constructor;
+			if(options.sketching){
+				if(options.wheels) {
+					constructor = circleHandler;
 				} else {
-					switch(shape) {
-						case "Free": return FreeShapeHandler;
-						case "Square": return RectangleHandler;
-						case "Polygon": return PolygonHandler;
+					switch(options.shape) {
+						case "Free":
+							constructor = freeShapeHandler;
+							break;
+						case "Square":
+							constructor = rectangleHandler;
+							break;
+						case "Polygon":
+							constructor = polygonHandler;
+							break;
+						case "Ellipse":
+							constructor = ellipseHandler;
+							break;
 					}
 				}
 			} else {
-				return EditHandler;
+				constructor = editHandler;
 			}
+			return constructor({shapeAttributes: options.shapeAttributes, canvas: options.canvas});
 		}	
 
 
@@ -219,7 +235,7 @@
 $(document).ready(function(){
 	if(Modernizr.webgl) {
 		// Go!
-		var sketchaBot = sketchabot();
-		sketchaBot.play();
+		var main = botprint();
+		main.play();
 	}
 });

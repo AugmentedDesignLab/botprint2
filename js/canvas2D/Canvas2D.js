@@ -1,6 +1,8 @@
 /**
  * @author Zhongpeng Lin
- * The 2D drawing area. DO NOT confuse this with
+ * The 2D drawing area. DO NOT confuse this with HTML5 canvas element.
+ * In fact, Canvas2D uses SVG under the hood, instead of HTML5 canvas
+ * 2D context.
  */
 
 function Canvas2D(elemID) {
@@ -10,60 +12,37 @@ function Canvas2D(elemID) {
 	this.draw = Raphael(elemID, this.width, this.height);
 	var pos = this.elem.offset();
 	this.offset = [pos.left, pos.top];
-	
-    
-	this._options = {
-		stroke: "#F8F8F8 ",
-		"stroke-opacity": 1,
-		fill: "#00FF00",
-		"stroke-width": 2,
-		"stroke-linecap": "round",
-		"stroke-linejoin": "round"
-	};
     this.svgs = [];
 }
 
-Canvas2D.prototype.setOptions = function(options) {
-	if(options === undefined){
-		return false;
-	} else {
-		this._options = options;
-		return true;
+Canvas2D.prototype.setHandler = function(handler) {
+	if(this.handler)
+	{
+		this.handler.disable();
 	}
-};
-
-Canvas2D.prototype.setHandler = function(handlerClass) {
-	this.disableHandlers();
-    this.handler = new handlerClass(this, this._options);
-};
-
-/*
- * Disable all current handlers
- */
-Canvas2D.prototype.disableHandlers = function() {
-	this.elem.unbind();
-	$.each(this.svgs, function(index, svg){
-		var rotator = svg.rotator;
-		if(rotator)
-			rotator.disable();
-		svg.unbindAll();
-	});
-	
+	this.handler = handler;
+	this.handler.enable();
 };
 
 Canvas2D.prototype.addSVG = function(svg) {
-	svg.unbindAll = function(){
-		// Add this function to svg so that it can be called to unbind events later
-		var events = this.events;
-		if(events)
-		{
-			var ev = events.pop();
-			while(ev){
-				ev.unbind();
-				ev = events.pop();
+	if(!svg.__proto__.unbindAll){
+		/*
+		 * HACKING: add unbindAll method to
+		 * Raphael's Element class
+		 */
+		svg.__proto__.unbindAll = function(){
+			// Add this function to svg so that it can be called to unbind events later
+			var events = this.events;
+			if(events)
+			{
+				var ev = events.pop();
+				while(ev){
+					ev.unbind();
+					ev = events.pop();
+				}
 			}
-		}
-	};
+		};	
+	}
 	this.svgs.push(svg);
 };
 
