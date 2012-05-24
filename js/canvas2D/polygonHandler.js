@@ -3,7 +3,7 @@
  */
 
 var polygonHandler = function(spec) {
-	var handler = abstractDrawHandler(spec);
+	var handler = sketchingHandler(spec);
 	
 	handler.mousedown = function(x, y) {
 		if(this.selected){
@@ -14,7 +14,7 @@ var polygonHandler = function(spec) {
 			// Create a new path
 			var draw = this.canvas.draw;
 			this.selected = draw.path('M '+x+' '+y + ' L ' + x + ' ' + y);
-			this.selected.attr(this.options);
+			this.selected.attr(this.shapeAttributes);
 			//this.selected.attr('fill', '#00FF00');
 		}
 	};

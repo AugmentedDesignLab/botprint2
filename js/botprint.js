@@ -37,7 +37,7 @@
 		// predefined shape to be previewed by the Botprint app
 		var geometry = new THREE.CubeGeometry( 100, 100, 100 );
 		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe: true } );
-		var defaultMesh 	 = new THREE.Mesh( geometry, material );
+		var mesh 	 = new THREE.Mesh( geometry, material );
 
 
 
@@ -77,11 +77,11 @@
 		self.preview = function(){
 			var svgs = canvas.svgs;
 			if(svgs.length > 0){
-				var mesh = new Chassis(svgs, 50);
-				mesh.rotation.x = Math.PI/2;
-				preview.setObject(mesh);
+				var chassis = new Chassis(svgs, 50);
+				chassis.rotation.x = Math.PI/2;
+				preview.setObject(chassis);
 			}else{
-				preview.setObject(defaultMesh);
+				preview.setObject(mesh);
 			}
 		};
 
@@ -162,26 +162,40 @@
 
 			previewing = vars["show3dPreview"];
 			
-			var constructor =  pickHandlerConstructor(vars["shape"], vars["wheelsLocation"], vars["sketching"]);
-			var handler = constructor({options:opts, canvas: canvas});
+			var handler =  pickHandler({
+				shape: vars["shape"], 
+				wheels: vars["wheelsLocation"],
+				sketching: vars["sketching"],
+				shapeAttributes: opts,
+				canvas: canvas});
 			canvas.setHandler(handler);
 		}
 		
-		function pickHandlerConstructor(shape, wheels, sketching){
-			if(sketching){
-				if(wheels) {
-					return circleHandler;
+		function pickHandler(options){
+			var constructor;
+			if(options.sketching){
+				if(options.wheels) {
+					constructor = circleHandler;
 				} else {
-					switch(shape) {
-						case "Free": return freeShapeHandler;
-						case "Square": return rectangleHandler;
-						case "Polygon": return polygonHandler;
-						case "Ellipse": return ellipseHandler;
+					switch(options.shape) {
+						case "Free":
+							constructor = freeShapeHandler;
+							break;
+						case "Square":
+							constructor = rectangleHandler;
+							break;
+						case "Polygon":
+							constructor = polygonHandler;
+							break;
+						case "Ellipse":
+							constructor = ellipseHandler;
+							break;
 					}
 				}
 			} else {
-				return editHandler;
+				constructor = editHandler;
 			}
+			return constructor({shapeAttributes: options.shapeAttributes, canvas: options.canvas});
 		}	
 
 

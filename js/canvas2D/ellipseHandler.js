@@ -2,12 +2,12 @@
  * @author Zhongpeng Lin
  */
 var ellipseHandler = function(spec) {
-	var handler = abstractDrawHandler(spec);
+	var handler = sketchingHandler(spec);
 	
 	handler.mousedown = function(x, y){
 		var draw = this.canvas.draw;
 		this.selected = draw.ellipse(x, y, 0, 0);
-		this.selected.attr(spec.options);
+		this.selected.attr(spec.shapeAttributes);
 	};
 	
 	handler.mousemove = function(x, y){

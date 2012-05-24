@@ -2,7 +2,7 @@
  * @author Zhongpeng Lin
  */
 var circleHandler = function(spec) {
-	var handler = abstractDrawHandler(spec);
+	var handler = sketchingHandler(spec);
 	handler.end = {
 		w: 5
 	};
@@ -20,7 +20,7 @@ var circleHandler = function(spec) {
 			this.start._y,
 			this.start._w
 		);
-		this.selected.attr(this.options);
+		this.selected.attr(this.shapeAttributes);
 	//	this.selected.attr('fill', '#00FF00');
 	};
 	

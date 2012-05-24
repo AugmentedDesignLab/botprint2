@@ -2,13 +2,13 @@
  * @author Zhongpeng Lin
  */
 var rectangleHandler = function(spec) {
-	var handler = abstractDrawHandler(spec);
+	var handler = sketchingHandler(spec);
 	
 	handler.mousedown = function(x, y){
 		this.start = new THREE.Vector2(x, y);
 		var draw = this.canvas.draw;
 		this.selected = draw.rect(x, y, 0, 0);
-		this.selected.attr(this.options);
+		this.selected.attr(this.shapeAttributes);
 	};
 	
 	handler.mousemove = function(x, y){

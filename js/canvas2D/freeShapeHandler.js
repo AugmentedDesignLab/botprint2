@@ -2,12 +2,12 @@
  * @author Zhongpeng Lin
  */
 function freeShapeHandler(spec) {
-	var handler = abstractDrawHandler(spec);
+	var handler = sketchingHandler(spec);
 	
 	handler.mousedown = function(x, y){
 		var draw = this.canvas.draw;
 		this.selected = draw.path('M '+x+','+y);
-		this.selected.attr(this.options);
+		this.selected.attr(this.shapeAttributes);
 	};
 
 	handler.mousemove = function(x, y){
