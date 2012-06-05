@@ -1,76 +1,125 @@
 <!doctype html>
-<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!-- Consider adding a manifest.appcache: h5bp.com/d/Offline -->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<html>
 <head>
-  <meta charset="utf-8">
-
-  <!-- Use the .htaccess and remove these lines to avoid edge case issues.
-       More info: h5bp.com/i/378 -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
-  <title>BotPrint | A Mixed-Initiative Robot Design Generator</title>
-  <meta name="description" content="">
-
-  <!-- Mobile viewport optimized: h5bp.com/viewport -->
-  <meta name="viewport" content="width=device-width">
-
-  <!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
-
-  <link rel="stylesheet" href="css/style.css">
-
-  <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
-
-  <!-- All JavaScript at the bottom, except this Modernizr build.
-       Modernizr enables HTML5 elements & feature detects for optimal performance.
-       Create your own custom Modernizr build: www.modernizr.com/download/ -->
-  <script src="js/vendor/modernizr-2.5.3.min.js"></script>
+    <meta charset="utf-8"/>
+    <title>Botprint</title>
+    <link href="css/botprint.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-  <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
-       chromium.org/developers/how-tos/chrome-frame-getting-started -->
-  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+<div id="menu">
+    <div id="menu-inner">
+        <h1>Botprint</h1>
 
-  <!-- Add your site or application content here -->
-  <div id="side-container" class="panel"></div>
-  <div id="canvas2d" class="panel">
-  	<div id="preview3d" class="panel"></div>
-  </div>
+        <p>
+            Mixed-initiative Robot Sketcher.
+            <br/>
+        </p>
 
-  <!-- JavaScript at the bottom for fast page loading: http://developer.yahoo.com/performance/rules.html#js_bottom -->
+        <div id="cheat">
+            <h2>Cheat Sheet</h2>
+            <ul>
+                <li>
+                    1. Add your desired Shape
+                </li>
+                <li>
+                    2. Pick a nice Color
+                </li>
+                <li>
+                    3. Start Sketching
+                </li>
+                <li>
+                    4. (optional) Add Cues
+                </li>
+            </ul>
+        </div>
+        <!--<br/><br/><br/>-->
+        <div id="palette">
+            <div class="palette-set clearfix">
+                <h2>Add a Shape</h2>
+                <a href="#" class="default" data-guivar="shape" data-guival="Free">Free</a>
+                <a href="#" data-guivar="shape" data-guival="Square">Square</a>
+                <a href="#" data-guivar="shape" data-guival="Polygon">Polygon</a>
+                <a href="#" data-guivar="shape" data-guival="Ellipse">Ellipse</a>
+            </div>
+            <div class="palette-set clearfix">
+                <h2>Pick a Color</h2>
+                <a href="#" data-guivar="color" data-guival="#FF0000">Red</a>
+                <a href="#" class="default" data-guivar="color" data-guival="#00FF00">Green</a>
+                <a href="#" data-guivar="color" data-guival="#FFFFFF">White</a>
+            </div>
+            <div class="palette-set clearfix">
+                <h2>Suggest Wheels Location</h2>
+                <a href="#" data-guivar="wheelsLocation" data-guival="true">Yes</a>
+                <a href="#" class="default" data-guivar="wheelsLocation" data-guival="false">No</a>
+            </div>
+            <br/><br/>
 
-  <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.7.2.min.js"><\/script>')</script>
-  <script src="js/vendor/raphael.js"></script>
-  <script src="js/vendor/ThreeDebug.js"></script>
-  <script src="js/vendor/dat.gui.js"></script>
+            <div class="palette-set clearfix">
+                <h2>Sketch or Edit</h2>
+                <a href="#" class="default" data-guivar="sketching" data-guival="true">Sketch</a>
+                <a href="#" data-guivar="sketching" data-guival="false">Edit</a>
+            </div>
 
-  <!-- scripts concatenated and minified via build script -->
-  <script src="js/plugins.js"></script>
+            <div class="palette-set clearfix">
+                <h2>Update 3D Preview</h2>
+                <a href="#" class="default" data-guivar="show3dPreview" data-guival="true">Yes</a>
+                <a href="#" data-guivar="show3dPreview" data-guival="false">No</a>
+            </div>
 
+            <div class="palette-set clearfix">
+                <h2>Done sketching</h2>
+                <a href="#" class="default" data-guivar="doneSketching"
+                   data-guival="true">Print</a>
+            </div>
+        </div>
 
-  <script src="js/canvas2D/Canvas2D.js"></script>
-  <script src="js/canvas2D/HandlerBase.js"></script>
-  <script src="js/canvas2D/DrawHandlerBase.js"></script>
-  <script src="js/canvas2D/FreeShapeHandler.js"></script>
-  <script src="js/canvas2D/RectangleHandler.js"></script>
-  <script src="js/canvas2D/PolygonHandler.js"></script>
-  <script src="js/canvas2D/EllipseHandler.js"></script>
-  <script src="js/canvas2D/DeleteHandler.js"></script>
-  <script src="js/canvas2D/EditHandler.js"></script>
-  <script src="js/canvas2D/Rotator.js"></script>
-  <script src="js/canvas2D/Util.js"></script>
+        <p>
+            More information about this project can found online at
+            <a href="#">url</a>.
+        </p>
+    </div>
+</div>
+<div id="container">
+    <a href="https://github.com/AugmentedDesignLab" title="Augmented Design Lab">
+        <span>&larr;</span>Back to ADL Site. </a>
 
-  <script src="js/Preview3D.js"></script>
-  <script src="js/SidePanel.js"></script>
-  <script src="js/SVG2Shape.js"></script>
-  <script src="js/Chassis.js"></script>
-  <script src="js/main.js"></script>
-  <!-- end scripts -->
+    <div id="canvas2d" class="panel">
+        <div id="preview3d" class="panel"></div>
+    </div>
+</div>
 
+<!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write ('<script src="js/vendor/jquery-1.7.2.min.js"><\/script>')
+</script>
+
+<!--ZP's stuff begin-->
+<script src="js/vendor/raphael.js"></script>
+<script src="js/vendor/ThreeDebug.js"></script>
+<script src="js/vendor/dat.gui.js"></script>
+<script src="js/vendor/Modernizr.js"></script>
+
+<!-- scripts concatenated and minified via build script -->
+<script src="js/plugins.js"></script>
+
+<script src="js/canvas2D/Canvas2D.js"></script>
+<script src="js/canvas2D/sketchingHandler.js"></script>
+<script src="js/canvas2D/freeShapeHandler.js"></script>
+<script src="js/canvas2D/rectangleHandler.js"></script>
+<script src="js/canvas2D/polygonHandler.js"></script>
+<script src="js/canvas2D/ellipseHandler.js"></script>
+<script src="js/canvas2D/circleHandler.js"></script>
+<script src="js/canvas2D/editHandler.js"></script>
+<script src="js/canvas2D/rotator.js"></script>
+<script src="js/canvas2D/remover.js"></script>
+
+<script src="js/Preview3D.js"></script>
+<script src="js/SVG2Shape.js"></script>
+<script src="js/Chassis.js"></script>
+<script src="js/botprint.js"></script>
+<!--ZP's stuff end-->
+
+<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 </body>
 </html>
