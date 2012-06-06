@@ -5,51 +5,57 @@ var editHandler = function(spec) {
 	var handler = spec;
 	
 	handler.enable = function() {
+		var draw = handler.canvas.draw;
 		$.each(handler.canvas.svgs, function(index, svg){
-			// Add rotator
-			if(!svg.rotator){
-				svg.rotator = rotator(svg);
+			if(svg.type === 'path'){
+				var path = svg.attrs.path;
+				svg.controlPoints = new Array();
+				$.each(path, function(index, action){
+					if(action.length == 3){
+						// draw a circle for each point along the path
+						var circle = draw.circle(action[1], action[2], 4);
+						circle.attr({fill: 'blue'});
+						// when the circle is dragged, update coordinates
+						// of the point at the same time
+						var startX, startY;
+						circle.drag(function(dx, dy, x, y, event){
+							// onmove
+							var newX = startX+dx, newY = startY+dy;
+							this.attr({cx: newX, cy: newY});
+							action[1] = newX;
+							action[2] = newY;
+							svg.attr({path: path});
+						}, function(x, y, event){
+							// onstart
+							startX = this.attrs.cx;
+							startY = this.attrs.cy;
+						});
+						circle.hover(function(){
+							// hover in
+							this.attr({r: 8});
+						}, function(){
+							// hover out
+							this.attr({r: 4});
+						});
+						svg.controlPoints[index] = circle;
+					}
+				});
 			}
-			svg.rotator.enable();
-		
-			if(!svg.remover){
-				svg.remover = remover(svg, handler.canvas);
-			}
-			svg.remover.enable();
-		
-			// Add dragging listener
-			var svgStr, orignalCoordinatesForRotator, removerStr;
-			
-			svg.drag(function(dx, dy, x, y, event){
-				/* onMove
-				 * Transformation will not change the x and y
-				 * of shapes, but change the cordinate systems.
-				 * There is no uniform way to change the cordinates
-				 * of shapes in Raphael, at least as far as I am
-				 * aware of. Although transformation provides an
-				 * uniform way of moving shapes, when these shapes
-				 * are being extruded, they need to be transformed
-				 * as well.
-				*/
-				svg.transform(svgStr+'T'+dx+','+dy);
-				// Rotator (circle) can be easily moved
-				svg.rotator.setCoordinates({x: orignalCoordinatesForRotator.x + dx, y: orignalCoordinatesForRotator.y + dy});
-				
-				svg.remover.transform(removerStr+'T'+dx+','+dy);
-			}, function(x, y, event){
-				// onStart
-				svgStr = svg.transform();
-				orignalCoordinatesForRotator = svg.rotator.getCoordinates();
-				removerStr = svg.remover.getTransformStr();
-			});
 		});
 			
 	};
 	
 	handler.disable = function() {
 		$.each(handler.canvas.svgs, function(index, svg){
-			svg.rotator.disable();
-			svg.remover.disable();
+			if(svg.type === 'path'){
+				var path = svg.attrs.path;
+				$.each(path, function(index, action){
+					var control = svg.controlPoints[index];
+					if(control){
+						control.remove();
+					}
+				});
+			}
 			svg.unbindAll();
 		});
 	};
