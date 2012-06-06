@@ -1,0 +1,1 @@
+var Skid = MechanicalParts.extend();
