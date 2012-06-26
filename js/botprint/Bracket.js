@@ -1,1 +1,0 @@
-var Bracket = MechanicalParts.extend();
