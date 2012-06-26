@@ -7,7 +7,7 @@ function Enumerable () {
 			var trueCollection = [];
 			var falseCollection = [];
 
-			this.each (function (element) {
+			this.forEach (function (element) {
 				if (iterator.call (context, element)) {
 					trueCollection.push (element);
 				} else {
