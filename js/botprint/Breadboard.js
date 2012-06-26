@@ -1,1 +1,0 @@
-var Breadboard = ElectronicParts.extend();

@@ -1,20 +1,11 @@
-var BatteryPack = Base.extend({
-	constructor: function(name, deck, shape){
-		this._name  = name;
-		this._deck  = deck;
-		this._shape = shape;
-	},
-
-	name: function(){
-		return this._name;
-	},
-
-	deck: function() {
-		return this._deck;
-	},
-
-	shape: function() {
-		return this._shape;
-	}
-
-});
+/**
+ * BatteryPack domain object.
+ * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
+ */
+function BatteryPack (O){
+	var opts = O || {};
+	var self = this;
+	// Mixing it in, just smash the methods of the newly created
+	// View onto this object
+	$.extend (self, Part (opts));
+}
