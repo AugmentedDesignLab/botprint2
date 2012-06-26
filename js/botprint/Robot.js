@@ -2,8 +2,8 @@
  * Robot domain object.
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function Robot (O/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, chassis: C}}*/){
-	var opts 	= O || {};
+function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, chassis: C}}*/){
+	opts 		= opts || {};
 	var parts 	= [];
 
 	var self 	= {

@@ -2,8 +2,8 @@
  * Bindable mixin.
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function Bindable (B) {
-	var bus = B || EventBus();
+function Bindable (bus) {
+	bus = bus || EventBus();
 	return {
 		/**
 		 * The bind method adds a function as an event listener.

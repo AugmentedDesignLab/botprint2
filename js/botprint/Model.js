@@ -2,8 +2,8 @@
  * Model mixin
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function Model (O/*options, e.g., {bus: EventBus(), name:"ModelA"}*/) {
-	var options = O || {};
+function Model (options/*options, e.g., {bus: EventBus(), name:"ModelA"}*/) {
+	options = options || {};
 	var self = {
 		name:function () {
 			return options.name;

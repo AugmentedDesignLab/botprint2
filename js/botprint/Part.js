@@ -2,8 +2,8 @@
  * Part domain object.
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function Part(O){
-	var opts = O || {};
+function Part(opts){
+	opts = opts || {};
 
 	var parts = [];
 	var root  = {};

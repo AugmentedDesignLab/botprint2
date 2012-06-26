@@ -3,13 +3,6 @@
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
 function EventBus () {
-	// simple extensions of Array.
-	Array.prototype.each = function(callback){
-		for (var i =  0; i < this.length; i++){
-			callback(this[i]);
-		}
-	};
-
 	// Array Remove - By John Resig (MIT Licensed)
 	Array.prototype.remove = function(array, from, to) {
 		var rest = array.slice((to || from) + 1 || array.length);
@@ -54,7 +47,7 @@ function EventBus () {
 		publish:function (event, payload/*payload is a record object*/) {
 			var callbacks = eventCallbacks[event];
 			if (callbacks && callbacks.length) {
-				callbacks.each(function (elem) {
+				callbacks.forEach(function (elem) {
 					elem.callback(elem.subscriber, payload);
 				});
 			}

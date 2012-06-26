@@ -2,8 +2,8 @@
  * View mixin
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function View (O/*options, e.g., {bus: EventBus, name: "ViewA"}*/) {
-	var options = O || {};
+function View (options/*options, e.g., {bus: EventBus, name: "ViewA"}*/) {
+	options = options || {};
 	var self = {
 		name:function () {
 			return options.name;
