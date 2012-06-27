@@ -9,6 +9,7 @@ Array.prototype.remove = function(array, from, to) {
 	return array.push.apply(array, rest);
 };
 
+Array.prototype.select = Array.prototype.filter;
 
 //Mixing enumerable into Array.prototype
 $.extend(Array.prototype, Enumerable());

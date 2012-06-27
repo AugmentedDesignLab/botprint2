@@ -44,4 +44,5 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 	// Mixing it in, just smash the methods of the newly created
 	// View onto this object
 	$.extend (self, Model (opts));
+	return self;
 }

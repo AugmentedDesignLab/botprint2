@@ -39,4 +39,5 @@ function Part(opts){
 	// Mixing it in, just smash the methods of the newly created
 	// View onto this object
 	$.extend (self, Model (opts));
+	return self;
 }

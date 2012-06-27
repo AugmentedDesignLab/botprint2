@@ -18,10 +18,6 @@ function Enumerable () {
 			return [trueCollection, falseCollection];
 		},
 
-		select:function (iterator, context) {
-			return this.partition (iterator, context)[0];
-		},
-
 		reject:function (iterator, context) {
 			return this.partition (iterator, context)[1];
 		},
