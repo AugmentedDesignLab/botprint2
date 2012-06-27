@@ -1,8 +1,8 @@
 /**
- * Wheel domain object.
+ * Motor domain object.
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function Wheel (opts){
+function Motor (opts){
 	opts = opts || {};
 	var self = this;
 	// Mixing it in, just smash the methods of the newly created

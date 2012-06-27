@@ -1,8 +1,8 @@
 /**
- * Wheel domain object.
+ * Switch domain object.
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function Wheel (opts){
+function Switch (opts){
 	opts = opts || {};
 	var self = this;
 	// Mixing it in, just smash the methods of the newly created
