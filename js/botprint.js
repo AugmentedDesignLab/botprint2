@@ -27,6 +27,10 @@
 		var previewing 	= true;
 
 		var vars		= []; // this will contain the choices we have made in the side bar
+		var sidePanelController = SidePanelController({canvas: canvas,
+			checkforChassisExistence: checkforChassisExistence,
+			updateCanvasHandler: updateCanvasHandler,
+			vars: vars});
 		var $container 	= $('#container');
 
 		var width		= $container.width(),
@@ -123,7 +127,7 @@
 			$(window).resize(callbacks.windowResize);
 
 			// GUI events
-			$(".palette-set a").click(callbacks.guiClick);
+			$(".palette-set a").click(sidePanelController.onClick);
 			$(".palette-set a.default").trigger('click');
 		}
 
