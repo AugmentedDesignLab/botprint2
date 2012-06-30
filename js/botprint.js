@@ -213,24 +213,6 @@
 				width			= $container.width();
 				height			= $container.height();
 			},
-
-			guiClick:function() {
-				var $this 	= $(this),
-					varName	= $this.data("guivar");
-				var varVal  = $this.data ("guival");
-
-
-				checkforChassisExistence(canvas.svgs, varName, varVal);
-
-				vars[varName] = varVal;
-
-				$this.siblings().addClass('disabled');
-				$this.removeClass('disabled');
-
-				updateCanvasHandler();
-
-				return false;
-			}
 		};
 	};
 })();

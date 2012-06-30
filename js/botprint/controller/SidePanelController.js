@@ -14,12 +14,10 @@ function SidePanelController(options) {
 
 			$this.siblings().addClass('disabled');
 			$this.removeClass('disabled');
-
-			trigger(Events.OPTION_CHANGED, {varName: varVal});
+			self.trigger(Events.OPTION_CHANGED, {varName: varVal});
 		}
 	};
 	
 	$.extend(self, Bindable());
-	
 	return self;
 }
