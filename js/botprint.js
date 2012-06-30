@@ -21,16 +21,18 @@
 		var self 	 = this;
 
 		// internal vars
-		var canvas  	= new Canvas2D('canvas2d');
-		var preview 	= new Preview3D('preview3d');
+		var eventBus	= EventBus();
+		var canvas  	= new Canvas2D({elemID: 'canvas2d', bus: eventBus});
+		var preview 	= new Preview3D({elemID:'preview3d', bus: eventBus});
 		var running 	= true;
 		var previewing 	= true;
 
 		var vars		= []; // this will contain the choices we have made in the side bar
-		var sidePanelController = SidePanelHandler({canvas: canvas,
+		var sidePanelController = SidePanelHandler(View({bus: eventBus}), {canvas: canvas,
 			checkforChassisExistence: checkforChassisExistence,
 			updateCanvasHandler: updateCanvasHandler,
-			vars: vars});
+			vars: vars,
+			bus: eventBus});
 		var $container 	= $('#container');
 
 		var width		= $container.width(),
@@ -64,15 +66,6 @@
 			} else {
 				preview.animate();
 			}
-
-			setInterval(function(){
-				//  Previews the 3d shape as long as it is indicated.
-				// 	This interval will give the browser chance to
-				//  extrude the shape object
-				if(previewing){
-					self.preview();
-				}
-			}, 100);
 		};
 
 		/**
@@ -138,8 +131,8 @@
 			// todo(Huascar) improve UI. low priority
 		}
 
-		function checkforChassisExistence(elems, varName, varVal) {
-			if(elems.length == 0){
+		function checkforChassisExistence(elem, varName, varVal) {
+			if(!elem){
 				if(varName == "wheelsLocation" && varVal == true){
 					alert("You must sketch a chassis before providing wheels.");
 					return false;
@@ -182,7 +175,7 @@
 			} else {
 				constructor = editHandler;
 			}
-			return constructor({shapeAttributes: options.shapeAttributes, canvas: options.canvas});
+			return constructor(canvas, {shapeAttributes: options.shapeAttributes});
 		}	
 
 

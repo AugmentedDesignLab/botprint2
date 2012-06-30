@@ -1,4 +1,4 @@
-function SidePanelHandler(options) {
+function SidePanelHandler(view, options) {
 	var self = {
 		onClick: function(event, payload) {
 			var $this 	= $(this),
@@ -6,7 +6,7 @@ function SidePanelHandler(options) {
 			var varVal  = $this.data ("guival");
 			
 			// FIXME to be deleted
-			options.checkforChassisExistence(options.canvas.svgs, varName, varVal);
+			options.checkforChassisExistence(options.canvas.chassis, varName, varVal);
 
 			options.vars[varName] = varVal;
 			options.updateCanvasHandler();
@@ -18,6 +18,6 @@ function SidePanelHandler(options) {
 		}
 	};
 	
-	$.extend(self, Bindable());
+	$.extend(self, Bindable(view.bus()));
 	return self;
 }

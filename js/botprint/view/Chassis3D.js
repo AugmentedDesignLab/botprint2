@@ -1,10 +1,10 @@
 /**
  * @author Zhongpeng Lin
  */
-Chassis.prototype = new THREE.Mesh();
-Chassis.constructor = Chassis;
+Chassis3D.prototype = new THREE.Mesh();
+Chassis3D.constructor = Chassis3D;
 
-function Chassis(svgs, height) {
+function Chassis3D(svgs, height) {
 	var toShape = new SVG2Shape();
 	var geometry = new THREE.Geometry();
 	var material = new THREE.MeshPhongMaterial();

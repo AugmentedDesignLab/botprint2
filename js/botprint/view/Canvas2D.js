@@ -5,51 +5,33 @@
  * 2D context.
  */
 
-function Canvas2D(elemID) {
-	this.elem = $('#'+elemID);
-	this.width = this.elem.width();
-	this.height = this.elem.height();
-	this.draw = Raphael(elemID, this.width, this.height);
-	var pos = this.elem.offset();
-	this.offset = [pos.left, pos.top];
-    this.svgs = [];
-}
-
-Canvas2D.prototype.setHandler = function(handler) {
-	if(this.handler)
-	{
-		this.handler.disable();
-	}
-	this.handler = handler;
-	this.handler.enable();
-};
-
-Canvas2D.prototype.addSVG = function(svg) {
-	if(!svg.__proto__.unbindAll){
-		/*
-		 * HACKING: add unbindAll method to
-		 * Raphael's Element class
-		 */
-		svg.__proto__.unbindAll = function(){
-			// Add this function to svg so that it can be called to unbind events later
-			var events = this.events;
-			if(events)
+function Canvas2D(options) {
+	var elem = $('#'+options.elemID);
+	var width = elem.width();
+	var height = elem.height();
+	var offset = {x:elem.offset().left, y:elem.offset().top};
+	var self = {
+		elem: elem,
+		draw: Raphael(options.elemID, width, height),
+		
+		setHandler: function(handler) {
+			if(self.handler)
 			{
-				var ev = events.pop();
-				while(ev){
-					ev.unbind();
-					ev = events.pop();
-				}
+				self.handler.disable();
 			}
-		};	
-	}
-	this.svgs.push(svg);
-};
-
-Canvas2D.prototype.translateX = function(x) {
-	return x - this.offset[0];
-};
-
-Canvas2D.prototype.translateY = function(y) {
-	return y - this.offset[1];
-};
+			self.handler = handler;
+			self.handler.enable();
+		},
+		
+		translateX: function(x) {
+			return x - offset.x;
+		},
+		
+		translateY: function(y) {
+			return y - offset.y;
+		}
+	};
+	
+	$.extend(self, View(options));
+	return self;
+}
