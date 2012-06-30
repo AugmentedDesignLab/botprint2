@@ -27,7 +27,7 @@
 		var previewing 	= true;
 
 		var vars		= []; // this will contain the choices we have made in the side bar
-		var sidePanelController = SidePanelController({canvas: canvas,
+		var sidePanelController = SidePanelHandler({canvas: canvas,
 			checkforChassisExistence: checkforChassisExistence,
 			updateCanvasHandler: updateCanvasHandler,
 			vars: vars});

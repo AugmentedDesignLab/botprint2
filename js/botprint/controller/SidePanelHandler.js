@@ -1,6 +1,6 @@
 function SidePanelController(options) {
 	var self = {
-		onClick: function() {
+		onClick: function(event, payload) {
 			var $this 	= $(this),
 				varName	= $this.data("guivar");
 			var varVal  = $this.data ("guival");
