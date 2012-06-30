@@ -178,24 +178,7 @@
 		function pickHandler(options){
 			var constructor;
 			if(options.sketching){
-				if(options.wheels) {
-					constructor = circleHandler;
-				} else {
-					switch(options.shape) {
-						case "Free":
-							constructor = freeShapeHandler;
-							break;
-						case "Square":
-							constructor = rectangleHandler;
-							break;
-						case "Polygon":
-							constructor = polygonHandler;
-							break;
-						case "Ellipse":
-							constructor = ellipseHandler;
-							break;
-					}
-				}
+				constructor = SketchingHandler;
 			} else {
 				constructor = editHandler;
 			}

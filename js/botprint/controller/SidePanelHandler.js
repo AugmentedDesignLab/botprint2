@@ -1,4 +1,4 @@
-function SidePanelController(options) {
+function SidePanelHandler(options) {
 	var self = {
 		onClick: function(event, payload) {
 			var $this 	= $(this),
