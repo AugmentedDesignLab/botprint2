@@ -10,6 +10,10 @@ function Part(opts){
 		 * @param child part to be added.
 		 */
 		add: function(child){
+			if(self.isLeaf()){
+				throw "Error: This object is not allowed to have any children. Therefore"
+					+ ", calling the add method on this object will be a mistake."
+			}
 			children.push(child);
 		},
 
@@ -19,6 +23,9 @@ function Part(opts){
 		 * @return {*} child of interest.
 		 */
 		getChild: function (idx){
+			if(self.isLeaf()){
+				throw "Error: This object is not allowed to have any children.."
+			}
 			return children[idx];
 		},
 
@@ -36,6 +43,10 @@ function Part(opts){
 		 * @return {Boolean} true if the child was removed.False otherwise.
 		 */
 		remove: function(child){
+			if(self.isLeaf()){
+				throw "Error: This object is not allowed to have any children. Therefore"
+					+ ", calling the remove method on this object will be a mistake."
+			}
 			for (var node, i = 0; node = self.getChild(i); i++) {
 				if(node == child){
 					children.splice(i, 1);
@@ -55,6 +66,10 @@ function Part(opts){
 		 * @param filter filtering condition.
 		 */
 		select: function(filter){
+			if(self.isLeaf()){
+				throw "Error: This object is not allowed to have any children. Therefore"
+					+ ", calling the select method on this object will be a mistake."
+			}
 			filter = filter || function(p) { return true; };
 			children.select(filter);
 		}
