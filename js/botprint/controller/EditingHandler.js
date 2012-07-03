@@ -14,7 +14,7 @@ function EditingHandler(view, options) {
 					circle.attr({fill: 'blue'});
 					circle.path_index = index;
 					circle.chassis = view.chassis;
-					// handle the events
+					// refire the events
 					var startX, startY;
 					circle.drag(function(dx, dy, x, y, event){
 						self.trigger(Events.DRAG_MOVE, {dx: dx, dy: dy, target: circle});
@@ -32,11 +32,8 @@ function EditingHandler(view, options) {
 					controlPoints.push(circle);
 					// create a handler for this circle
 					var handler = DraggingHandler(circle);
-					handler.bind(Events.DRAG_START, handler.drag_start);
-					handler.bind(Events.DRAG_MOVE, handler.drag_move);
-					handler.bind(Events.DRAG_END, handler.drag_end);
-					handler.bind(Events.MOUSEOVER, handler.mouseover);
-					handler.bind(Events.MOUSEOUT, handler.mouseout);
+					handler.enable();
+					circle.handler = handler;
 				}
 			});
 		},
@@ -45,8 +42,8 @@ function EditingHandler(view, options) {
 			while(controlPoints.length > 0)
 			{
 				var point = controlPoints.pop();
+				point.handler.disable();
 				point.remove();
-				// TODO unbind handlers from EventBus
 			}
 		}
 	};

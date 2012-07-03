@@ -46,26 +46,24 @@ function Preview3D(options) {
 	var object 	 = new THREE.Mesh( geometry, material );
 	scene.add(object);
 	
-	var update = function(payload) {
-		var chassis = new Chassis3D([payload.shape], 50);
-		chassis.rotation.x = Math.PI/2;
-
-		if(object) {
-			scene.remove(object);
-		}
-		object = chassis;
-		scene.add(object);
-	};
 	
 	var self = {
 		animate: function() {
 			rotation += Math.PI / 200;
 			render();
 			requestAnimationFrame(self.animate);
+		},
+		updateChassis: function(chassis) {
+			if(object) {
+				scene.remove(object);
+			}
+			object = chassis;
+			scene.add(object);
 		}
 	};
 	
 	$.extend(self, View(options));
-	self.bind(Events.CHASSIS_SHAPE_UPDATED, update);
+	var handler = Preview3DHandler(self);
+	handler.enable();
 	return self;
 }

@@ -9,6 +9,14 @@ function DraggingHandler(view, options) {
 	var dragStartX, dragStartY;
 	
 	var self = {
+		enable: function() {
+			self.bindAll(['DRAG_START', 'DRAG_MOVE', 'DRAG_END', 'MOUSEOVER', 'MOUSEOUT']);			
+		},
+		
+		disable: function() {
+			// TODO waiting for a way to unbind event handlers from EventBus
+		},
+		
 		drag_start: function(payload) {
 			if(self.isMyJob(payload)){
 				// remember the starting coordinates
