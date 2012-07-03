@@ -9,52 +9,63 @@ function SketchingHandler(view, options) {
 		
 		enable: function(){
 			var events = ['mousedown', 'mousemove', 'dblclick'];
+			
 			events.forEach(function(ev){
-				elem.bind(ev, function(payload){
-			      payload.preventDefault();
-			      self[ev](view.translateX(payload.clientX),
-			      	view.translateY(payload.clientY));
+				elem.bind(ev, function(eventObj){
+					eventObj.preventDefault();
+					self[ev]({x:view.translateX(eventObj.clientX),
+			      		y:view.translateY(eventObj.clientY), target: view});
+			      	// FIXME having trouble using EventBus here, help me out!
+			      	// self.trigger(Events[ev.toUpperCase()], {x:view.translateX(eventObj.clientX),
+			      	// y:view.translateY(eventObj.clientY), target: view});
 			    });				
 			});
+			// self.bindAll(events);
 		},
 		
 		disable: function() {
 			elem.unbind();
 		},
 				
-		mousedown: function(x, y) {
-			if(view.chassis)
-				view.chassis.remove();
-			if(self.shape){
+		mousedown: function(payload) {
+			if(!this.isMyJob(payload))
+				return;
+			if(this.shape){
 				// Extend the path
-				var path = self.shape.attrs.path;
-				self.shape.attr('path', path +' L ' + x + ' ' + y);
+				var path = this.shape.attrs.path;
+				this.shape.attr('path', path +' L ' + payload.x + ' ' + payload.y);
 			}else{
+				if(view.chassis)
+					view.chassis.remove();
 				// Create a new path
 				var draw = view.draw;
-				self.shape = draw.path('M '+x+' '+y + ' L ' + x + ' ' + y);
-				self.shape.attr(options.shapeAttributes);
+				this.shape = draw.path('M '+payload.x+' '+payload.y+' L ' + payload.x + ' ' + payload.y);
+				this.shape.attr(options.shapeAttributes);
 			}
 		},
 		
-		mousemove: function(x, y) {
-			if(self.shape){
+		mousemove: function(payload) {
+			if(!this.isMyJob(payload))
+				return;
+			if(this.shape){
 				// Modify the last path element
-				var path = self.shape.attrs.path;
+				var path = this.shape.attrs.path;
 				var last = path[path.length - 1];
-				last[1] = x;
-				last[2] = y;
-				self.shape.attr('path', path);
+				last[1] = payload.x;
+				last[2] = payload.y;
+				this.shape.attr('path', path);
 			}
 		},
 		
-		dblclick: function(x, y){
-			if(self.shape){
-				var path = self.shape.attrs.path;
-				self.shape.attr('path', path +'Z');
-				view.chassis = self.shape;
-				self.trigger(Events.CHASSIS_SHAPE_UPDATED, {shape: self.shape});
-				self.shape = null;
+		dblclick: function(payload){
+			if(!this.isMyJob(payload))
+				return;
+			if(this.shape){
+				var path = this.shape.attrs.path;
+				this.shape.attr('path', path +'Z');
+				view.chassis = this.shape;
+				this.trigger(Events.CHASSIS_SHAPE_UPDATED, {shape: this.shape});
+				this.shape = null;
 			}
 		}
 	};

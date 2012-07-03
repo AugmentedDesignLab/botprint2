@@ -5,7 +5,6 @@
 
 // FIXME need a better name for this class
 function DraggingHandler(view, options) {
-	
 	var dragStartX, dragStartY;
 	
 	var self = {
@@ -14,6 +13,7 @@ function DraggingHandler(view, options) {
 		},
 		
 		disable: function() {
+			view = null;
 			// TODO waiting for a way to unbind event handlers from EventBus
 		},
 		
@@ -43,7 +43,9 @@ function DraggingHandler(view, options) {
 		},
 		
 		drag_end: function(payload) {
-			self.trigger(Events.CHASSIS_SHAPE_UPDATED, {shape: view.chassis});
+			if(self.isMyJob(payload)){
+				self.trigger(Events.CHASSIS_SHAPE_UPDATED, {shape: view.chassis});
+			}
 		},
 		
 		mouseover: function(payload) {

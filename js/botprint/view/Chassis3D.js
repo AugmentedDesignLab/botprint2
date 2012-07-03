@@ -8,7 +8,7 @@ function Chassis3D(svgs, height) {
 	var toShape = new SVG2Shape();
 	var geometry = new THREE.Geometry();
 	var material = new THREE.MeshPhongMaterial();
-	$.each(svgs, function(index, value){
+	svgs.forEach(function(value){
 		var s = toShape.convert(value);
 		var g = s.extrude({amount: height});
 		
