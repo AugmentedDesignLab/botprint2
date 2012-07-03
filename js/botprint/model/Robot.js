@@ -53,6 +53,15 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 		},
 
 		/**
+		 * find the parts of interest matching a filter condition.
+		 * @param filter filter condition.
+		 * @return {*} matched elements.
+		 */
+		find: function(filter){
+			return parts.select(filter);
+		},
+
+		/**
 		 * install a part on the Robot.
 		 * @param part robot part to be installed.
 		 */
@@ -60,19 +69,24 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 			parts.push(part);
 		},
 
+		/**
+		 * persist assambled robot.
+		 * @param data assambled robot.
+		 */
 		persist: function(data) {
 			console.log(data);
 			// todo(anyone) to persist the assembled Robot.
 		},
 
-		select: function(filter){
-			return parts.select(filter);
-		},
-
+		/**
+		 * uninstall the parts matching a filter condition.
+		 * @param part part to be uninstalled.
+		 * @param filter filter condition that will help us find the elements of interest.
+		 */
 		uninstall: function(part, filter){
 			filter = filter || function(p){ return p.name() == part.name(); };
 			if(parts > 1) {
-				var elems = self.select(filter);
+				var elems = self.find(filter);
 
 				if(elems){
 					delete elems[0];
