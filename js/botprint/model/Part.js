@@ -23,6 +23,14 @@ function Part(opts){
 		},
 
 		/**
+		 * @return {Function} true if this is a leaf. False if this is a
+		 * composite part.
+		 */
+		isLeaf: function(){
+			return self.options().isLeaf;
+		},
+
+		/**
 		 * removes a child.
 		 * @param child child part to be removed.
 		 * @return {Boolean} true if the child was removed.False otherwise.
