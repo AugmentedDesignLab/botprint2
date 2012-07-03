@@ -173,7 +173,7 @@
 			if(options.sketching){
 				constructor = SketchingHandler;
 			} else {
-				constructor = editHandler;
+				constructor = EditingHandler;
 			}
 			return constructor(canvas, {shapeAttributes: options.shapeAttributes});
 		}	

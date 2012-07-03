@@ -23,6 +23,8 @@ function SketchingHandler(view, options) {
 		},
 				
 		mousedown: function(x, y) {
+			if(view.chassis)
+				view.chassis.remove();
 			if(self.shape){
 				// Extend the path
 				var path = self.shape.attrs.path;
@@ -32,24 +34,6 @@ function SketchingHandler(view, options) {
 				var draw = view.draw;
 				self.shape = draw.path('M '+x+' '+y + ' L ' + x + ' ' + y);
 				self.shape.attr(options.shapeAttributes);
-				/*
-				 * HACKING: add unbindAll method to
-				 * Raphael's Element class
-				 */
-				if(self.shape.__proto__.unbindAll){
-					self.shape.__proto__.unbindAll = function(){
-						// Add this function to svg so that it can be called to unbind events later
-						var events = this.events;
-						if(events)
-						{
-							var ev = events.pop();
-							while(ev){
-								ev.unbind();
-								ev = events.pop();
-							}
-						}
-					};	
-				}
 			}
 		},
 		
@@ -75,6 +59,6 @@ function SketchingHandler(view, options) {
 		}
 	};
 	
-	$.extend(self, Bindable(view.bus()));
+	$.extend(self, EventHandler(view, options));
 	return self;
 }

@@ -18,6 +18,6 @@ function SidePanelHandler(view, options) {
 		}
 	};
 	
-	$.extend(self, Bindable(view.bus()));
+	$.extend(self, EventHandler(view, options));
 	return self;
 }

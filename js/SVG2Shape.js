@@ -20,12 +20,13 @@ SVG2Shape.prototype.fromPath = function(elem) {
 
 	// used to remove duplicate actions
 	var existingActions = {};
-
+	var cleanedPath = [];
 	for(var i = 0; i < path.length; i++)
 	{
 		var action = path[i];
 		if(!existingActions[action]){
 			existingActions[action] = true;
+			cleanedPath.push(action);
 			switch(action[0]){
 				case 'M':
 				case 'm':
@@ -44,7 +45,7 @@ SVG2Shape.prototype.fromPath = function(elem) {
 
 		}
 	}
-
+	elem.attr({path: cleanedPath});
 	return shape;
 };
 
