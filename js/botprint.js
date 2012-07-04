@@ -25,7 +25,6 @@
 		var canvas  	= new Canvas2D({elemID: 'canvas2d', bus: eventBus});
 		var preview 	= new Preview3D({elemID:'preview3d', bus: eventBus});
 		var running 	= true;
-		var previewing 	= true;
 
 		var vars		= []; // this will contain the choices we have made in the side bar
 		var sidePanelController = SidePanelHandler(View({bus: eventBus}), {canvas: canvas,
@@ -76,7 +75,6 @@
 			vars["shape"]				= "Free";
 			vars["color"]				= "#00FF00";
 			vars["wheelsLocation"]		= false;
-			vars["show3dPreview"]		= true;
 			vars["sketching"]			= true;
 
 			// create our stuff
@@ -143,7 +141,6 @@
 				"stroke-linejoin": "round"
 			};
 
-			previewing = vars["show3dPreview"];
 			
 			var handler =  pickHandler({
 				shape: vars["shape"], 
