@@ -18,7 +18,7 @@ function DraggingHandler(view, options) {
 		},
 		
 		drag_start: function(payload) {
-			if(self.isMyJob(payload)){
+			if(self.proceed(payload)){
 				// remember the starting coordinates
 				dragStartX = view.attrs.cx;
 				dragStartY = view.attrs.cy;
@@ -26,7 +26,7 @@ function DraggingHandler(view, options) {
 		},
 		
 		drag_move: function(payload) {
-			if(self.isMyJob(payload)){
+			if(self.proceed(payload)){
 				/* calculate the new coordinates from the
 				 * starting coordinates and the offset
 				 */ 
@@ -43,19 +43,19 @@ function DraggingHandler(view, options) {
 		},
 		
 		drag_end: function(payload) {
-			if(self.isMyJob(payload)){
+			if(self.proceed(payload)){
 				self.trigger(Events.CHASSIS_SHAPE_UPDATED, {shape: view.chassis});
 			}
 		},
 		
 		mouseover: function(payload) {
-			if(self.isMyJob(payload)){
+			if(self.proceed(payload)){
 				view.attr({r: 6});
 			}
 		},
 		
 		mouseout: function(payload) {
-			if(self.isMyJob(payload)){
+			if(self.proceed(payload)){
 				view.attr({r: 4});
 			}
 		}

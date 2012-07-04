@@ -5,7 +5,7 @@
 function EventHandler(view, options) {
 	var self = {
 		// decide if a handler should process an event
-		isMyJob: function(payload) {
+		proceed: function(payload) {
 			return view == payload.target;
 		},
 		

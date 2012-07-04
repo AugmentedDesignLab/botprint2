@@ -28,7 +28,7 @@ function SketchingHandler(view, options) {
 		},
 				
 		mousedown: function(payload) {
-			if(!this.isMyJob(payload))
+			if(!this.proceed(payload))
 				return;
 			if(this.shape){
 				// Extend the path
@@ -45,7 +45,7 @@ function SketchingHandler(view, options) {
 		},
 		
 		mousemove: function(payload) {
-			if(!this.isMyJob(payload))
+			if(!this.proceed(payload))
 				return;
 			if(this.shape){
 				// Modify the last path element
@@ -58,7 +58,7 @@ function SketchingHandler(view, options) {
 		},
 		
 		dblclick: function(payload){
-			if(!this.isMyJob(payload))
+			if(!this.proceed(payload))
 				return;
 			if(this.shape){
 				var path = this.shape.attrs.path;

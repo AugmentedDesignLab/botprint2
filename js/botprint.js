@@ -69,20 +69,6 @@
 		};
 
 		/**
-		 * Previews the sketch in 3D.
-		 */
-		self.preview = function(){
-			var svgs = canvas.svgs;
-			if(svgs.length > 0){
-				var chassis = new Chassis(svgs, 50);
-				chassis.rotation.x = Math.PI/2;
-				preview.setObject(chassis);
-			}else{
-				preview.setObject(mesh);
-			}
-		};
-
-		/**
 		 * Initializes the Botprint experiment and kicks everything off. Yay!
 		 */
 		self.init = function() {
