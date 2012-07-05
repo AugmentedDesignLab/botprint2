@@ -1,5 +1,6 @@
 /**
- * The Deck domain object
+ * The Deck domain object. This object will represent the layout pattern
+ * of our robot.
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
 function Deck (opts){

@@ -7,17 +7,25 @@ function BatteryPack (opts){
 	$.extend(options, opts || {});
 
 	var self = {
-		// either a nine volt battery holder or AA || AAA battery holder
+		/**
+		 * @return {Function} either a nine volt battery holder or
+		 * 		AA || AAA battery holder
+		 */
 		holder: function(){
 			return opts.holder;
 		},
 
-		// female or male connector
+		/**
+		 *
+		 * @return {Function} either female or male connector
+		 */
 		connector: function(){
 			return opts.connector;
 		},
 
-		// e.g., AA to power servos and Nine volt to power the Arduino
+		/**
+		 * @return {*} e.g., AA to power servos and Nine volt to power the Arduino
+		 */
 		target: function(){
 			return opts.target;
 		}
