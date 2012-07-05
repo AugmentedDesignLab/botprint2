@@ -3,8 +3,26 @@
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
 function BatteryPack (opts){
-	opts = opts || {};
-	var self = this;
+	var options = {isLeaf: true};
+	$.extend(options, opts || {});
+
+	var self = {
+		// either a nine volt battery holder or AA || AAA battery holder
+		holder: function(){
+			return opts.holder;
+		},
+
+		// female or male connector
+		connector: function(){
+			return opts.connector;
+		},
+
+		// e.g., AA to power servos and Nine volt to power the Arduino
+		target: function(){
+			return opts.target;
+		}
+	};
+
 	// Mixing it in, just smash the methods of the newly created
 	// View onto this object
 	$.extend (self, Part (opts));

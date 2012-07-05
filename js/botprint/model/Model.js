@@ -21,6 +21,6 @@ function Model (options/*options, e.g., {bus: EventBus(), name:"ModelA"}*/) {
 	// Mixing it in, just smash the methods of the newly created Bindable onto
 	// this object
 	$.extend (self, Bindable (options.bus));
-	$.extend (self, Describable());
+	$.extend (self, Describable(options));
 	return self;
 }

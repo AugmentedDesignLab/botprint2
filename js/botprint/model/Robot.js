@@ -7,8 +7,8 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 
 	var self 	= {
 		/**
-		 * assemble the Robot given a set of parts and a set of PCG
-		 * algorithms.
+		 * assembles a Robot given a set of parts and a set of PCG
+		 * algorithms that put these parts together.
 		 */
 		assemble: function(){
 		  	// iterate over all algorithms in the right order
@@ -43,7 +43,7 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 				var data = parts;
 				algs.forEach(function (elem) {
 					// e.g., function(data){ AlgorithmX(data).perform(); }
-					data = elem['callback'].call(data);
+					data = elem.callback.call(data);
 				});
 
 				// persist the assembled robot in a format understood by
@@ -53,7 +53,7 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 		},
 
 		/**
-		 * find the parts of interest matching a filter condition.
+		 * finds the parts of interest matching a condition.
 		 * @param filter filter condition.
 		 * @return {*} matched elements.
 		 */
@@ -62,7 +62,7 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 		},
 
 		/**
-		 * install a part on the Robot.
+		 * installs a part on the Robot.
 		 * @param part robot part to be installed.
 		 */
 		install: function(part) {
@@ -70,7 +70,7 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 		},
 
 		/**
-		 * persist assambled robot.
+		 * persists the assambled robot.
 		 * @param data assambled robot.
 		 */
 		persist: function(data) {
@@ -79,7 +79,7 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 		},
 
 		/**
-		 * uninstall the parts matching a filter condition.
+		 * uninstalls the parts matching a condition.
 		 * @param part part to be uninstalled.
 		 * @param filter filter condition that will help us find the elements of interest.
 		 */

@@ -2,12 +2,17 @@
  * Describable mixin
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function Describable (){
-	var position 	= { x:0, 	 y:0, 		z:0		};
-	var dimensions  = { width:0, height:0, 	depth:0	};
+function Describable (options){
+	var coordinates = options.coordinates || {}; //e.g., coordinates: { x:0, y:0, z:0 };
+	var dimensions  = options.dimensions  || {}; //e.g., dimensions: { width:0, height:0, depth:0	};
+	var shape		= options.shape 	  || {};
 	return {
-		position: function(){
-			return position;
+		shape: function(){
+			return shape;
+		},
+
+		coordinates: function(){
+			return coordinates;
 		},
 
 		dimensions: function(){

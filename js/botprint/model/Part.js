@@ -6,7 +6,7 @@ function Part(opts){
 	var children = [];
 	var self = {
 		/**
-		 * adds a new child part.
+		 * adds a new ``child'' part.
 		 * @param child part to be added.
 		 */
 		add: function(child){
@@ -18,7 +18,7 @@ function Part(opts){
 		},
 
 		/**
-		 * gets a given child located at a given index.
+		 * gets a given ``child'' located at a given index.
 		 * @param idx location of the child of interest.
 		 * @return {*} child of interest.
 		 */
@@ -38,7 +38,7 @@ function Part(opts){
 		},
 
 		/**
-		 * removes a child.
+		 * removes a ``child'' part.
 		 * @param child child part to be removed.
 		 * @return {Boolean} true if the child was removed.False otherwise.
 		 */
@@ -62,8 +62,8 @@ function Part(opts){
 		},
 
 		/**
-		 * samples the children data structure given a filtering condition.
-		 * @param filter filtering condition.
+		 * samples the children data structure given a matching condition.
+		 * @param filter matching condition.
 		 */
 		select: function(filter){
 			if(self.isLeaf()){
