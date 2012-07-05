@@ -37,7 +37,7 @@ function EventBus () {
 			var callbacks = eventCallbacks[event];
 			if (callbacks && callbacks.length) {
 				callbacks.forEach(function (elem) {
-					elem['callback'].call(elem.subscriber, payload);
+					elem.callback.call(elem.subscriber, payload);
 				});
 			}
 		}
