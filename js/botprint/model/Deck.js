@@ -1,9 +1,10 @@
 /**
- * Motor domain object.
+ * The Deck domain object. This object will represent the layout pattern
+ * of our robot.
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function Motor (opts){
-	var options = {isLeaf: true};
+function Deck (opts){
+	var options = {isLeaf: false};
 	$.extend(options, opts || {});
 
 	var self = this;
