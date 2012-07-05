@@ -4,7 +4,7 @@
  */
 function Describable (options){
 	var coordinates = options.coordinates || {}; //e.g., coordinates: { x:0, y:0, z:0 };
-	var dimensions  = options.dimensions  || {}; //e.g., dimensions: { width:0, height:0, depth:0	};
+	var dimensions  = options.dimensions  || {}; //e.g., dimensions: { w:0, h:0, d:0 };
 	var shape		= options.shape 	  || {};
 	return {
 		/**
