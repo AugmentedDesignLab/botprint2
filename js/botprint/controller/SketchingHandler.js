@@ -8,10 +8,10 @@ function SketchingHandler(view, options) {
 	var self = {
 		
 		enable: function(){
-			var events = ['mousedown', 'mousemove', 'dblclick'];
+			var events = ['mouseDown', 'mouseMove', 'dblClick'];
 			
 			events.forEach(function(ev){
-				elem.bind(ev, function(eventObj){
+				elem.bind(ev.toLowerCase(), function(eventObj){
 					eventObj.preventDefault();
 					self[ev]({x:view.translateX(eventObj.clientX),
 			      		y:view.translateY(eventObj.clientY), target: view});
@@ -27,7 +27,7 @@ function SketchingHandler(view, options) {
 			elem.unbind();
 		},
 				
-		mousedown: function(payload) {
+		mouseDown: function(payload) {
 			if(!this.proceed(payload))
 				return;
 			if(this.shape){
@@ -44,7 +44,7 @@ function SketchingHandler(view, options) {
 			}
 		},
 		
-		mousemove: function(payload) {
+		mouseMove: function(payload) {
 			if(!this.proceed(payload))
 				return;
 			if(this.shape){
@@ -57,14 +57,14 @@ function SketchingHandler(view, options) {
 			}
 		},
 		
-		dblclick: function(payload){
+		dblClick: function(payload){
 			if(!this.proceed(payload))
 				return;
 			if(this.shape){
 				var path = this.shape.attrs.path;
 				this.shape.attr('path', path +'Z');
 				view.chassis = this.shape;
-				this.trigger(Events.CHASSIS_SHAPE_UPDATED, {shape: this.shape});
+				this.trigger(Events.chassisShapeUpdated, {shape: this.shape});
 				this.shape = null;
 			}
 		}

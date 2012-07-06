@@ -14,7 +14,7 @@ function SidePanelHandler(view, options) {
 
 			$this.siblings().addClass('disabled');
 			$this.removeClass('disabled');
-			self.trigger(Events.OPTION_CHANGED, {varName: varVal});
+			self.trigger(Events.optionChanged, {varName: varVal});
 		}
 	};
 	
