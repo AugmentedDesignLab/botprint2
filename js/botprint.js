@@ -22,16 +22,16 @@
 
 		// internal vars
 		var eventBus	= EventBus();
-		var canvas  	= new Canvas2D({elemID: 'canvas2d', bus: eventBus});
-		var preview 	= new Preview3D({elemID:'preview3d', bus: eventBus});
-		var running 	= true;
-
+		var canvas  	= Canvas2D({elemID: 'canvas2d', bus: eventBus});
+		var preview 	= Preview3D({elemID:'preview3d', bus: eventBus});
 		var vars		= []; // this will contain the choices we have made in the side bar
-		var sidePanelController = SidePanelHandler(View({bus: eventBus}), {canvas: canvas,
+		var sidePanel	= SidePanel({elemClass: 'palette-set a', bus: eventBus,
+			canvas: canvas,
 			checkforChassisExistence: checkforChassisExistence,
 			updateCanvasHandler: updateCanvasHandler,
-			vars: vars,
-			bus: eventBus});
+			vars: vars});
+		var running 	= true;
+
 		var $container 	= $('#container');
 
 		var width		= $container.width(),
@@ -103,9 +103,6 @@
 			// window event
 			$(window).resize(callbacks.windowResize);
 
-			// GUI events
-			$(".palette-set a").click(sidePanelController.onClick);
-			$(".palette-set a.default").trigger('click');
 		}
 
 		/**
