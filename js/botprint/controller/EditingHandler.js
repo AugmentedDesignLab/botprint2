@@ -15,7 +15,7 @@ function EditingHandler(view, options) {
 					var circle = draw.circle(action[1], action[2], 4);
 					// initialize the circle
 					$.extend(circle, View({bus: view.bus()}));
-					circle.attr({fill: 'blue'});
+					circle.attr({fill: 'white', stroke: 'black'});
 					circle.path_index = index;
 					circle.chassis = view.chassis;
 					// refire the events

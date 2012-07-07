@@ -11,9 +11,9 @@ function SidePanelHandler(view, options) {
 
 			$this.siblings().addClass('disabled');
 			$this.removeClass('disabled');
-			var payload = {};
-			payload[varName] = varVal;
-			self.trigger(Events.optionChanged, payload);
+			var pl = {};
+			pl[varName] = varVal;
+			self.trigger(Events.optionChanged, pl);
 		}
 	};
 	

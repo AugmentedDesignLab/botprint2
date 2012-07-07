@@ -15,7 +15,7 @@ function EventHandler(view, options) {
 		bindAll: function(events) {
 			var sub = this;
 			events.forEach(function(ev){
-				sub.bind(Events[ev] || Events[ev.toUpperCase()], sub[ev] || sub[ev.toLowerCase()]);
+				sub.bind(Events[ev], sub[ev]);
 			});
 		}
 	};
