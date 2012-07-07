@@ -6,7 +6,7 @@ function EventHandler(view, options) {
 	var self = {
 		// decide if a handler should process an event
 		proceed: function(payload) {
-			return view == payload.target || view == payload.currentTarget;
+			return view == payload.target;
 		},
 		
 		/* Provide a default implementation of binding events to handlers,
