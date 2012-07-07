@@ -13,6 +13,13 @@ function Canvas2D(options) {
 	var self = {
 		elem: elem,
 		draw: Raphael(options.elemID, width, height),
+		shapeAttributes: {
+				'stroke': '#F8F8F8 ',
+				'stroke-opacity': 1,
+				'stroke-width': 2,
+				'stroke-linecap': 'round',
+				'stroke-linejoin': 'round'
+		},
 		
 		setHandler: function(handler) {
 			if(self.handler)
@@ -21,6 +28,22 @@ function Canvas2D(options) {
 			}
 			self.handler = handler;
 			self.handler.enable();
+		},
+		
+		optionChanged: function(payload) {
+			if(payload.color) {
+				self.shapeAttributes.fill = payload.color;
+			}
+			
+			if(payload.sketching != undefined){
+				var constructor;
+				if(payload.sketching){
+					constructor = SketchingHandler;
+				} else {
+					constructor = EditingHandler;
+				}
+				self.setHandler(constructor(this, {shapeAttributes: self.shapeAttributes}));				
+			}
 		},
 		
 		translateX: function(x) {
@@ -33,5 +56,7 @@ function Canvas2D(options) {
 	};
 	
 	$.extend(self, View(options));
+	
+	self.bind(Events.optionChanged, self.optionChanged);
 	return self;
 }

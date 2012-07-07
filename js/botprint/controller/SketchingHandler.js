@@ -8,63 +8,53 @@ function SketchingHandler(view, options) {
 	var self = {
 		
 		enable: function(){
-			var events = ['mousedown', 'mousemove', 'dblclick'];
+			var events = ['mouseDown', 'mouseMove', 'dblClick'];
 			
 			events.forEach(function(ev){
-				elem.bind(ev, function(eventObj){
-					eventObj.preventDefault();
-					self[ev]({x:view.translateX(eventObj.clientX),
-			      		y:view.translateY(eventObj.clientY), target: view});
-			      	// FIXME having trouble using EventBus here, help me out!
-			      	// self.trigger(Events[ev.toUpperCase()], {x:view.translateX(eventObj.clientX),
-			      	// y:view.translateY(eventObj.clientY), target: view});
-			    });				
+			    elem.bind(ev.toLowerCase(), self[ev]);		
 			});
-			// self.bindAll(events);
 		},
 		
 		disable: function() {
 			elem.unbind();
 		},
 				
-		mousedown: function(payload) {
-			if(!this.proceed(payload))
-				return;
+		mouseDown: function(payload) {
+			var x = view.translateX(payload.clientX);
+			var y = view.translateY(payload.clientY);
 			if(this.shape){
 				// Extend the path
 				var path = this.shape.attrs.path;
-				this.shape.attr('path', path +' L ' + payload.x + ' ' + payload.y);
+				this.shape.attr('path', path +' L ' + x + ' ' + y);
 			}else{
 				if(view.chassis)
 					view.chassis.remove();
 				// Create a new path
 				var draw = view.draw;
-				this.shape = draw.path('M '+payload.x+' '+payload.y+' L ' + payload.x + ' ' + payload.y);
+				this.shape = draw.path('M '+x+' '+y+' L ' + x + ' ' + y);
 				this.shape.attr(options.shapeAttributes);
 			}
 		},
 		
-		mousemove: function(payload) {
-			if(!this.proceed(payload))
-				return;
+		mouseMove: function(payload) {
+			var x = view.translateX(payload.clientX);
+			var y = view.translateY(payload.clientY);
 			if(this.shape){
 				// Modify the last path element
 				var path = this.shape.attrs.path;
 				var last = path[path.length - 1];
-				last[1] = payload.x;
-				last[2] = payload.y;
+				last[1] = x;
+				last[2] = y;
 				this.shape.attr('path', path);
 			}
 		},
 		
-		dblclick: function(payload){
-			if(!this.proceed(payload))
-				return;
+		dblClick: function(payload){
 			if(this.shape){
 				var path = this.shape.attrs.path;
 				this.shape.attr('path', path +'Z');
 				view.chassis = this.shape;
-				this.trigger(Events.CHASSIS_SHAPE_UPDATED, {shape: this.shape});
+				self.trigger(Events.chassisShapeUpdated, {shape: this.shape});
 				this.shape = null;
 			}
 		}

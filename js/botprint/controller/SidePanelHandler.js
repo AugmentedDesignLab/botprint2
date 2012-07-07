@@ -1,20 +1,19 @@
 function SidePanelHandler(view, options) {
 	var self = {
-		onClick: function(event, payload) {
+		enable: function() {
+			view.elem.bind('click', self.click);
+		},
+		
+		click: function(payload) {
 			var $this 	= $(this),
-				varName	= $this.data("guivar");
-			var varVal  = $this.data ("guival");
-			
-			// FIXME to be deleted
-			options.checkforChassisExistence(options.canvas.chassis, varName, varVal);
-
-			options.vars[varName] = varVal;
-			options.updateCanvasHandler();
-			// end FIXME
+				varName	= $this.data('guivar');
+			var varVal  = $this.data ('guival');
 
 			$this.siblings().addClass('disabled');
 			$this.removeClass('disabled');
-			self.trigger(Events.OPTION_CHANGED, {varName: varVal});
+			var pl = {};
+			pl[varName] = varVal;
+			self.trigger(Events.optionChanged, pl);
 		}
 	};
 	
