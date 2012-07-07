@@ -27,19 +27,7 @@
 		var sidePanel	= SidePanel({elemClass: 'palette-set a', bus: eventBus});
 		var running 	= true;
 
-		var $container 	= $('#container');
-
-		var width		= $container.width(),
-			height		= $container.height();
-
 		var $gui		= $('#palette');
-
-		// predefined shape to be previewed by the Botprint app
-		var geometry = new THREE.CubeGeometry( 100, 100, 100 );
-		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe: true } );
-		var mesh 	 = new THREE.Mesh( geometry, material );
-
-
 
 		/**
 		 * Pauses the 3D preview animation
@@ -78,7 +66,7 @@
 
 // Surfaceize!
 $(document).ready(function(){
-	if(Modernizr.webgl) {
+	if(window.WebGLRenderingContext) {
 		// Go!
 		var main = botprint();
 		main.play();
