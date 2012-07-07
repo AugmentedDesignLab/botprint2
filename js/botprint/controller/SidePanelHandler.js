@@ -8,16 +8,12 @@ function SidePanelHandler(view, options) {
 			var $this 	= $(this),
 				varName	= $this.data('guivar');
 			var varVal  = $this.data ('guival');
-			
-			// FIXME to be deleted
-			options.checkforChassisExistence(options.canvas.chassis, varName, varVal);
-			options.vars[varName] = varVal;
-			options.updateCanvasHandler();
-			// end FIXME
 
 			$this.siblings().addClass('disabled');
 			$this.removeClass('disabled');
-			self.trigger(Events.optionChanged, {varName: varVal});
+			var payload = {};
+			payload[varName] = varVal;
+			self.trigger(Events.optionChanged, payload);
 		}
 	};
 	

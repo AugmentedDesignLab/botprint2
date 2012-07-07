@@ -24,12 +24,7 @@
 		var eventBus	= EventBus();
 		var canvas  	= Canvas2D({elemID: 'canvas2d', bus: eventBus});
 		var preview 	= Preview3D({elemID:'preview3d', bus: eventBus});
-		var vars		= []; // this will contain the choices we have made in the side bar
-		var sidePanel	= SidePanel({elemClass: 'palette-set a', bus: eventBus,
-			canvas: canvas,
-			checkforChassisExistence: checkforChassisExistence,
-			updateCanvasHandler: updateCanvasHandler,
-			vars: vars});
+		var sidePanel	= SidePanel({elemClass: 'palette-set a', bus: eventBus});
 		var running 	= true;
 
 		var $container 	= $('#container');
@@ -71,104 +66,12 @@
 		 * Initializes the Botprint experiment and kicks everything off. Yay!
 		 */
 		self.init = function() {
-			// set up our initial vars
-			vars["shape"]				= "Free";
-			vars["color"]				= "#00FF00";
-			vars["wheelsLocation"]		= false;
-			vars["sketching"]			= true;
-
 			// create our stuff
-			if(bootstrapCanvas2D()) {
-				setupUIComponents();
+			if(window.WebGLRenderingContext) {
 				$gui.addClass('live');
 			} else {
 				$('html').removeClass('webgl').addClass('no-webgl');
 			}
-		};
-
-		/**
-		 * This function will be used to
-		 * @return {Boolean}
-		 */
-		function bootstrapCanvas2D() {
-			// add listeners
-			addEventListeners();
-
-			canvas.width  = width;
-			canvas.height = height;
-			return true;
-		}
-
-		function addEventListeners() {
-			// window event
-			$(window).resize(callbacks.windowResize);
-
-		}
-
-		/**
-		 * Creates the objects we need to make the UI nicer.
-		 */
-		function setupUIComponents() {
-			// todo(Huascar) improve UI. low priority
-		}
-
-		function checkforChassisExistence(elem, varName, varVal) {
-			if(!elem){
-				if(varName == "wheelsLocation" && varVal == true){
-					alert("You must sketch a chassis before providing wheels.");
-					return false;
-				}
-
-				if(varName == "transform" && varVal == false){
-					alert("You must sketch a shape before start editing.");
-					return false;
-				}
-			}
-
-			return true;
-		}
-
-		function updateCanvasHandler (){
-			var opts = {
-				stroke: "#F8F8F8 ",
-				"stroke-opacity": 1,
-				fill: vars["color"],
-				"stroke-width": 2,
-				"stroke-linecap": "round",
-				"stroke-linejoin": "round"
-			};
-
-			
-			var handler =  pickHandler({
-				shape: vars["shape"], 
-				wheels: vars["wheelsLocation"],
-				sketching: vars["sketching"],
-				shapeAttributes: opts,
-				canvas: canvas});
-			canvas.setHandler(handler);
-		}
-		
-		function pickHandler(options){
-			var constructor;
-			if(options.sketching){
-				constructor = SketchingHandler;
-			} else {
-				constructor = EditingHandler;
-			}
-			return constructor(canvas, {shapeAttributes: options.shapeAttributes});
-		}	
-
-
-		/**
-		 * Our internal callbacks object - a neat
-		 * and tidy way to organise the various
-		 * callbacks in operation.
-		 */
-		callbacks = {
-			windowResize: function() {
-				width			= $container.width();
-				height			= $container.height();
-			},
 		};
 	};
 })();

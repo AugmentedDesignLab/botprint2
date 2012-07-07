@@ -4,6 +4,7 @@ function EditingHandler(view, options) {
 	var self = {
 		enable: function() {
 			if(!view.chassis) {
+				alert("You must sketch a shape before start editing.");
 				return;
 			}
 			var draw = view.draw;
