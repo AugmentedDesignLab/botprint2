@@ -9,7 +9,7 @@ function DraggingHandler(view, options) {
 	
 	var self = {
 		enable: function() {
-			self.bindAll(['DRAG_START', 'DRAG_MOVE', 'DRAG_END', 'MOUSEOVER', 'MOUSEOUT']);			
+			self.bindAll(['dragStart', 'dragMove', 'dragEnd', 'mouseOver', 'mouseOut']);			
 		},
 		
 		disable: function() {
@@ -17,7 +17,7 @@ function DraggingHandler(view, options) {
 			// TODO waiting for a way to unbind event handlers from EventBus
 		},
 		
-		drag_start: function(payload) {
+		dragStart: function(payload) {
 			if(self.proceed(payload)){
 				// remember the starting coordinates
 				dragStartX = view.attrs.cx;
@@ -25,7 +25,7 @@ function DraggingHandler(view, options) {
 			}
 		},
 		
-		drag_move: function(payload) {
+		dragMove: function(payload) {
 			if(self.proceed(payload)){
 				/* calculate the new coordinates from the
 				 * starting coordinates and the offset
@@ -42,19 +42,19 @@ function DraggingHandler(view, options) {
 			}
 		},
 		
-		drag_end: function(payload) {
+		dragEnd: function(payload) {
 			if(self.proceed(payload)){
-				self.trigger(Events.CHASSIS_SHAPE_UPDATED, {shape: view.chassis});
+				self.trigger(Events.chassisShapeUpdated, {shape: view.chassis});
 			}
 		},
 		
-		mouseover: function(payload) {
+		mouseOver: function(payload) {
 			if(self.proceed(payload)){
 				view.attr({r: 6});
 			}
 		},
 		
-		mouseout: function(payload) {
+		mouseOut: function(payload) {
 			if(self.proceed(payload)){
 				view.attr({r: 4});
 			}

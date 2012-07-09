@@ -3,15 +3,16 @@
  */
 
 var Events = {
-	OPTION_CHANGED: 'User chose a different option in side panel, payload: {variable: new_value}',
-	CHASSIS_SHAPE_UPDATED: 'The chassis shape is updated, payload: {shape: new_svg}',
+	optionChanged: 'User chose a different option in side panel, payload: {variable: new_value}',
+	chassisShapeUpdated: 'The chassis shape is updated, payload: {shape: new_svg}',
 	// constants for mouse events
-	MOUSEDOWN: 'onmousedown event, payload: {x: x_value, y: y_value}',
-	MOUSEMOVE: 'onmousemove event, payload: {x: x_value, y: y_value}',
-	MOUSEOVER: 'onmouseover event, payload: {target: event_target}',
-	MOUSEOUT: 'onmouseout event, payload: {target: event_target}',
-	DOUBLE_CLICK: 'ondblclick event, payload: {x: x_value, y: y_value}',
-	DRAG_START: 'onstart event of mouse dragging, payload: {target: drag_target}',
-	DRAG_MOVE: 'onmove event of mouse dragging, payload: {dx: horizontal distance from the start point, dy: vertical distance from the start point, target: drag_target}',
-	DRAG_END: 'onend event of mouse dragging, payload: {target: drag_target}'
+	mouseDown: 'onmousedown event, payload: {x: x_value, y: y_value}',
+	mouseMove: 'onmousemove event, payload: {x: x_value, y: y_value}',
+	mouseOver: 'onmouseover event, payload: {target: event_target}',
+	mouseOut: 'onmouseout event, payload: {target: event_target}',
+	click: 'onclick event, payload: {target: element on which the event occurred, currentTarget: the element the event handler has been attached to}',
+	dblClick: 'ondblclick event, payload: {x: x_value, y: y_value}',
+	dragStart: 'onstart event of mouse dragging, payload: {target: drag_target}',
+	dragMove: 'onmove event of mouse dragging, payload: {dx: horizontal distance from the start point, dy: vertical distance from the start point, target: drag_target}',
+	dragEnd: 'onend event of mouse dragging, payload: {target: drag_target}'
 };

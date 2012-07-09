@@ -3,6 +3,10 @@ function EditingHandler(view, options) {
 	
 	var self = {
 		enable: function() {
+			if(!view.chassis) {
+				alert("You must sketch a shape before start editing.");
+				return;
+			}
 			var draw = view.draw;
 			var path = view.chassis.attrs.path;
 			path.forEach(function(action, index){
@@ -11,23 +15,23 @@ function EditingHandler(view, options) {
 					var circle = draw.circle(action[1], action[2], 4);
 					// initialize the circle
 					$.extend(circle, View({bus: view.bus()}));
-					circle.attr({fill: 'blue'});
+					circle.attr({fill: 'white', stroke: 'black'});
 					circle.path_index = index;
 					circle.chassis = view.chassis;
 					// refire the events
 					var startX, startY;
 					circle.drag(function(dx, dy, x, y, event){
-						self.trigger(Events.DRAG_MOVE, {dx: dx, dy: dy, target: circle});
+						self.trigger(Events.dragMove, {dx: dx, dy: dy, target: circle});
 					}, function(x, y, event){
-						self.trigger(Events.DRAG_START, {target: circle});
+						self.trigger(Events.dragStart, {target: circle});
 					}, function(){
-						self.trigger(Events.DRAG_END, {target:circle});
+						self.trigger(Events.dragEnd, {target:circle});
 					});
 					
 					circle.hover(function(){
-						self.trigger(Events.MOUSEOVER,{target: circle});
+						self.trigger(Events.mouseOver,{target: circle});
 					}, function(){
-						self.trigger(Events.MOUSEOUT, {target: circle});
+						self.trigger(Events.mouseOut, {target: circle});
 					});
 					controlPoints.push(circle);
 					// create a handler for this circle
