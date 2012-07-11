@@ -24,7 +24,7 @@ function Canvas2D(options) {
 		setHandler: function(handler) {
 			if(self.handler)
 			{
-				// self.handler.disable();
+				self.handler.disable();
 			}
 			self.handler = handler;
 			self.handler.enable();
@@ -33,16 +33,6 @@ function Canvas2D(options) {
 		optionChanged: function(payload) {
 			if(payload.color) {
 				self.shapeAttributes.fill = payload.color;
-			}
-			
-			if(payload.sketching != undefined){
-				var constructor;
-				if(payload.sketching){
-					constructor = SketchingHandler;
-				} else {
-					constructor = EditingHandler;
-				}
-				self.setHandler(constructor(this, {shapeAttributes: self.shapeAttributes, bus: options.bus}));				
 			}
 		},
 		
@@ -58,5 +48,8 @@ function Canvas2D(options) {
 	$.extend(self, View(options));
 	
 	self.bind(Events.optionChanged, self.optionChanged);
+	
+	self.setHandler(SketchingHandler(self, {shapeAttributes: self.shapeAttributes}));
+	
 	return self;
 }

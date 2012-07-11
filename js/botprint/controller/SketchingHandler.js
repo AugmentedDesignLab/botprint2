@@ -52,8 +52,16 @@ function SketchingHandler(view, options) {
 		dblClick: function(payload){
 			if(this.shape){
 				var path = this.shape.attrs.path;
+				/* click event handler is called twice
+				 * before this. Two pop operations from path
+				 * are to offset the effect of two click events
+				 */ 
+				path.pop();
+				path.pop();
 				this.shape.attr('path', path +'Z');
 				view.chassis = this.shape;
+				// Automatically switch to EditingHandler
+				view.setHandler(EditingHandler(view))
 				self.trigger(Events.chassisShapeUpdated, {shape: this.shape});
 				this.shape = null;
 			}
