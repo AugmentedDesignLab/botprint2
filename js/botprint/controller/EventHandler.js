@@ -20,6 +20,6 @@ function EventHandler(view, options) {
 		}
 	};
 	
-	$.extend(self, Bindable(view.bus()));
+	$.extend(self, Bindable(view.bus || options.bus));
 	return self; 
 }

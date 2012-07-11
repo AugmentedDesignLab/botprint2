@@ -24,7 +24,7 @@ function Canvas2D(options) {
 		setHandler: function(handler) {
 			if(self.handler)
 			{
-				self.handler.disable();
+				// self.handler.disable();
 			}
 			self.handler = handler;
 			self.handler.enable();
@@ -42,7 +42,7 @@ function Canvas2D(options) {
 				} else {
 					constructor = EditingHandler;
 				}
-				self.setHandler(constructor(this, {shapeAttributes: self.shapeAttributes}));				
+				self.setHandler(constructor(this, {shapeAttributes: self.shapeAttributes, bus: options.bus}));				
 			}
 		},
 		

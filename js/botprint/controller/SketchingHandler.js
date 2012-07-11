@@ -8,7 +8,7 @@ function SketchingHandler(view, options) {
 	var self = {
 		
 		enable: function(){
-			var events = ['mouseDown', 'mouseMove', 'dblClick'];
+			var events = ['click', 'mouseMove', 'dblClick'];
 			
 			events.forEach(function(ev){
 			    elem.bind(ev.toLowerCase(), self[ev]);		
@@ -19,7 +19,7 @@ function SketchingHandler(view, options) {
 			elem.unbind();
 		},
 				
-		mouseDown: function(payload) {
+		click: function(payload) {
 			var x = view.translateX(payload.clientX);
 			var y = view.translateY(payload.clientY);
 			if(this.shape){

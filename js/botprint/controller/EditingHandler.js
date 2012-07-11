@@ -13,29 +13,40 @@ function EditingHandler(view, options) {
 				if(action.length == 3){
 					// draw a circle for each point along the path
 					var circle = draw.circle(action[1], action[2], 4);
+					/* extend circle with View mixin, using its own event bus
+					 * making it self a separate channel so that different
+					 * circles don't interfere with each other 
+					 */
+					$.extend(circle, View());
 					// initialize the circle
-					$.extend(circle, View({bus: view.bus()}));
 					circle.attr({fill: 'white', stroke: 'black'});
 					circle.path_index = index;
 					circle.chassis = view.chassis;
 					// refire the events
 					var startX, startY;
 					circle.drag(function(dx, dy, x, y, event){
-						self.trigger(Events.dragMove, {dx: dx, dy: dy, target: circle});
+						circle.trigger(Events.dragMove, {dx: dx, dy: dy, x: x, y: y, event: event});
 					}, function(x, y, event){
-						self.trigger(Events.dragStart, {target: circle});
+						circle.trigger(Events.dragStart, {x: x, y: y, event: event});
 					}, function(){
-						self.trigger(Events.dragEnd, {target:circle});
+						circle.trigger(Events.dragEnd, {event: event});
 					});
 					
 					circle.hover(function(){
-						self.trigger(Events.mouseOver,{target: circle});
+						circle.trigger(Events.mouseOver);
 					}, function(){
-						self.trigger(Events.mouseOut, {target: circle});
+						circle.trigger(Events.mouseOut);
+					});
+					
+					circle.click(function(event) {
+						circle.trigger(Events.click, {event: event});
 					});
 					controlPoints.push(circle);
-					// create a handler for this circle
-					var handler = DraggingHandler(circle);
+					/* create a handler for this circle,
+					 * using a shared event bus so that it can
+					 * notify other parts of the system
+					 */
+					var handler = DraggingHandler(circle, {bus: options.bus});
 					handler.enable();
 					circle.handler = handler;
 				}
