@@ -12,6 +12,7 @@ applications; all views will be different.
 
 ## PingView
 
+```JavaScript
 function PingView(O) {
 	var opts = {name: "Ping"};
 	$.extend(opts, O || {});
@@ -35,9 +36,11 @@ function PingView(O) {
 
 	return self;
 }
+```
 
 ## PongView
 
+```JavaScript
 function PongView(O){
 	var opts = {name: "Pong"};
 	$.extend(opts, O || {});
@@ -62,12 +65,14 @@ function PongView(O){
 
 	return self;
 }
+```
 
 Now that we developed our views, let's show a simple test page showing the
 typical API usage.
 
 ## Test page
 
+```HTML
 <html>
 <head>
     <title>EventBus test</title>
@@ -84,3 +89,4 @@ typical API usage.
 
 </body>
 </html>
+```

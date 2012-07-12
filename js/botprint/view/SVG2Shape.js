@@ -8,7 +8,7 @@ SVG2Shape.prototype.convert = function(elem) {
 		case 'circle': shape = this.fromCircle(elem); break;
 		case 'ellipse': shape = this.fromEllipse(elem); break;
 	}
-	// save transforms to be replayed later at Chassis.js
+	// save transforms to be replayed later at Chassis3D.js
 	shape.transforms = elem.transform();
 	return shape;
 };
@@ -20,12 +20,13 @@ SVG2Shape.prototype.fromPath = function(elem) {
 
 	// used to remove duplicate actions
 	var existingActions = {};
-
+	var cleanedPath = [];
 	for(var i = 0; i < path.length; i++)
 	{
 		var action = path[i];
 		if(!existingActions[action]){
 			existingActions[action] = true;
+			cleanedPath.push(action);
 			switch(action[0]){
 				case 'M':
 				case 'm':
@@ -44,7 +45,7 @@ SVG2Shape.prototype.fromPath = function(elem) {
 
 		}
 	}
-
+	elem.attr({path: cleanedPath});
 	return shape;
 };
 
@@ -82,13 +83,6 @@ SVG2Shape.prototype.fromEllipse = function(elem) {
 	var attrs = elem.attrs;
 	var cx = attrs.cx, cy = attrs.cy, rx = attrs.rx, ry = attrs.ry;
 
-	/*
-	 * absellipse is added to three.js by Zhongpeng Lin. To the date of
-	 * 2012-05-12, the changes have not been accepted by official
-	 * three.js repository, unfornately. In order to make this work,
-	 * the three.js built from https://github.com/linzhp/three.js
-	 * should be used.
-	 */
 	shape.absellipse(cx, cy, rx, ry, 0, 2*Math.PI);	
 	return shape;
 };
