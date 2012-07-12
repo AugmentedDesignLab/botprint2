@@ -5,13 +5,11 @@
 
 // FIXME need a better name for this class
 function DraggingHandler(view, options) {
-	var dragStartX, dragStartY;
 	var deviationX, deviationY;
 	
 	var self = {
 		enable: function() {
 			var events = ['dragStart', 'dragMove', 'dragEnd', 'mouseOver', 'mouseOut', 'click'];
-			// self.bindAll(['dragStart', 'dragMove', 'dragEnd', 'mouseOver', 'mouseOut']);			
 			events.forEach(function(ev){
 			    view.bind(Events[ev], self[ev]);		
 			});
@@ -24,9 +22,6 @@ function DraggingHandler(view, options) {
 		
 		dragStart: function(payload) {
 			payload.event.stopPropagation();
-			// remember the starting coordinates
-			dragStartX = view.attrs.cx;
-			dragStartY = view.attrs.cy;
 			// remember the deviation from the center of view
 			deviationX = view.attrs.cx - payload.x;
 			deviationY = view.attrs.cy - payload.y;

@@ -5,7 +5,7 @@ function Preview3DHandler(view, options) {
 	
 	var self = {
 		enable: function() {
-			self.bindAll(['chassisShapeUpdated']);
+			self.bind(Events.chassisShapeUpdated, self.chassisShapeUpdated);
 		},
 		
 		disable: function() {
