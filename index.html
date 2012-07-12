@@ -3,7 +3,6 @@
 	<head>
 		<meta charset="utf-8"/>
 		<title>Botprint</title>
-		<link href="css/botprint.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 		<div id="menu">
@@ -74,44 +73,7 @@
 				<div id="preview3d" class="panel"></div>
 			</div>
 		</div>
-
-		<!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-		<script>
-			window.jQuery || document.write('<script src="js/vendor/jquery-1.7.2.min.js"><\/script>')
-		</script>
-		<script src="js/vendor/raphael.js"></script>
-		<script src="js/vendor/Three.js"></script>
-		
-		<!-- spi -->
-		<script src="js/botprint/spi/Enumerable.js"></script>
-		<script src="js/botprint/spi/Arrays.js"></script>
-		<script src="js/botprint/spi/Bindable.js"></script>
-		<script src="js/botprint/spi/EventBus.js"></script>
-		<script src="js/botprint/spi/Events.js"></script>
-		
-		<!-- Controllers -->
-		<script src="js/botprint/controller/EventHandler.js"></script>
-		<script src="js/botprint/controller/SidePanelHandler.js"></script>
-		<script src="js/botprint/controller/SketchingHandler.js"></script>
-		<script src="js/botprint/controller/DraggingHandler.js"></script>
-		<script src="js/botprint/controller/EditingHandler.js"></script>
-		<script src="js/botprint/controller/Preview3DHandler.js"></script>
-		
-		<!-- Views -->
-		<script src="js/botprint/view/View.js"></script>
-		<script src="js/botprint/view/Canvas2D.js"></script>
-		<script src="js/botprint/view/Preview3D.js"></script>
-		<script src="js/botprint/view/SVG2Shape.js"></script>
-		<script src="js/botprint/view/Chassis3D.js"></script>
-		<script src="js/botprint/view/SidePanel.js"></script>
-
-
-		<!-- scripts concatenated and minified via build script -->
-		<script src="js/plugins.js"></script>
-
-		<script src="js/botprint.js"></script>
-
-		<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+        <script src="js/yepnope.js"></script>
+        <script src="js/bootstrap.js"></script>
 	</body>
 </html>
