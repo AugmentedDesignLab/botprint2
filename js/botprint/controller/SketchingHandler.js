@@ -4,24 +4,25 @@
 
 function SketchingHandler(view, options) {
 	var elem = view.elem;
+	var events = ['click', 'mouseMove', 'dblClick'];
 	
 	var self = {
-		
 		enable: function(){
-			var events = ['click', 'mouseMove', 'dblClick'];
-			
 			events.forEach(function(ev){
 			    elem.bind(ev.toLowerCase(), self[ev]);		
 			});
 		},
 		
 		disable: function() {
-			elem.unbind();
+			events.forEach(function(ev){
+			    elem.unbind(ev.toLowerCase(), self[ev]);		
+			});
 		},
 				
 		click: function(payload) {
-			var x = view.translateX(payload.clientX);
-			var y = view.translateY(payload.clientY);
+			var x = EventX(payload).offsetX;
+			var y = EventX(payload).offsetY;
+
 			if(this.shape){
 				// Extend the path
 				var path = this.shape.attrs.path;
@@ -37,8 +38,9 @@ function SketchingHandler(view, options) {
 		},
 		
 		mouseMove: function(payload) {
-			var x = view.translateX(payload.clientX);
-			var y = view.translateY(payload.clientY);
+			var x = EventX(payload).offsetX;
+			var y = EventX(payload).offsetY;
+
 			if(this.shape){
 				// Modify the last path element
 				var path = this.shape.attrs.path;
@@ -61,7 +63,9 @@ function SketchingHandler(view, options) {
 				this.shape.attr('path', path +'Z');
 				view.chassis = this.shape;
 				// Automatically switch to EditingHandler
-				view.setHandler(EditingHandler(view))
+				self.disable();
+				var editingHandler = EditingHandler(view);
+				editingHandler.enable();
 				self.trigger(Events.chassisShapeUpdated, {shape: this.shape});
 				this.shape = null;
 			}

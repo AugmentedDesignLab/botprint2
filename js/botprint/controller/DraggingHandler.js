@@ -34,11 +34,11 @@ function DraggingHandler(view, options) {
 		
 		dragMove: function(payload) {
 			payload.event.stopPropagation();
-			/* calculate the new coordinates from the
-			 * starting coordinates and the offset
-			 */ 
-			// var newX = dragStartX+payload.dx, newY = dragStartY+payload.dy;
 			
+			/* calculate the new coordinates from the
+			 * current mouse position and deviation from
+			 * circle center
+			 */ 
 			var newX = payload.x + deviationX, newY = payload.y + deviationY;
 			// move the circle
 			view.attr({cx: newX, cy: newY});

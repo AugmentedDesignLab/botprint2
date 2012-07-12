@@ -9,7 +9,6 @@ function Canvas2D(options) {
 	var elem = $('#'+options.elemID);
 	var width = elem.width();
 	var height = elem.height();
-	var offset = {x:elem.offset().left, y:elem.offset().top};
 	var self = {
 		elem: elem,
 		draw: Raphael(options.elemID, width, height),
@@ -21,35 +20,44 @@ function Canvas2D(options) {
 				'stroke-linejoin': 'round'
 		},
 		
-		setHandler: function(handler) {
-			if(self.handler)
-			{
-				self.handler.disable();
-			}
-			self.handler = handler;
-			self.handler.enable();
-		},
-		
 		optionChanged: function(payload) {
 			if(payload.color) {
 				self.shapeAttributes.fill = payload.color;
 			}
+			
+			if(payload.wheelsLocation != undefined) {
+				if(payload.wheelsLocation) {
+					if(!this.chassis) {
+						alert("You must sketch a chassis before start adding wheels.");
+					} else {
+						if(this.sketchingHandler)
+						{
+							/* need to disalbe SketchingHandler, because it can
+							 * interfere with AddingWheelHandler
+							 */ 
+							this.sketchingHandler.disable();
+						}
+						if(!this.addingWheelHandler)
+							this.addingWheelHandler = AddingWheelHandler(this);
+						this.addingWheelHandler.enable();
+					}
+					
+				} else {
+					if(this.addingWheelHandler) {
+						this.addingWheelHandler.disable();
+					}
+				}
+			}
 		},
 		
-		translateX: function(x) {
-			return x - offset.x;
-		},
-		
-		translateY: function(y) {
-			return y - offset.y;
-		}
 	};
 	
 	$.extend(self, View(options));
 	
 	self.bind(Events.optionChanged, self.optionChanged);
 	
-	self.setHandler(SketchingHandler(self, {shapeAttributes: self.shapeAttributes}));
+	self.sketchingHandler = SketchingHandler(self, {shapeAttributes: self.shapeAttributes});
+	self.sketchingHandler.enable();
 	
 	return self;
 }
