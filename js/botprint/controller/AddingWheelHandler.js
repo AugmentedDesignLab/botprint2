@@ -27,9 +27,13 @@ function AddingWheelHandler(view, options) {
 		click: function(payload) {
 			var x = EventX(payload).offsetX;
 			var y = EventX(payload).offsetY;
-			var wheel = view.draw.rect(x - wheelDef.width/2, y - wheelDef.height/2,
+			var svg = view.draw.rect(x - wheelDef.width/2, y - wheelDef.height/2,
 				wheelDef.width, wheelDef.height, wheelDef.radius);
-			wheel.attr({fill: wheelDef.fill});
+			svg.attr({fill: wheelDef.fill});
+
+			var wheel = Wheel2D(svg);
+			var dragging = DraggingHandler(wheel, {bus: view.bus});
+			dragging.enable();
 		}
 	};
 

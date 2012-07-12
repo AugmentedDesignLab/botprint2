@@ -23,7 +23,6 @@ function EditingHandler(view, options) {
 					circle.path_index = index;
 					circle.chassis = view.chassis;
 					// refire the events
-					var startX, startY;
 					circle.drag(function(dx, dy, x, y, event){
 						circle.trigger(Events.dragMove, {dx: dx, dy: dy, x: x, y: y, event: event});
 					}, function(x, y, event){
