@@ -46,7 +46,7 @@ function EditingHandler(view, options) {
 					 * using a shared event bus so that it can
 					 * notify other parts of the system
 					 */
-					var handler = DraggingHandler(circle, {bus: view.bus});
+					var handler = VertexHandler(circle, {bus: view.bus});
 					handler.enable();
 					circle.handler = handler;
 				}

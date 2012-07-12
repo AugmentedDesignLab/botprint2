@@ -3,8 +3,7 @@
  *
  */
 
-// FIXME need a better name for this class
-function DraggingHandler(view, options) {
+function VertexHandler(view, options) {
 	var deviationX, deviationY;
 	
 	var self = {
