@@ -1,30 +1,28 @@
 /**
- * 2D representation of a wheel
- * 
  * @author Zhongpeng Lin
  */
-function Wheel2D(svg, options) {
-	
+function Vertex2D(svg, options) {
 	var self = {
 		svg: svg,
 		
 		getPosition: function() {
-			return {x: svg.attrs.x, y: svg.attrs.y};
+			return {x: svg.attrs.cx, y: svg.attrs.cy};
 		},
 		
 		setPosition: function(x, y) {
-			svg.attr({x: x, y: y});
+			svg.attr({cx: x, cy: y});
 		},
 		
 		highlight: function() {
-			svg.attr({stroke: '#F8F8F8'});			
+			svg.attr({r: 6});
 		},
 		
 		lowlight: function() {
-			svg.attr({stroke: null});
+			svg.attr({r: 4});
 		}
 	};
 	
 	$.extend(self, View(options));
 	return self;
+	
 }

@@ -1,5 +1,5 @@
 function EditingHandler(view, options) {
-	var controlPoints = [];
+	var vertices = [];
 	
 	var self = {
 		enable: function() {
@@ -11,53 +11,39 @@ function EditingHandler(view, options) {
 			var path = view.chassis.attrs.path;
 			path.forEach(function(action, index){
 				if(action.length == 3){
-					// draw a circle for each point along the path
+					// draw a circle for each vertex along the path
 					var circle = draw.circle(action[1], action[2], 4);
-					/* extend circle with View mixin, using its own event bus
-					 * making it self a separate channel so that different
-					 * circles don't interfere with each other 
-					 */
-					$.extend(circle, View());
-					// initialize the circle
 					circle.attr({fill: 'white', stroke: 'black'});
-					circle.path_index = index;
-					circle.chassis = view.chassis;
-					// refire the events
-					circle.drag(function(dx, dy, x, y, event){
-						circle.trigger(Events.dragMove, {dx: dx, dy: dy, x: x, y: y, event: event});
-					}, function(x, y, event){
-						circle.trigger(Events.dragStart, {x: x, y: y, event: event});
-					}, function(){
-						circle.trigger(Events.dragEnd, {event: event});
-					});
 					
-					circle.hover(function(){
-						circle.trigger(Events.mouseOver);
-					}, function(){
-						circle.trigger(Events.mouseOut);
-					});
+					var vertex = Vertex2D(circle);
+					vertex.path_index = index;
+					vertex.chassis = view.chassis;
+					vertex.handlers = [];
+					var handlerOptions = {bus: view.bus};
+					// making it draggable
+					vertex = Draggable2D(vertex);
+					var dragging = VertexDraggingHandler(vertex, handlerOptions);
+					dragging.enable();
+					vertex.handlers.push(dragging);
+					// making it hoverable
+					vertex = Hoverable2D(vertex);
+					var hovering = HoveringHandler(vertex, handlerOptions);
+					hovering.enable();
+					vertex.handlers.push(hovering);
 					
-					circle.click(function(event) {
-						circle.trigger(Events.click, {event: event});
-					});
-					controlPoints.push(circle);
-					/* create a handler for this circle,
-					 * using a shared event bus so that it can
-					 * notify other parts of the system
-					 */
-					var handler = VertexHandler(circle, {bus: view.bus});
-					handler.enable();
-					circle.handler = handler;
+					vertices.push(vertex);
+					
+					
 				}
 			});
 		},
 		
 		disable: function() {
-			while(controlPoints.length > 0)
+			while(vertices.length > 0)
 			{
-				var point = controlPoints.pop();
-				point.handler.disable();
-				point.remove();
+				var vertex = vertices.pop();
+				vertex.handler.disable();
+				vertex.svg.remove();
 			}
 		}
 	};

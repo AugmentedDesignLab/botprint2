@@ -32,8 +32,16 @@ function AddingWheelHandler(view, options) {
 			svg.attr({fill: wheelDef.fill});
 
 			var wheel = Wheel2D(svg);
-			var dragging = DraggingHandler(wheel, {bus: view.bus});
+			var handlerOptions = {bus: view.bus};
+			// making it draggable
+			wheel = Draggable2D(wheel);
+			var dragging = DraggingHandler(wheel, handlerOptions);
 			dragging.enable();
+			// making it hoverable
+			wheel = Hoverable2D(wheel, handlerOptions);
+			var hovering = HoveringHandler(wheel, handlerOptions);
+			hovering.enable();
+	
 		}
 	};
 

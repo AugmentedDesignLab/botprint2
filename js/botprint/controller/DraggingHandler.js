@@ -3,7 +3,7 @@ function DraggingHandler(view, options) {
 	
 	var self = {
 		enable: function() {
-			var events = ['dragStart', 'dragMove', 'dragEnd', 'mouseOver', 'mouseOut', 'click'];
+			var events = ['dragStart', 'dragMove', 'dragEnd'];
 			events.forEach(function(ev){
 			    view.bind(Events[ev], self[ev]);		
 			});
@@ -32,21 +32,9 @@ function DraggingHandler(view, options) {
 
 		dragEnd: function(payload) {
 			payload.event.stopPropagation();
-		},
-		
-		mouseOver: function(payload) {
-			view.highlight();
-		},
-		
-		mouseOut: function(payload) {
-			view.lowlight();
-		},
-		
-		click: function(payload) {
-			// Prevent Canvas2D from handling the event
-			payload.event.stopPropagation();
 		}
-
+		
+		
 	};
 	
 	$.extend(self, EventHandler(view, options));
