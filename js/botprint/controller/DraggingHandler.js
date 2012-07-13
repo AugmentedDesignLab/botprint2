@@ -4,8 +4,9 @@ function DraggingHandler(view, options) {
 	var self = {
 		enable: function() {
 			var events = ['dragStart', 'dragMove', 'dragEnd'];
+			var _this = this;
 			events.forEach(function(ev){
-			    view.bind(Events[ev], self[ev]);		
+			    view.bind(Events[ev], _this[ev]);		
 			});
 		},
 		
