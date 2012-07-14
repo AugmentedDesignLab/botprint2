@@ -20,8 +20,8 @@ function SketchingHandler(view, options) {
 		},
 				
 		click: function(payload) {
-			var x = EventX(payload).offsetX;
-			var y = EventX(payload).offsetY;
+			var x = OffsetEvent(payload).offsetX;
+			var y = OffsetEvent(payload).offsetY;
 
 			if(this.shape){
 				// Extend the path
@@ -38,8 +38,8 @@ function SketchingHandler(view, options) {
 		},
 		
 		mouseMove: function(payload) {
-			var x = EventX(payload).offsetX;
-			var y = EventX(payload).offsetY;
+			var x = OffsetEvent(payload).offsetX;
+			var y = OffsetEvent(payload).offsetY;
 
 			if(this.shape){
 				// Modify the last path element
