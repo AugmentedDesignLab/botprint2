@@ -11,15 +11,9 @@ function EditingHandler(view, options) {
 			var path = view.chassis.attrs.path;
 			path.forEach(function(action, index){
 				if(action.length == 3){
-					// draw a circle for each vertex along the path
-					var circle = draw.circle(action[1], action[2], 4);
-					circle.attr({fill: 'white', stroke: 'black'});
-					
-					var vertex = Vertex2D(circle);
-					vertex.path_index = index;
-					vertex.chassis = view.chassis;
+					var vertex = Vertex2D({x: action[1], y: action[2]}, view.chassis);
 					vertex.handlers = [];
-					var handlerOptions = {bus: view.bus};
+					var handlerOptions = {bus: view.bus, pathIndex: index};
 					// making it draggable
 					vertex = Draggable2D(vertex);
 					var dragging = VertexDraggingHandler(vertex, handlerOptions);
