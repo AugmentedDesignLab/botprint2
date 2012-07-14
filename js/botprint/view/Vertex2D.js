@@ -2,16 +2,16 @@
  * The widget for dragging a vertex of a polygon
  * @author Zhongpeng Lin
  */
-function Vertex2D(position, target) {
+function Vertex2D(position, target, options) {
 	var draw = target.paper;
 	var normalSize = 4;
-	var svg = draw.circle(action[1], action[2], normalSize);
+	var svg = draw.circle(position.x, position.y, normalSize);
 	svg.attr({fill: 'white', stroke: 'black'});
 	
 	var self = {
 		svg: svg,
-		
 		target: target,
+		handlers: [],
 		
 		getPosition: function() {
 			return {x: svg.attrs.cx, y: svg.attrs.cy};
@@ -31,6 +31,11 @@ function Vertex2D(position, target) {
 		
 		remove: function() {
 			// destructor
+			this.handlers.forEach(function(h){
+				h.disable();
+			});
+			svg.unbindAll();
+			svg.remove();
 		}
 	};
 	

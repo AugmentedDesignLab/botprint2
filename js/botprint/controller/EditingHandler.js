@@ -12,7 +12,6 @@ function EditingHandler(view, options) {
 			path.forEach(function(action, index){
 				if(action.length == 3){
 					var vertex = Vertex2D({x: action[1], y: action[2]}, view.chassis);
-					vertex.handlers = [];
 					var handlerOptions = {bus: view.bus, pathIndex: index};
 					// making it draggable
 					vertex = Draggable2D(vertex);
@@ -35,8 +34,7 @@ function EditingHandler(view, options) {
 		disable: function() {
 			while(vertices.length > 0){
 				var vertex = vertices.pop();
-				vertex.handler.disable();
-				vertex.svg.remove();
+				vertex.remove();
 			}
 		}
 	};
