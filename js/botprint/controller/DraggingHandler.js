@@ -1,5 +1,5 @@
 function DraggingHandler(view, options) {
-	var deviationX, deviationY;
+	var dragStartX, dragStartY;
 	
 	var self = {
 		enable: function() {
@@ -17,8 +17,8 @@ function DraggingHandler(view, options) {
 		dragStart: function(payload) {
 			payload.event.stopPropagation();
 			// remember the deviation from the initial position of view
-			deviationX = view.getPosition().x - payload.x;
-			deviationY = view.getPosition().y - payload.y;
+			dragStartX = view.getPosition().x - payload.x;
+			dragStartY = view.getPosition().y - payload.y;
 		},
 		
 		dragMove: function(payload) {
@@ -26,7 +26,7 @@ function DraggingHandler(view, options) {
 			/* calculate the new coordinates from the
 			 * current mouse position and initial deviation
 			 */ 
-			var newX = payload.x + deviationX, newY = payload.y + deviationY;
+			var newX = payload.x + dragStartX, newY = payload.y + dragStartY;
 			// move the circle
 			view.setPosition(newX, newY);
 		},
