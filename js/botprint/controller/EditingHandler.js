@@ -39,8 +39,7 @@ function EditingHandler(view, options) {
 		},
 		
 		disable: function() {
-			while(vertices.length > 0)
-			{
+			while(vertices.length > 0){
 				var vertex = vertices.pop();
 				vertex.handler.disable();
 				vertex.svg.remove();
