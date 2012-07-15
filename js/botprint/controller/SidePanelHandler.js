@@ -17,6 +17,6 @@ function SidePanelHandler(view, options) {
 		}
 	};
 	
-	$.extend(self, EventHandler(view, options));
+	Mixable(self).mix(EventHandler(view, options));
 	return self;
 }
