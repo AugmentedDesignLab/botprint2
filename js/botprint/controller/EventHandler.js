@@ -1,25 +1,24 @@
 /**
+ * Provides the default implementation of
+ * enable and disable method. When a handler
+ * does not want the default implementation,
+ * it can simply extend from Bindable
  * @author Zhongpeng Lin
  */
 
 function EventHandler(view, options) {
 	var self = {
-		// decide if a handler should process an event
-		proceed: function(payload) {
-			return view == payload.target;
+		enable: function() {
+			var thisHandler = this;
+			thisHandler.events.forEach(function(ev){
+			    view.bind(Events[ev], thisHandler[ev]);
+			});
 		},
 		
-		/* Provide a default implementation of binding events to handlers,
-		 * assuming the handler method names are the same as event names
-		 */
-		bindAll: function(events) {
-			var sub = this;
-			events.forEach(function(ev){
-				sub.bind(Events[ev], sub[ev]);
-			});
-		}
+		disable: function() {
+			// TODO waiting for a way to unbind event handlers from EventBus
+		}		
 	};
-	
-	$.extend(self, Bindable(view.bus()));
+	$.extend(self, Bindable(view.bus || options.bus));
 	return self; 
 }
