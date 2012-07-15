@@ -39,6 +39,5 @@ function EditingHandler(view, options) {
 		}
 	};
 	
-	$.extend(self, EventHandler(view, options));
 	return self;
 }

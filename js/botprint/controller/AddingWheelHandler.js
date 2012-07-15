@@ -3,7 +3,6 @@
  */
 function AddingWheelHandler(view, options) {
 	var elem = view.elem;
-	var events = ['click']
 	var wheelDef = {
 		width: 30,
 		height: 60,
@@ -12,18 +11,8 @@ function AddingWheelHandler(view, options) {
 	};
 	
 	var self = {
-		enable: function(){
-			events.forEach(function(ev){
-			    elem.bind(ev.toLowerCase(), self[ev]);		
-			});
-		},
-		
-		disable: function() {
-			events.forEach(function(ev){
-			    elem.unbind(ev.toLowerCase(), self[ev]);		
-			});
-		},
-				
+		events: ['click'],
+
 		click: function(payload) {
 			var x = OffsetEvent(payload).offsetX;
 			var y = OffsetEvent(payload).offsetY;
@@ -45,6 +34,6 @@ function AddingWheelHandler(view, options) {
 		}
 	};
 
-	$.extend(self, EventHandler(view, options));
+	Mixable(self).mix(CanvasEventHandler(view, options));
 	return self;
 }

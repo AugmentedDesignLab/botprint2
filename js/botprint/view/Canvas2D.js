@@ -38,7 +38,7 @@ function Canvas2D(options) {
 							this.sketchingHandler.disable();
 						}
 						if(!this.addingWheelHandler)
-							this.addingWheelHandler = AddingWheelHandler(this);
+							this.addingWheelHandler = AddingWheelHandler(this, options.bus);
 						this.addingWheelHandler.enable();
 					}
 					
@@ -56,7 +56,7 @@ function Canvas2D(options) {
 	
 	self.bind(Events.optionChanged, self.optionChanged);
 	
-	self.sketchingHandler = SketchingHandler(self, {shapeAttributes: self.shapeAttributes});
+	self.sketchingHandler = SketchingHandler(self, {shapeAttributes: self.shapeAttributes, bus: options.bus});
 	self.sketchingHandler.enable();
 	
 	return self;

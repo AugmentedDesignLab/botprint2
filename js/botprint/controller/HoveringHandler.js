@@ -4,16 +4,7 @@
 function HoveringHandler(view, options) {
 	
 	var self = {
-		enable: function() {
-			var events = ['mouseOut', 'mouseOver'];
-			events.forEach(function(ev){
-			    view.bind(Events[ev], self[ev]);		
-			});
-		},
-		
-		disable: function() {
-			// TODO waiting for a way to unbind event handlers from EventBus
-		},
+		events: ['mouseOut', 'mouseOver'],
 
 		mouseOver: function(payload) {
 			view.highlight();
@@ -24,6 +15,6 @@ function HoveringHandler(view, options) {
 		}
 		
 	};
-	
+	$.extend(self, EventHandler(view, options));
 	return self;
 }

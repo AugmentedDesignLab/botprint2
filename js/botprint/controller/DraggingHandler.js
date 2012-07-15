@@ -2,18 +2,8 @@ function DraggingHandler(view, options) {
 	var dragStartX, dragStartY;
 	
 	var self = {
-		enable: function() {
-			var events = ['dragStart', 'dragMove', 'dragEnd'];
-			var thisHandler = this;
-			events.forEach(function(ev){
-			    view.bind(Events[ev], thisHandler[ev]);
-			});
-		},
-		
-		disable: function() {
-			// TODO waiting for a way to unbind event handlers from EventBus
-		},
-		
+		events: ['dragStart', 'dragMove', 'dragEnd'],
+
 		dragStart: function(payload) {
 			payload.event.stopPropagation();
 			// remember the deviation from the initial position of view
