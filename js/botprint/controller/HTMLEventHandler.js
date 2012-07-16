@@ -1,19 +1,19 @@
 /**
  * @author Zhongpeng Lin
  */
-function CanvasEventHandler(view, options) {
+function HTMLEventHandler(view, options) {
 	var self = {
 		enable: function(){
 			var thisHandler = this;
 			thisHandler.events.forEach(function(ev){
-			    view.elem.bind(ev.toLowerCase(), thisHandler[ev]);		
+			    view.node.bind(ev.toLowerCase(), thisHandler[ev]);		
 			});
 		},
 		
 		disable: function() {
 			var thisHandler = this;
 			thisHandler.events.forEach(function(ev){
-			    view.elem.unbind(ev.toLowerCase(), thisHandler[ev]);		
+			    view.node.unbind(ev.toLowerCase(), thisHandler[ev]);		
 			});
 		}
 	};

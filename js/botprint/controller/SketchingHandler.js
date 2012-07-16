@@ -3,7 +3,6 @@
  */
 
 function SketchingHandler(view, options) {
-	var elem = view.elem;
 	
 	var self = {
 		events: ['click', 'mouseMove', 'dblClick'],
@@ -21,7 +20,7 @@ function SketchingHandler(view, options) {
 				// Create a new path
 				var draw = view.draw;
 				this.shape = draw.path('M '+x+' '+y+' L ' + x + ' ' + y);
-				this.shape.attr(options.shapeAttributes);
+				this.shape.attr(view.shapeAttributes);
 			}
 		},
 		
@@ -50,16 +49,20 @@ function SketchingHandler(view, options) {
 				path.pop();
 				this.shape.attr('path', path +'Z');
 				view.chassis = this.shape;
-				// Automatically switch to EditingHandler
+				// Automatically switch to SelectionHandler
 				self.disable();
-				var editingHandler = EditingHandler(view);
-				editingHandler.enable();
+				var selectionHandler = SelectionHandler(view, {bus:options.bus});
+				selectionHandler.enable();
+				view.selectionHandler = selectionHandler;
+				
+				var chassis2D = Chassis2D(this.shape, {bus:options.bus});
+				
 				self.trigger(Events.chassisShapeUpdated, {shape: this.shape});
 				this.shape = null;
 			}
 		}
 	};
 	
-	Mixable(self).mix(CanvasEventHandler(view, options));
+	Mixable(self).mix(HTMLEventHandler(view, options));
 	return self;
 }

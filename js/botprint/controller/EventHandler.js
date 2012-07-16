@@ -19,6 +19,6 @@ function EventHandler(view, options) {
 			// TODO waiting for a way to unbind event handlers from EventBus
 		}		
 	};
-	$.extend(self, Bindable(view.bus || options.bus));
+	$.extend(self, Bindable(options.bus));
 	return self; 
 }

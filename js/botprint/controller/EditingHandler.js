@@ -3,16 +3,12 @@ function EditingHandler(view, options) {
 	
 	var self = {
 		enable: function() {
-			if(!view.chassis) {
-				alert("You must sketch a shape before start editing.");
-				return;
-			}
-			var draw = view.draw;
-			var path = view.chassis.attrs.path;
+			var draw = view.svg.paper;
+			var path = view.svg.attrs.path;
 			path.forEach(function(action, index){
 				if(action.length == 3){
-					var vertex = Vertex2D({x: action[1], y: action[2]}, view.chassis);
-					var handlerOptions = {bus: view.bus, pathIndex: index};
+					var vertex = Vertex2D({x: action[1], y: action[2]}, view.svg);
+					var handlerOptions = {bus: options.bus, pathIndex: index};
 					// making it draggable
 					vertex = Draggable2D(vertex);
 					var dragging = VertexDraggingHandler(vertex, handlerOptions);

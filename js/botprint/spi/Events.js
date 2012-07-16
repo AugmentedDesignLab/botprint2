@@ -14,5 +14,6 @@ var Events = {
 	dblClick: 'ondblclick event, payload: {x: x_value, y: y_value}',
 	dragStart: 'onstart event of mouse dragging, payload: {target: drag_target}',
 	dragMove: 'onmove event of mouse dragging, payload: {dx: horizontal distance from the start point, dy: vertical distance from the start point, target: drag_target}',
-	dragEnd: 'onend event of mouse dragging, payload: {target: drag_target}'
+	dragEnd: 'onend event of mouse dragging, payload: {target: drag_target}',
+	selectionChanged: 'A different element on the web page is selected. payload: {target: the 2D shape selected}'
 };

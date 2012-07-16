@@ -10,7 +10,7 @@ function Canvas2D(options) {
 	var width = elem.width();
 	var height = elem.height();
 	var self = {
-		elem: elem,
+		node: elem,
 		draw: Raphael(options.elemID, width, height),
 		shapeAttributes: {
 				'stroke': '#F8F8F8 ',
@@ -30,13 +30,6 @@ function Canvas2D(options) {
 					if(!this.chassis) {
 						alert("You must sketch a chassis before start adding wheels.");
 					} else {
-						if(this.sketchingHandler)
-						{
-							/* need to disalbe SketchingHandler, because it can
-							 * interfere with AddingWheelHandler
-							 */ 
-							this.sketchingHandler.disable();
-						}
 						if(!this.addingWheelHandler)
 							this.addingWheelHandler = AddingWheelHandler(this, options.bus);
 						this.addingWheelHandler.enable();
@@ -50,13 +43,19 @@ function Canvas2D(options) {
 			}
 		},
 		
+		select: function() {},
+		deselect: function() {},
+		getColor: function() {
+			// Force SidePanel to use default color when canvas is selected
+			return null;
+		}
 	};
 	
 	$.extend(self, View(options));
 	
 	self.bind(Events.optionChanged, self.optionChanged);
 	
-	self.sketchingHandler = SketchingHandler(self, {shapeAttributes: self.shapeAttributes, bus: options.bus});
+	self.sketchingHandler = SketchingHandler(self, {bus: options.bus});
 	self.sketchingHandler.enable();
 	
 	return self;

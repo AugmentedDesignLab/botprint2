@@ -7,6 +7,7 @@ function Wheel2D(svg, options) {
 	
 	var self = {
 		svg: svg,
+		node: $(svg.node),
 		
 		getPosition: function() {
 			return {x: svg.attrs.x, y: svg.attrs.y};
@@ -17,11 +18,29 @@ function Wheel2D(svg, options) {
 		},
 		
 		highlight: function() {
-			svg.attr({stroke: '#F8F8F8'});			
+			svg.attr({stroke: '#F8F8F8'});	
 		},
 		
 		lowlight: function() {
 			svg.attr({stroke: null});
+		},
+
+		setColor: function(color) {
+			svg.attr({fill: color});
+		},
+		
+		getColor: function() {
+			return svg.attrs.fill;
+		},
+		
+		select: function() {
+			svg.attr({stroke: '#F8F8F8'});	
+			this.selected = true;
+		},
+		
+		deselect: function() {
+			svg.attr({stroke: null});
+			this.selected = false;
 		}
 	};
 	

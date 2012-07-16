@@ -34,11 +34,11 @@
 				</div>
 				<!--<br/><br/><br/>-->
 				<div id="palette">
-					<div class="palette-set clearfix">
+					<div class="palette-set clearfix color">
 						<h2>Pick a Color</h2>
-						<a href="#" data-guivar="color" data-guival="#FF0000">Red</a>
-						<a href="#" class="default" data-guivar="color" data-guival="#00FF00">Green</a>
-						<a href="#" data-guivar="color" data-guival="#FFFFFF">White</a>
+						<a href="#" class="red" data-guivar="color" data-guival="#FF0000">Red</a>
+						<a href="#" class="green default" data-guivar="color" data-guival="#00FF00">Green</a>
+						<a href="#" class="white" data-guivar="color" data-guival="#FFFFFF">White</a>
 					</div>
 					<div class="palette-set clearfix">
 						<h2>Mark Wheels Location</h2>
@@ -89,7 +89,7 @@
 		
 		<!-- Controllers -->
 		<script src="js/botprint/controller/EventHandler.js"></script>
-		<script src="js/botprint/controller/CanvasEventHandler.js"></script>
+		<script src="js/botprint/controller/HTMLEventHandler.js"></script>
 		<script src="js/botprint/controller/SidePanelHandler.js"></script>
 		<script src="js/botprint/controller/SketchingHandler.js"></script>
 		<script src="js/botprint/controller/VertexDraggingHandler.js"></script>
@@ -98,6 +98,7 @@
 		<script src="js/botprint/controller/AddingWheelHandler.js"></script>
 		<script src="js/botprint/controller/DraggingHandler.js"></script>
 		<script src="js/botprint/controller/HoveringHandler.js"></script>
+		<script src="js/botprint/controller/SelectionHandler.js"></script>
 		
 		<!-- Views -->
 		<script src="js/botprint/view/View.js"></script>
@@ -110,6 +111,7 @@
 		<script src="js/botprint/view/Draggable2D.js"></script>
 		<script src="js/botprint/view/Hoverable2D.js"></script>
 		<script src="js/botprint/view/Vertex2D.js"></script>
+		<script src="js/botprint/view/Chassis2D.js"></script>
 
 
 		<!-- scripts concatenated and minified via build script -->
