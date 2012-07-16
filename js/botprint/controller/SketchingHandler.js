@@ -51,9 +51,8 @@ function SketchingHandler(view, options) {
 				this.shape.attr('path', path +'Z');
 				view.chassis = this.shape;
 				// Automatically switch to EditingHandler
-				self.disable();
-				var editingHandler = EditingHandler(view);
-				editingHandler.enable();
+				self.trigger(Events.disabled, {view: view});
+				EditingHandler(view).trigger(Events.enabled, {view: view});
 				self.trigger(Events.chassisShapeUpdated, {shape: this.shape});
 				this.shape = null;
 			}
@@ -61,5 +60,18 @@ function SketchingHandler(view, options) {
 	};
 	
 	Mixable(self).mix(CanvasEventHandler(view, options));
+
+	Binder(self).bindAll(function(){
+		// this will ignore the other binding strategies, e.g., draggable, hoverable.
+		this.bindSelfToDisabled(function(payload){
+			var thisHandler = self;
+			var view = payload['view'];
+			thisHandler.events.forEach (function (ev) {
+				view.elem.bind (ev.toLowerCase (), thisHandler[ev]);
+			});
+		});
+
+		this.bindSelfToEnabled();
+	});
 	return self;
 }

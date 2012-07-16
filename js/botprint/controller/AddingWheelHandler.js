@@ -33,9 +33,9 @@ function AddingWheelHandler(view, options) {
 	};
 
 	Mixable(self).mix(CanvasEventHandler(view, options));
-	HandlerMaker(self).makeAll(function() {
-		this.makeWheelDraggable();
-		this.makeSelfHoverable();
+	Binder(self).bindAll(function() {
+		this.bindWheelsToDraggable();
+		this.bindSelfToHoverable();
 	});
 	return self;
 }

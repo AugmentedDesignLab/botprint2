@@ -4,19 +4,21 @@
  *
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function HandlerMaker (that) {
+function Binder (that) {
 	that 	= that    || {};
 	return {
-		makeAll: function(closure){
-			closure = closure || function() {
-				this.makeSelfDraggable();
-				this.makeSelfHoverable();
+		bindAll: function(thruClosure){
+			thruClosure = thruClosure || function() {
+				this.bindSelfToDraggable();
+				this.bindSelfToHoverable();
+				this.bindSelfToDisabled();
+				this.bindSelfToEnabled();
 			};
 
-			closure.call(this);
+			thruClosure.call(this);
 		},
 
-		makeSelfHoverable: function() {
+		bindSelfToHoverable: function() {
 			that.bind(Events.hoverable, function(payload){
 				var vertex   		= payload['vertex'];
 				var handlerOptions 	= payload['handlerOptions'];
@@ -28,7 +30,7 @@ function HandlerMaker (that) {
 			});
 		},
 
-		makeSelfDraggable: function() {
+		bindSelfToDraggable: function() {
 			that.bind(Events.draggable, function(payload){
 				var vertex   		= payload['vertex'];
 				var handlerOptions 	= payload['handlerOptions'];
@@ -40,7 +42,7 @@ function HandlerMaker (that) {
 			});
 		},
 
-		makeWheelDraggable: function () {
+		bindWheelsToDraggable: function () {
 			that.bind(Events.draggable, function(payload){
 				var vertex   		= payload['vertex'];
 				var handlerOptions 	= payload['handlerOptions'];
@@ -50,6 +52,32 @@ function HandlerMaker (that) {
 					vertex.handlers.push(dragging);
 				}
 			});
+		},
+
+		bindSelfToDisabled: function(thruStrategy) {
+			thruStrategy = thruStrategy || Binder.DISABLED;
+			that.bind(Events.disabled, thruStrategy);
+		},
+
+		bindSelfToEnabled: function(thruStrategy) {
+			thruStrategy = thruStrategy || Binder.ENABLED;
+			that.bind(Events.enabled, thruStrategy);
 		}
 	}
 }
+
+Binder.DISABLED = function (payload) {
+	var thisHandler = this;
+	var view = payload['view'];
+	thisHandler.events.forEach (function (ev) {
+		view.elem.bind (ev.toLowerCase (), thisHandler[ev]);
+	});
+};
+
+Binder.ENABLED  = function(payload) {
+	var thisHandler = this;
+	var view = payload['view'];
+	thisHandler.events.forEach(function(ev){
+		view.elem.unbind(ev.toLowerCase(), thisHandler[ev]);
+	});
+};
