@@ -2,13 +2,7 @@ function EditingHandler(view, options) {
 	var vertices = [];
 	
 	var self = {
-		enable: function() {
-			self.trigger(Events.enabled, {view: view});
-		},
-		
-		disable: function() {
-			self.trigger(Events.disabled, {});
-		}
+		// no enable and disable stuff
 	};
 
 	$.extend(self, Bindable(view.bus));
