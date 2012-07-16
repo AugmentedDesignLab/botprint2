@@ -4,15 +4,16 @@
  *
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function HandlerMaker (that, pushed) {
-	that 	= that   || {};
-	pushed 	= pushed || true;
+function HandlerMaker (that) {
+	that 	= that    || {};
 	return {
-		makeAll: function() {
-			var self = this;
-			self.makeSelfHoverable();
-			if(pushed)  self.makeSelfDraggable();
-			else 		self.makeWheelDraggable();
+		makeAll: function(closure){
+			closure = closure || function() {
+				this.makeSelfDraggable();
+				this.makeSelfHoverable();
+			};
+
+			closure.call(this);
 		},
 
 		makeSelfHoverable: function() {
@@ -21,10 +22,8 @@ function HandlerMaker (that, pushed) {
 				var handlerOptions 	= payload['handlerOptions'];
 				var hovering = HoveringHandler(vertex, handlerOptions);
 				hovering.enable();
-				if(pushed) {
-					if(vertex.handlers){
-						vertex.handlers.push(hovering);
-					}
+				if(vertex.handlers){
+					vertex.handlers.push(hovering);
 				}
 			});
 		},
@@ -35,10 +34,8 @@ function HandlerMaker (that, pushed) {
 				var handlerOptions 	= payload['handlerOptions'];
 				var dragging = VertexDraggingHandler(vertex, handlerOptions);
 				dragging.enable();
-				if(pushed) {
-					if(vertex.handlers){
-						vertex.handlers.push(dragging);
-					}
+				if(vertex.handlers){
+					vertex.handlers.push(dragging);
 				}
 			});
 		},
@@ -49,10 +46,8 @@ function HandlerMaker (that, pushed) {
 				var handlerOptions 	= payload['handlerOptions'];
 				var dragging = DraggingHandler(vertex, handlerOptions);
 				dragging.enable();
-				if(pushed) {
-					if(vertex.handlers){
-						vertex.handlers.push(dragging);
-					}
+				if(vertex.handlers){
+					vertex.handlers.push(dragging);
 				}
 			});
 		}
