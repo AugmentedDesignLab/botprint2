@@ -24,16 +24,18 @@ function AddingWheelHandler(view, options) {
 			var handlerOptions = {bus: view.bus};
 			// making it draggable
 			wheel = Draggable2D(wheel);
-			var dragging = DraggingHandler(wheel, handlerOptions);
-			dragging.enable();
+			self.trigger(Events.draggable, {vertex: wheel, handlerOptions: handlerOptions});
+
 			// making it hoverable
 			wheel = Hoverable2D(wheel, handlerOptions);
-			var hovering = HoveringHandler(wheel, handlerOptions);
-			hovering.enable();
-	
+			self.trigger(Events.hoverable, {vertex: wheel, handlerOptions: handlerOptions});
 		}
 	};
 
 	Mixable(self).mix(CanvasEventHandler(view, options));
+	Binder(self).bindAll(function() {
+		this.bindWheelsToDraggable();
+		this.bindSelfToHoverable();
+	});
 	return self;
 }
