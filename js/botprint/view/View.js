@@ -9,9 +9,7 @@ function View (options/*options, e.g., {bus: EventBus, name: "ViewA"}*/) {
 			return options.name;
 		},
 
-		bus: function(){
-			return options.bus;
-		}
+		bus: options.bus
 	};
 
 	// Mixing it in, just smash the methods of the newly created Bindable onto

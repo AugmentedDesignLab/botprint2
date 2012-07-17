@@ -6,22 +6,11 @@ function SketchingHandler(view, options) {
 	var elem = view.elem;
 	
 	var self = {
-		
-		enable: function(){
-			var events = ['mouseDown', 'mouseMove', 'dblClick'];
-			
-			events.forEach(function(ev){
-			    elem.bind(ev.toLowerCase(), self[ev]);		
-			});
-		},
-		
-		disable: function() {
-			elem.unbind();
-		},
-				
-		mouseDown: function(payload) {
-			var x = view.translateX(payload.clientX);
-			var y = view.translateY(payload.clientY);
+		events: ['click', 'mouseMove', 'dblClick'],
+		click: function(payload) {
+			var x = OffsetEvent(payload).offsetX;
+			var y = OffsetEvent(payload).offsetY;
+
 			if(this.shape){
 				// Extend the path
 				var path = this.shape.attrs.path;
@@ -37,8 +26,9 @@ function SketchingHandler(view, options) {
 		},
 		
 		mouseMove: function(payload) {
-			var x = view.translateX(payload.clientX);
-			var y = view.translateY(payload.clientY);
+			var x = OffsetEvent(payload).offsetX;
+			var y = OffsetEvent(payload).offsetY;
+
 			if(this.shape){
 				// Modify the last path element
 				var path = this.shape.attrs.path;
@@ -52,14 +42,24 @@ function SketchingHandler(view, options) {
 		dblClick: function(payload){
 			if(this.shape){
 				var path = this.shape.attrs.path;
+				/* click event handler is called twice
+				 * before this. Two pop operations from path
+				 * are to offset the effect of two click events
+				 */ 
+				path.pop();
+				path.pop();
 				this.shape.attr('path', path +'Z');
 				view.chassis = this.shape;
+				// Automatically switch to EditingHandler
+				self.disable();
+				var editingHandler = EditingHandler(view);
+				editingHandler.enable();
 				self.trigger(Events.chassisShapeUpdated, {shape: this.shape});
 				this.shape = null;
 			}
 		}
 	};
 	
-	$.extend(self, EventHandler(view, options));
+	Mixable(self).mix(CanvasEventHandler(view, options));
 	return self;
 }
