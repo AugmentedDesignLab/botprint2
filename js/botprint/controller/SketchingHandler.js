@@ -5,10 +5,26 @@
 function SketchingHandler(view, options) {
 	
 	var self = {
-		events: ['click', 'mouseMove', 'dblClick'],
+		userEvents: ['click', 'mouseMove', 'dblClick'],
+		enable: function() {
+			var thisHandler = this;
+			thisHandler.userEvents.forEach(function(ev){
+			    view.bind(Events[ev], thisHandler[ev]);
+			});			
+		},
+		
+		disable: function() {
+			var thisHandler = this;
+			thisHandler.userEvents.forEach(function(ev){
+			    view.unbind(Events[ev], thisHandler[ev]);
+			    // view.node.unbind(ev.toLowerCase());		
+			});			
+		},
+		
 		click: function(payload) {
-			var x = OffsetEvent(payload).offsetX;
-			var y = OffsetEvent(payload).offsetY;
+			var event = payload.event;
+			var x = OffsetEvent(event).offsetX;
+			var y = OffsetEvent(event).offsetY;
 
 			if(this.shape){
 				// Extend the path
@@ -25,8 +41,9 @@ function SketchingHandler(view, options) {
 		},
 		
 		mouseMove: function(payload) {
-			var x = OffsetEvent(payload).offsetX;
-			var y = OffsetEvent(payload).offsetY;
+			var event = payload.event;
+			var x = OffsetEvent(event).offsetX;
+			var y = OffsetEvent(event).offsetY;
 
 			if(this.shape){
 				// Modify the last path element
@@ -63,6 +80,6 @@ function SketchingHandler(view, options) {
 		}
 	};
 	
-	Mixable(self).mix(HTMLEventHandler(view, options));
+	Mixable(self).mix(EventHandler(view, options));
 	return self;
 }

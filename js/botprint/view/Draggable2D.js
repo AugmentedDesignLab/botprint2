@@ -16,6 +16,7 @@ function Draggable2D(object2D) {
 	});
 	
 	object2D.svg.click(function(event) {
+console.debug('in draggable');
 		/* 
 		 * As a click event occurs whenever there is a drag operation,
 		 * in order to avoid this click event propagate to any ancestor

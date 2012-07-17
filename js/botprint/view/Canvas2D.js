@@ -55,6 +55,7 @@ function Canvas2D(options) {
 	
 	self.bind(Events.optionChanged, self.optionChanged);
 	
+	self = Sketchable(self);
 	self.sketchingHandler = SketchingHandler(self, {bus: options.bus});
 	self.sketchingHandler.enable();
 	

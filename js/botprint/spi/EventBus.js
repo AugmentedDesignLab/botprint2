@@ -26,6 +26,24 @@ function EventBus () {
 		},
 
 		/**
+		 * The unsubscribe method removes a function from event listeners.
+		 *
+		 * @name unsubscribe
+		 * @methodOf EventBus#
+		 *
+		 * @param {String} event The event to listen to.
+		 * @param {Function} callback The function to be called when the specified event
+		 * is triggered.
+		 */
+		unsubscribe:function (event, callback, subscriber) {
+			if(eventCallbacks[event]){
+				eventCallbacks[event] = eventCallbacks[event].filter(function(elem){
+					return elem.subscriber != subscriber || elem.callback != callback
+				});
+			}
+		},
+
+		/**
 		 * The publish method calls all listeners attached to the specified event.
 		 *
 		 * @name publish
