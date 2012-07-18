@@ -47,6 +47,15 @@ function Canvas2D(options) {
 			}
 		},
 		
+		doneSketching: function(chassis) {
+			this.chassis = chassis;
+			// Automatically switch to SelectionHandler
+			this.sketchingHandler.disable();
+			var selectionHandler = SelectionHandler(this, {bus:options.bus});
+			selectionHandler.enable();
+			this.selectionHandler = selectionHandler;
+		},
+		
 		select: function() {},
 		deselect: function() {},
 		getColor: function() {

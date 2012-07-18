@@ -43,6 +43,15 @@ function Wheel2D(svg, options) {
 		}
 	};
 	
-	$.extend(self, View(options));
+	$.extend(self, View());
+	// making it draggable
+	self = Draggable2D(self);
+	var dragging = DraggingHandler(self, options);
+	dragging.enable();
+	// makeing it selectable
+	var selection = SelectionHandler(self, options);
+	selection.enable();
+	// 'click' it to make it selected
+	self.trigger(Events.click);
 	return self;
 }

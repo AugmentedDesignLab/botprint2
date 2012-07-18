@@ -7,7 +7,8 @@ function SelectionHandler(view, options) {
 		userEvents: ['click'],
 		
 		click: function(payload) {
-			payload.event.stopPropagation();
+			if(payload)
+				payload.event.stopPropagation();
 			if(view.selected)
 				return;
 			// Notify others to deselect themselves, and SidePanel to change selected color

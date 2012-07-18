@@ -18,15 +18,7 @@ function AddingWheelHandler(view, options) {
 				wheelDef.width, wheelDef.height, wheelDef.radius);
 			svg.attr(view.shapeAttributes);
 
-			var wheel = Wheel2D(svg);
-			var handlerOptions = {bus: options.bus};
-			// making it draggable
-			wheel = Draggable2D(wheel);
-			var dragging = DraggingHandler(wheel, handlerOptions);
-			dragging.enable();
-			// makeing it selectable
-			var selection = SelectionHandler(wheel, handlerOptions);
-			selection.enable();
+			var wheel = Wheel2D(svg, {bus: options.bus});
 		}
 	};
 

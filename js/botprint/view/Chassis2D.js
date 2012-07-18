@@ -28,6 +28,7 @@ function Chassis2D(svg, options) {
 	
 	var selectionHandler = SelectionHandler(Selectable(self), {bus: options.bus});
 	selectionHandler.enable();
+	self.trigger(Events.click);
 	
 	return self;
 }

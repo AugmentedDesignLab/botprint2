@@ -17,8 +17,6 @@ function SketchingHandler(view, options) {
 				var path = this.shape.attrs.path;
 				this.shape.attr('path', path +' L ' + x + ' ' + y);
 			}else{
-				if(view.chassis)
-					view.chassis.remove();
 				// Create a new path
 				var draw = view.draw;
 				this.shape = draw.path('M '+x+' '+y+' L ' + x + ' ' + y);
@@ -51,15 +49,8 @@ function SketchingHandler(view, options) {
 				path.pop();
 				path.pop();
 				this.shape.attr('path', path +'Z');
-				view.chassis = this.shape;
-				// Automatically switch to SelectionHandler
-				self.disable();
-				var selectionHandler = SelectionHandler(view, {bus:options.bus});
-				selectionHandler.enable();
-				view.selectionHandler = selectionHandler;
-				
 				var chassis2D = Chassis2D(this.shape, {bus:options.bus});
-				
+				view.doneSketching(chassis2D);				
 				self.trigger(Events.chassisShapeUpdated, {shape: this.shape});
 				this.shape = null;
 			}
