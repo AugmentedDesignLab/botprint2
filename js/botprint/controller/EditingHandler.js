@@ -3,11 +3,11 @@ function EditingHandler(view, options) {
 	
 	var self = {
 		enable: function() {
-			var draw = view.svg.paper;
-			var path = view.svg.attrs.path;
+			var draw = view.elem.paper;
+			var path = view.elem.attrs.path;
 			path.forEach(function(action, index){
 				if(action.length == 3){
-					var vertex = Vertex2D({x: action[1], y: action[2]}, view.svg);
+					var vertex = Vertex2D({x: action[1], y: action[2]}, view.elem);
 					var handlerOptions = {bus: options.bus, pathIndex: index};
 					// making it draggable
 					vertex = Draggable2D(vertex);

@@ -9,7 +9,7 @@ function Vertex2D(position, target, options) {
 	svg.attr({fill: 'white', stroke: 'black'});
 	
 	var self = {
-		svg: svg,
+		elem: svg,
 		target: target,
 		handlers: [],
 		

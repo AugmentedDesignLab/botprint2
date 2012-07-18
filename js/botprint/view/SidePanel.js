@@ -3,7 +3,7 @@
  */
 function SidePanel(options) {
 	var self = {
-		node: $('.'+options.elemClass),
+		elem: $('.'+options.elemClass),
 		setColor: function(color) {
 			this.select($('.color a.'+color));
 		},
@@ -13,8 +13,8 @@ function SidePanel(options) {
 			element.removeClass('disabled');			
 		}
 	};
-	$.extend(self, View(options));
-	var handler = SidePanelHandler(self, options);
+	$.extend(self, View());
+	var handler = SidePanelHandler(Selectable(self), options);
 	handler.enable();
 	$('.'+options.elemClass+'.default').trigger('click');
 }

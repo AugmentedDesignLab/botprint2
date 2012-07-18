@@ -1,17 +1,34 @@
 function SidePanelHandler(view, options) {
 	var self = {
-		events: ['click'],
+		userEvents: ['click'],
+		appEvents: ['selectionChanged'],
+		
 		enable: function() {
-			this.super.enable.call(this);
-			self.bind(Events.selectionChanged, self.selectionChanged);
+			var thisHandler = this;
+			thisHandler.appEvents.forEach(function(ev){
+			    self.bind(Events[ev], thisHandler[ev]);
+			});
+			thisHandler.userEvents.forEach(function(ev){
+			    view.bind(Events[ev], thisHandler[ev]);
+			});			
 		},
 		
+		disable: function() {
+			var thisHandler = this;
+			thisHandler.appEvents.forEach(function(ev){
+			    self.unbind(Events[ev], thisHandler[ev]);
+			});
+			thisHandler.userEvents.forEach(function(ev){
+			    view.unbind(Events[ev], thisHandler[ev]);
+			});			
+		},
+
 		click: function(payload) {
-			payload.preventDefault();
-			var $this 	= $(this),
-				varName	= $this.data('guivar');
-			var varVal  = $this.data ('guival');
-			view.select($this);
+			payload.event.preventDefault();
+			var target 	= $(payload.event.target),
+				varName	= target.data('guivar');
+			var varVal  = target.data ('guival');
+			view.select(target);
 			var pl = {};
 			pl[varName] = varVal;
 			self.trigger(Events.optionChanged, pl);
@@ -30,6 +47,6 @@ function SidePanelHandler(view, options) {
 		}
 	};
 	
-	Mixable(self).mix(HTMLEventHandler(view, options));
+	Mixable(self).mix(EventHandler(view, options));
 	return self;
 }

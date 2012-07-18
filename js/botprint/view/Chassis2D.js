@@ -1,7 +1,6 @@
 function Chassis2D(svg, options) {
 	var self = {
-		svg: svg,
-		node: $(svg.node),
+		elem: svg,
 		setColor: function(color) {
 			svg.attr({fill: color});
 		},
@@ -26,7 +25,8 @@ function Chassis2D(svg, options) {
 	};
 	
 	Mixable(self).mix(View());
-	var selectionHandler = SelectionHandler(self, {bus: options.bus});
+	
+	var selectionHandler = SelectionHandler(Selectable(self), {bus: options.bus});
 	selectionHandler.enable();
 	
 	return self;

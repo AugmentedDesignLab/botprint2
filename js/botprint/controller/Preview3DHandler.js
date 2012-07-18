@@ -4,7 +4,21 @@
 function Preview3DHandler(view, options) {
 	
 	var self = {
-		events: ['chassisShapeUpdated'],
+		appEvents: ['chassisShapeUpdated'],
+		
+		enable: function() {
+			var thisHandler = this;
+			thisHandler.appEvents.forEach(function(ev){
+			    self.bind(Events[ev], thisHandler[ev]);
+			});			
+		},
+		
+		disable: function() {
+			var thisHandler = this;
+			thisHandler.appEvents.forEach(function(ev){
+			    self.unbind(Events[ev], thisHandler[ev]);
+			});			
+		},
 
 		chassisShapeUpdated: function(payload) {
 			var chassis = new Chassis3D([payload.shape], 50);

@@ -62,7 +62,7 @@ function Preview3D(options) {
 		}
 	};
 	
-	$.extend(self, View(options));
+	$.extend(self, View());
 	var handler = Preview3DHandler(self, {bus: options.bus});
 	handler.enable();
 	return self;

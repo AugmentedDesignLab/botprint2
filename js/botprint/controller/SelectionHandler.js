@@ -3,15 +3,31 @@
  */
 function SelectionHandler(view, options) {
 	var self = {
-		events: ['selectionChanged', 'optionChanged'],
+		appEvents: ['selectionChanged', 'optionChanged'],
+		userEvents: ['click'],
+		
 		enable: function() {
-			this.bind(Events.selectionChanged, this.selectionChanged);
-			this.bind(Events.optionChanged, this.optionChanged);
-			view.node.bind('click', this.click);
+			var thisHandler = this;
+			thisHandler.appEvents.forEach(function(ev){
+			    self.bind(Events[ev], thisHandler[ev]);
+			});
+			thisHandler.userEvents.forEach(function(ev){
+			    view.bind(Events[ev], thisHandler[ev]);
+			});			
 		},
 		
+		disable: function() {
+			var thisHandler = this;
+			thisHandler.appEvents.forEach(function(ev){
+			    self.unbind(Events[ev], thisHandler[ev]);
+			});
+			thisHandler.userEvents.forEach(function(ev){
+			    view.unbind(Events[ev], thisHandler[ev]);
+			});			
+		},
+
 		click: function(payload) {
-			payload.stopPropagation();
+			payload.event.stopPropagation();
 			if(view.selected)
 				return;
 			// Notify others to deselect themselves, and SidePanel to change selected color

@@ -2,7 +2,22 @@ function DraggingHandler(view, options) {
 	var dragStartX, dragStartY;
 	
 	var self = {
-		events: ['dragStart', 'dragMove', 'dragEnd'],
+		userEvents: ['dragStart', 'dragMove', 'dragEnd'],
+
+		enable: function() {
+			var thisHandler = this;
+			thisHandler.userEvents.forEach(function(ev){
+			    view.bind(Events[ev], thisHandler[ev]);
+			});			
+		},
+		
+		disable: function() {
+			var thisHandler = this;
+			thisHandler.userEvents.forEach(function(ev){
+			    view.unbind(Events[ev], thisHandler[ev]);
+			});			
+		},
+
 
 		dragStart: function(payload) {
 			payload.event.stopPropagation();
@@ -28,6 +43,6 @@ function DraggingHandler(view, options) {
 		
 	};
 	
-	$.extend(self, EventHandler(view, options));
+	Mixable(self).mix(EventHandler(view, options));
 	return self;
 }

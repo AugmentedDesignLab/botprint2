@@ -10,10 +10,10 @@ function Canvas2D(options) {
 	var width = elem.width();
 	var height = elem.height();
 	var self = {
-		node: elem,
+		elem: elem,
 		draw: Raphael(options.elemID, width, height),
 		shapeAttributes: {
-				'stroke': '#F8F8F8 ',
+				'stroke': '#F8F8F8',
 				'stroke-opacity': 1,
 				'stroke-width': 2,
 				'stroke-linecap': 'round',
@@ -33,11 +33,15 @@ function Canvas2D(options) {
 						if(!this.addingWheelHandler)
 							this.addingWheelHandler = AddingWheelHandler(this, {bus:options.bus});
 						this.addingWheelHandler.enable();
+						this.selectionHandler.disable();
 					}
 					
 				} else {
 					if(this.addingWheelHandler) {
 						this.addingWheelHandler.disable();
+					}
+					if(this.selectionHandler) {
+						this.selectionHandler.enable();						
 					}
 				}
 			}

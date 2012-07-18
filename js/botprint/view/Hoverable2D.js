@@ -7,7 +7,7 @@
  * @author Zhongpeng Lin
  */
 function Hoverable2D(object2D) {
-	object2D.svg.hover(function(){
+	object2D.elem.hover(function(){
 		object2D.trigger(Events.mouseOver);
 	}, function(){
 		object2D.trigger(Events.mouseOut);
