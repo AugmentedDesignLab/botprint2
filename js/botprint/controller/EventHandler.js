@@ -8,17 +8,31 @@
 
 function EventHandler(view, options) {
 	var self = {
+		appEvents: [],
+		userEvents: [],
+		
 		enable: function() {
 			var thisHandler = this;
-			thisHandler.events.forEach(function(ev){
-			    view.bind(Events[ev], thisHandler[ev]);
+			thisHandler.appEvents.forEach(function(ev){
+			    options.app.bind(ApplicationEvents[ev], thisHandler[ev]);
 			});
+			thisHandler.userEvents.forEach(function(ev){
+			    view.bind(UserEvents[ev], thisHandler[ev]);
+			});			
 		},
 		
 		disable: function() {
-			// TODO waiting for a way to unbind event handlers from EventBus
-		}		
+			var thisHandler = this;
+			thisHandler.appEvents.forEach(function(ev){
+			    self.unbind(ApplicationEvents[ev], thisHandler[ev]);
+			});
+			thisHandler.userEvents.forEach(function(ev){
+			    view.unbind(UserEvents[ev], thisHandler[ev]);
+			});			
+		},
+
 	};
-	$.extend(self, Bindable(view.bus || options.bus));
+	
+	$.extend(self, Bindable(view.bus));
 	return self; 
 }

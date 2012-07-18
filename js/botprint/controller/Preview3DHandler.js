@@ -4,8 +4,8 @@
 function Preview3DHandler(view, options) {
 	
 	var self = {
-		events: ['chassisShapeUpdated'],
-
+		appEvents: ['chassisShapeUpdated'],
+		
 		chassisShapeUpdated: function(payload) {
 			var chassis = new Chassis3D([payload.shape], 50);
 			chassis.rotation.x = Math.PI/2;

@@ -20,6 +20,20 @@ function Bindable (bus) {
 		},
 
 		/**
+		 * The unbind method removes a function from event listeners.
+		 *
+		 * @name unbind
+		 * @methodOf View#
+		 *
+		 * @param {String} event The event to listen to.
+		 * @param {Function} callback The function to be called when the specified event
+		 * is triggered.
+		 */
+		unbind:function (event, callback) {
+			bus.unsubscribe(event, callback, this);
+		},
+
+		/**
 		 * The trigger method calls all listeners attached to the specified event.
 		 *
 		 * @name trigger
