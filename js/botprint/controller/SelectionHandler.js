@@ -6,26 +6,6 @@ function SelectionHandler(view, options) {
 		appEvents: ['selectionChanged', 'optionChanged'],
 		userEvents: ['click'],
 		
-		enable: function() {
-			var thisHandler = this;
-			thisHandler.appEvents.forEach(function(ev){
-			    self.bind(Events[ev], thisHandler[ev]);
-			});
-			thisHandler.userEvents.forEach(function(ev){
-			    view.bind(Events[ev], thisHandler[ev]);
-			});			
-		},
-		
-		disable: function() {
-			var thisHandler = this;
-			thisHandler.appEvents.forEach(function(ev){
-			    self.unbind(Events[ev], thisHandler[ev]);
-			});
-			thisHandler.userEvents.forEach(function(ev){
-			    view.unbind(Events[ev], thisHandler[ev]);
-			});			
-		},
-
 		click: function(payload) {
 			payload.event.stopPropagation();
 			if(view.selected)

@@ -4,21 +4,6 @@ function DraggingHandler(view, options) {
 	var self = {
 		userEvents: ['dragStart', 'dragMove', 'dragEnd'],
 
-		enable: function() {
-			var thisHandler = this;
-			thisHandler.userEvents.forEach(function(ev){
-			    view.bind(Events[ev], thisHandler[ev]);
-			});			
-		},
-		
-		disable: function() {
-			var thisHandler = this;
-			thisHandler.userEvents.forEach(function(ev){
-			    view.unbind(Events[ev], thisHandler[ev]);
-			});			
-		},
-
-
 		dragStart: function(payload) {
 			payload.event.stopPropagation();
 			// remember the deviation from the initial position of view

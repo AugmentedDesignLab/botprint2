@@ -3,26 +3,6 @@ function SidePanelHandler(view, options) {
 		userEvents: ['click'],
 		appEvents: ['selectionChanged'],
 		
-		enable: function() {
-			var thisHandler = this;
-			thisHandler.appEvents.forEach(function(ev){
-			    self.bind(Events[ev], thisHandler[ev]);
-			});
-			thisHandler.userEvents.forEach(function(ev){
-			    view.bind(Events[ev], thisHandler[ev]);
-			});			
-		},
-		
-		disable: function() {
-			var thisHandler = this;
-			thisHandler.appEvents.forEach(function(ev){
-			    self.unbind(Events[ev], thisHandler[ev]);
-			});
-			thisHandler.userEvents.forEach(function(ev){
-			    view.unbind(Events[ev], thisHandler[ev]);
-			});			
-		},
-
 		click: function(payload) {
 			payload.event.preventDefault();
 			var target 	= $(payload.event.target),
