@@ -8,9 +8,9 @@
  */
 function Hoverable2D(object2D) {
 	object2D.elem.hover(function(){
-		object2D.trigger(Events.mouseOver);
+		object2D.trigger(UserEvents.mouseOver);
 	}, function(){
-		object2D.trigger(Events.mouseOut);
+		object2D.trigger(UserEvents.mouseOut);
 	});
 	
 	return object2D;	

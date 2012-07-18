@@ -4,16 +4,17 @@
  */
 function Botprint() {
 	var eventBus	= EventBus();
-	var canvas  	= Canvas2D({elemID: 'canvas2d', bus: eventBus});
-	var preview 	= Preview3D({elemID:'preview3d', bus: eventBus});
-	var sidePanel	= SidePanel({elemClass: 'palette-set a', bus: eventBus});
-	
 	var self = {
 		VERSION: '0.0.2',
 		play: function() {
 			preview.animate();
 		}
 	};
+
+	Mixable(self).mix(Bindable());	
+	var canvas  	= Canvas2D({elemID: 'canvas2d', app: self});
+	var preview 	= Preview3D({elemID:'preview3d', app: self});
+	var sidePanel	= SidePanel({elemClass: 'palette-set a', app: self});
 	
 	return self;
 }

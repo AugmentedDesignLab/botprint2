@@ -11,7 +11,7 @@ function SidePanelHandler(view, options) {
 			view.select(target);
 			var pl = {};
 			pl[varName] = varVal;
-			self.trigger(Events.optionChanged, pl);
+			options.app.trigger(ApplicationEvents.optionChanged, pl);
 		},
 		
 		selectionChanged: function(payload) {

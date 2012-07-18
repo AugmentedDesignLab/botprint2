@@ -27,21 +27,21 @@ function Canvas2D(options) {
 			
 			if(payload.wheelsLocation != undefined) {
 				if(payload.wheelsLocation) {
-					if(!this.chassis) {
+					if(!self.chassis) {
 						alert("You must sketch a chassis before start adding wheels.");
 					} else {
-						if(!this.addingWheelHandler)
-							this.addingWheelHandler = AddingWheelHandler(this, {bus:options.bus});
-						this.addingWheelHandler.enable();
-						this.selectionHandler.disable();
+						if(!self.addingWheelHandler)
+							self.addingWheelHandler = AddingWheelHandler(self, {app:options.app});
+						self.addingWheelHandler.enable();
+						self.selectionHandler.disable();
 					}
 					
 				} else {
-					if(this.addingWheelHandler) {
-						this.addingWheelHandler.disable();
+					if(self.addingWheelHandler) {
+						self.addingWheelHandler.disable();
 					}
-					if(this.selectionHandler) {
-						this.selectionHandler.enable();						
+					if(self.selectionHandler) {
+						self.selectionHandler.enable();						
 					}
 				}
 			}
@@ -51,7 +51,7 @@ function Canvas2D(options) {
 			this.chassis = chassis;
 			// Automatically switch to SelectionHandler
 			this.sketchingHandler.disable();
-			var selectionHandler = SelectionHandler(this, {bus:options.bus});
+			var selectionHandler = SelectionHandler(this, {app:options.app});
 			selectionHandler.enable();
 			this.selectionHandler = selectionHandler;
 		},
@@ -66,10 +66,10 @@ function Canvas2D(options) {
 	
 	$.extend(self, View());
 	
-	options.bus.subscribe(Events.optionChanged, self.optionChanged, self);
+	options.app.bind(ApplicationEvents.optionChanged, self.optionChanged);
 	
 	self = Sketchable(self);
-	self.sketchingHandler = SketchingHandler(self, {bus: options.bus});
+	self.sketchingHandler = SketchingHandler(self, {app: options.app});
 	self.sketchingHandler.enable();
 	
 	return self;

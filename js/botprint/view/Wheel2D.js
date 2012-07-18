@@ -52,6 +52,6 @@ function Wheel2D(svg, options) {
 	var selection = SelectionHandler(self, options);
 	selection.enable();
 	// 'click' it to make it selected
-	self.trigger(Events.click);
+	self.trigger(UserEvents.click);
 	return self;
 }

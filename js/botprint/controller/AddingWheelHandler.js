@@ -18,7 +18,7 @@ function AddingWheelHandler(view, options) {
 				wheelDef.width, wheelDef.height, wheelDef.radius);
 			svg.attr(view.shapeAttributes);
 
-			var wheel = Wheel2D(svg, {bus: options.bus});
+			var wheel = Wheel2D(svg, {app: options.app});
 		}
 	};
 

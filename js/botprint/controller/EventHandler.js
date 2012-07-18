@@ -14,25 +14,25 @@ function EventHandler(view, options) {
 		enable: function() {
 			var thisHandler = this;
 			thisHandler.appEvents.forEach(function(ev){
-			    self.bind(Events[ev], thisHandler[ev]);
+			    options.app.bind(ApplicationEvents[ev], thisHandler[ev]);
 			});
 			thisHandler.userEvents.forEach(function(ev){
-			    view.bind(Events[ev], thisHandler[ev]);
+			    view.bind(UserEvents[ev], thisHandler[ev]);
 			});			
 		},
 		
 		disable: function() {
 			var thisHandler = this;
 			thisHandler.appEvents.forEach(function(ev){
-			    self.unbind(Events[ev], thisHandler[ev]);
+			    self.unbind(ApplicationEvents[ev], thisHandler[ev]);
 			});
 			thisHandler.userEvents.forEach(function(ev){
-			    view.unbind(Events[ev], thisHandler[ev]);
+			    view.unbind(UserEvents[ev], thisHandler[ev]);
 			});			
 		},
 
 	};
 	
-	$.extend(self, Bindable(options.bus));
+	$.extend(self, Bindable(view.bus));
 	return self; 
 }

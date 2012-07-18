@@ -9,7 +9,7 @@ function EditingHandler(view, options) {
 				if(action.length == 3){
 					var vertex = Vertex2D({x: action[1], y: action[2]},
 						view.elem,
-						{bus: options.bus, pathIndex: index});					
+						{app: options.app, pathIndex: index});					
 					vertices.push(vertex);
 				}
 			});

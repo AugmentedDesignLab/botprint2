@@ -10,7 +10,7 @@ function Chassis2D(svg, options) {
 		},
 		
 		select: function() {
-			var editingHandler = EditingHandler(this, {bus: options.bus});
+			var editingHandler = EditingHandler(this, {app: options.app});
 			editingHandler.enable();
 			this.editingHandler = editingHandler;
 			this.selected = true;
@@ -26,9 +26,9 @@ function Chassis2D(svg, options) {
 	
 	Mixable(self).mix(View());
 	
-	var selectionHandler = SelectionHandler(Selectable(self), {bus: options.bus});
+	var selectionHandler = SelectionHandler(Selectable(self), {app: options.app});
 	selectionHandler.enable();
-	self.trigger(Events.click);
+	self.trigger(UserEvents.click);
 	
 	return self;
 }

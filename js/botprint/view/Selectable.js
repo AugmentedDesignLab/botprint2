@@ -6,7 +6,7 @@
 function Selectable(object2D) {
 	object2D.elem.click(function(event) {
 		event.stopPropagation();
-		object2D.trigger(Events.click, {event: event});
+		object2D.trigger(UserEvents.click, {event: event});
 	});
 	return object2D;
 }

@@ -12,7 +12,7 @@ function SelectionHandler(view, options) {
 			if(view.selected)
 				return;
 			// Notify others to deselect themselves, and SidePanel to change selected color
-			self.trigger(Events.selectionChanged, {target: view});
+			options.app.trigger(ApplicationEvents.selectionChanged, {target: view});
 			// Select this view
 			view.select();
 		},
