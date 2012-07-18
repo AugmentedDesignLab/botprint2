@@ -13,7 +13,7 @@ function Canvas2D(options) {
 		elem: elem,
 		draw: Raphael(options.elemID, width, height),
 		shapeAttributes: {
-				'stroke': '#F8F8F8 ',
+				'stroke': '#F8F8F8',
 				'stroke-opacity': 1,
 				'stroke-width': 2,
 				'stroke-linecap': 'round',
@@ -27,36 +27,49 @@ function Canvas2D(options) {
 			
 			if(payload.wheelsLocation != undefined) {
 				if(payload.wheelsLocation) {
-					if(!this.chassis) {
+					if(!self.chassis) {
 						alert("You must sketch a chassis before start adding wheels.");
 					} else {
-						if(this.sketchingHandler)
-						{
-							/* need to disalbe SketchingHandler, because it can
-							 * interfere with AddingWheelHandler
-							 */ 
-							this.sketchingHandler.disable();
-						}
-						if(!this.addingWheelHandler)
-							this.addingWheelHandler = AddingWheelHandler(this, options.bus);
-						this.addingWheelHandler.enable();
+						if(!self.addingWheelHandler)
+							self.addingWheelHandler = AddingWheelHandler(self, {app:options.app});
+						self.addingWheelHandler.enable();
+						self.selectionHandler.disable();
 					}
 					
 				} else {
-					if(this.addingWheelHandler) {
-						this.addingWheelHandler.disable();
+					if(self.addingWheelHandler) {
+						self.addingWheelHandler.disable();
+					}
+					if(self.selectionHandler) {
+						self.selectionHandler.enable();						
 					}
 				}
 			}
 		},
 		
+		doneSketching: function(chassis) {
+			this.chassis = chassis;
+			// Automatically switch to SelectionHandler
+			this.sketchingHandler.disable();
+			var selectionHandler = SelectionHandler(this, {app:options.app});
+			selectionHandler.enable();
+			this.selectionHandler = selectionHandler;
+		},
+		
+		select: function() {},
+		deselect: function() {},
+		getColor: function() {
+			// Force SidePanel to use default color when canvas is selected
+			return null;
+		}
 	};
 	
-	$.extend(self, View(options));
+	$.extend(self, View());
 	
-	self.bind(Events.optionChanged, self.optionChanged);
+	options.app.bind(ApplicationEvents.optionChanged, self.optionChanged);
 	
-	self.sketchingHandler = SketchingHandler(self, {shapeAttributes: self.shapeAttributes, bus: options.bus});
+	self = Sketchable(self);
+	self.sketchingHandler = SketchingHandler(self, {app: options.app});
 	self.sketchingHandler.enable();
 	
 	return self;

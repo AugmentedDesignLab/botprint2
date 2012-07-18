@@ -6,7 +6,7 @@
 function Wheel2D(svg, options) {
 	
 	var self = {
-		svg: svg,
+		elem: svg,
 		
 		getPosition: function() {
 			return {x: svg.attrs.x, y: svg.attrs.y};
@@ -17,14 +17,41 @@ function Wheel2D(svg, options) {
 		},
 		
 		highlight: function() {
-			svg.attr({stroke: '#F8F8F8'});			
+			svg.attr({stroke: '#00FFFF'});	
 		},
 		
 		lowlight: function() {
 			svg.attr({stroke: null});
+		},
+
+		setColor: function(color) {
+			svg.attr({fill: color});
+		},
+		
+		getColor: function() {
+			return svg.attrs.fill;
+		},
+		
+		select: function() {
+			svg.attr({stroke: '#00FFFF'});	
+			this.selected = true;
+		},
+		
+		deselect: function() {
+			svg.attr({stroke: null});
+			this.selected = false;
 		}
 	};
 	
-	$.extend(self, View(options));
+	$.extend(self, View());
+	// making it draggable
+	self = Draggable2D(self);
+	var dragging = DraggingHandler(self, options);
+	dragging.enable();
+	// makeing it selectable
+	var selection = SelectionHandler(self, options);
+	selection.enable();
+	// 'click' it to make it selected
+	self.trigger(UserEvents.click);
 	return self;
 }
