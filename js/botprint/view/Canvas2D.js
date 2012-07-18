@@ -31,7 +31,7 @@ function Canvas2D(options) {
 						alert("You must sketch a chassis before start adding wheels.");
 					} else {
 						if(!this.addingWheelHandler)
-							this.addingWheelHandler = AddingWheelHandler(this, options.bus);
+							this.addingWheelHandler = AddingWheelHandler(this, {bus:options.bus});
 						this.addingWheelHandler.enable();
 					}
 					
@@ -51,9 +51,9 @@ function Canvas2D(options) {
 		}
 	};
 	
-	$.extend(self, View(options));
+	$.extend(self, View());
 	
-	self.bind(Events.optionChanged, self.optionChanged);
+	options.bus.subscribe(Events.optionChanged, self.optionChanged, self);
 	
 	self = Sketchable(self);
 	self.sketchingHandler = SketchingHandler(self, {bus: options.bus});

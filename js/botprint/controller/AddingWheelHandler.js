@@ -9,17 +9,31 @@ function AddingWheelHandler(view, options) {
 	};
 	
 	var self = {
-		events: ['click'],
+		userEvents: ['click'],
+
+		enable: function() {
+			var thisHandler = this;
+			thisHandler.userEvents.forEach(function(ev){
+			    view.bind(Events[ev], thisHandler[ev]);
+			});			
+		},
+		
+		disable: function() {
+			var thisHandler = this;
+			thisHandler.userEvents.forEach(function(ev){
+			    view.unbind(Events[ev], thisHandler[ev]);
+			});			
+		},
 
 		click: function(payload) {
-			var x = OffsetEvent(payload).offsetX;
-			var y = OffsetEvent(payload).offsetY;
+			var x = OffsetEvent(payload.event).offsetX;
+			var y = OffsetEvent(payload.event).offsetY;
 			var svg = view.draw.rect(x - wheelDef.width/2, y - wheelDef.height/2,
 				wheelDef.width, wheelDef.height, wheelDef.radius);
 			svg.attr(view.shapeAttributes);
 
 			var wheel = Wheel2D(svg);
-			var handlerOptions = {bus: view.bus};
+			var handlerOptions = {bus: options.bus};
 			// making it draggable
 			wheel = Draggable2D(wheel);
 			var dragging = DraggingHandler(wheel, handlerOptions);
@@ -30,6 +44,6 @@ function AddingWheelHandler(view, options) {
 		}
 	};
 
-	Mixable(self).mix(HTMLEventHandler(view, options));
+	Mixable(self).mix(EventHandler(view, options));
 	return self;
 }

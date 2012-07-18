@@ -17,7 +17,6 @@ function SketchingHandler(view, options) {
 			var thisHandler = this;
 			thisHandler.userEvents.forEach(function(ev){
 			    view.unbind(Events[ev], thisHandler[ev]);
-			    // view.node.unbind(ev.toLowerCase());		
 			});			
 		},
 		
