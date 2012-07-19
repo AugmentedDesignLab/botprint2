@@ -9,8 +9,8 @@ function SketchingHandler(view, options) {
 		
 		click: function(payload) {
 			var event = payload.event;
-			var x = OffsetEvent(event).offsetX;
-			var y = OffsetEvent(event).offsetY;
+			var x = CurrentEvent(event).currentX;
+			var y = CurrentEvent(event).currentY;
 
 			if(this.shape){
 				// Extend the path
@@ -26,8 +26,8 @@ function SketchingHandler(view, options) {
 		
 		mouseMove: function(payload) {
 			var event = payload.event;
-			var x = OffsetEvent(event).offsetX;
-			var y = OffsetEvent(event).offsetY;
+			var x = CurrentEvent(event).currentX;
+			var y = CurrentEvent(event).currentY;
 
 			if(this.shape){
 				// Modify the last path element

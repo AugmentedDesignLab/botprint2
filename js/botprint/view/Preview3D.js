@@ -48,6 +48,7 @@ function Preview3D(options) {
 	
 	
 	var self = {
+		elem: stage,
 		animate: function() {
 			rotation += Math.PI / 200;
 			render();
