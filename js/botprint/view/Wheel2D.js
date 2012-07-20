@@ -7,6 +7,7 @@ function Wheel2D(svg, options) {
 	
 	var self = {
 		elem: svg,
+		id: new Date().getTime(),
 		
 		getPosition: function() {
 			return {x: svg.attrs.x, y: svg.attrs.y};
@@ -46,7 +47,7 @@ function Wheel2D(svg, options) {
 	$.extend(self, View());
 	// making it draggable
 	self = Draggable2D(self);
-	var dragging = DraggingHandler(self, options);
+	var dragging = WheelDraggingHandler(self, options);
 	dragging.enable();
 	// makeing it selectable
 	var selection = SelectionHandler(self, options);

@@ -19,6 +19,7 @@ function AddingWheelHandler(view, options) {
 			svg.attr(view.shapeAttributes);
 
 			var wheel = Wheel2D(svg, {app: options.app});
+			options.app.trigger(ApplicationEvents.wheelUpdated, {wheel: wheel});
 		}
 	};
 
