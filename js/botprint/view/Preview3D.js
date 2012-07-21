@@ -46,7 +46,6 @@ function Preview3D(options) {
 	var object 	 = new THREE.Mesh( geometry, material );
 	scene.add(object);
 	
-	
 	var self = {
 		elem: stage,
 		animate: function() {
@@ -66,5 +65,7 @@ function Preview3D(options) {
 	$.extend(self, View());
 	var handler = Preview3DHandler(self, {app: options.app});
 	handler.enable();
+	// disallow objects from being dragged under this area
+	stage.mousemove(function(event){event.stopPropagation();});
 	return self;
 }

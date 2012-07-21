@@ -17,4 +17,6 @@ function SidePanel(options) {
 	var handler = SidePanelHandler(Selectable(self), options);
 	handler.enable();
 	$('.'+options.elemClass+'.default').trigger('click');
+	// disallow objects from being dragged under this area
+	$('#'+options.elemID).mousemove(function(event){event.stopPropagation();});
 }
