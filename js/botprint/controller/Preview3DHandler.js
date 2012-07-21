@@ -4,7 +4,7 @@
 function Preview3DHandler(view, options) {
 	
 	var self = {
-		appEvents: ['chassisShapeUpdated', 'wheelUpdated'],
+		appEvents: ['chassisShapeUpdated', 'wheelUpdated', 'wheelDeleted'],
 		wheels: {},
 		
 		chassisShapeUpdated: function(payload) {
@@ -20,6 +20,13 @@ function Preview3DHandler(view, options) {
 			var robot = new Robot3D(self.chassis, self.wheels);
 			view.updateRobot(robot);			
 		},
+		
+		wheelDeleted: function(payload) {
+			var w = payload.wheel;
+			delete self.wheels[w.id];
+			var robot = new Robot3D(self.chassis, self.wheels);
+			view.updateRobot(robot);			
+		}
 	};
 	Mixable(self).mix(EventHandler(view, options));
 	return self;

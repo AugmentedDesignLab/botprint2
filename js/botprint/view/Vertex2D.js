@@ -27,15 +27,6 @@ function Vertex2D(position, target, options) {
 		
 		lowlight: function() {
 			svg.attr({r: normalSize});
-		},
-		
-		remove: function() {
-			// destructor
-			this.handlers.forEach(function(h){
-				h.disable();
-			});
-			svg.unbindAll();
-			svg.remove();
 		}
 	};
 	
@@ -50,6 +41,8 @@ function Vertex2D(position, target, options) {
 	var hovering = HoveringHandler(self, options);
 	hovering.enable();
 	self.handlers.push(hovering);
+	// making it removable
+	self = Removable2D(self);
 	return self;
 	
 }
