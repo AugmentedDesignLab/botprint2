@@ -9,7 +9,7 @@ function Preview3D(options) {
 	var scene = new THREE.Scene();
 	// Add camera
 	var camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
-	var rotation = Math.PI/2;
+	var rotation = 0;
 	scene.add(camera);
 	
 	// Setup point lighting
@@ -46,18 +46,18 @@ function Preview3D(options) {
 	var object 	 = new THREE.Mesh( geometry, material );
 	scene.add(object);
 	
-	
 	var self = {
+		elem: stage,
 		animate: function() {
 			rotation += Math.PI / 200;
 			render();
 			requestAnimationFrame(self.animate);
 		},
-		updateChassis: function(chassis) {
+		updateRobot: function(robot) {
 			if(object) {
 				scene.remove(object);
 			}
-			object = chassis;
+			object = robot;
 			scene.add(object);
 		}
 	};
@@ -65,5 +65,7 @@ function Preview3D(options) {
 	$.extend(self, View());
 	var handler = Preview3DHandler(self, {app: options.app});
 	handler.enable();
+	// disallow objects from being dragged under this area
+	stage.mousemove(function(event){event.stopPropagation();});
 	return self;
 }

@@ -9,8 +9,8 @@ function SketchingHandler(view, options) {
 		
 		click: function(payload) {
 			var event = payload.event;
-			var x = OffsetEvent(event).offsetX;
-			var y = OffsetEvent(event).offsetY;
+			var x = RelativeCoordEvent(event).relativeX;
+			var y = RelativeCoordEvent(event).relativeY;
 
 			if(this.shape){
 				// Extend the path
@@ -26,8 +26,8 @@ function SketchingHandler(view, options) {
 		
 		mouseMove: function(payload) {
 			var event = payload.event;
-			var x = OffsetEvent(event).offsetX;
-			var y = OffsetEvent(event).offsetY;
+			var x = RelativeCoordEvent(event).relativeX;
+			var y = RelativeCoordEvent(event).relativeY;
 
 			if(this.shape){
 				// Modify the last path element
@@ -48,7 +48,7 @@ function SketchingHandler(view, options) {
 				 */ 
 				path.pop();
 				path.pop();
-				this.shape.attr('path', path +'Z');
+				this.shape.attr({path: path +'Z', stroke: null});
 				var chassis2D = Chassis2D(this.shape, {app:options.app});
 				view.doneSketching(chassis2D);				
 				options.app.trigger(ApplicationEvents.chassisShapeUpdated, {shape: this.shape});
