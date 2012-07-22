@@ -17,7 +17,7 @@ function Wheel2D(svg, options) {
 		setPosition: function(x, y) {
 			svg.attr({x: x, y: y});
 			if(this.removeButton) {
-				this.removeButton.position = {x:x, y:y};
+				this.removeButton.setPosition(x, y);
 			}
 		},
 		

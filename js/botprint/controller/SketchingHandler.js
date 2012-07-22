@@ -48,7 +48,7 @@ function SketchingHandler(view, options) {
 				 */ 
 				path.pop();
 				path.pop();
-				this.shape.attr('path', path +'Z');
+				this.shape.attr({path: path +'Z', stroke: null});
 				var chassis2D = Chassis2D(this.shape, {app:options.app});
 				view.doneSketching(chassis2D);				
 				options.app.trigger(ApplicationEvents.chassisShapeUpdated, {shape: this.shape});

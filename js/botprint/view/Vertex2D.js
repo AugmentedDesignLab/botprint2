@@ -3,7 +3,7 @@
  * @author Zhongpeng Lin
  */
 function Vertex2D(position, target, options) {
-	var draw = target.paper;
+	var draw = target.elem.paper;
 	var normalSize = 4;
 	var svg = draw.circle(position.x, position.y, normalSize);
 	svg.attr({fill: 'white', stroke: 'black'});

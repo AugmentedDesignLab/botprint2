@@ -13,30 +13,27 @@ function RemoveButton(target, options) {
 	var targetPosition = target.getPosition();
 	var offset = {x: initPosition.x - targetPosition.x, y: initPosition.y - targetPosition.y};
 	
-	var self = Object.create(View(), {
-		target: {value: target},
-		elem: {value: button},
-		handlers: {value: []},
-		position: {
-			set: function(targetPosition) {
-				var x = targetPosition.x + offset.x;
-				var y = targetPosition.y + offset.y;
-				button.transform('T'+x+','+y);
-			}
+	var self = {
+		target: target,
+		elem: button,
+		handlers: [],
+		setPosition: function(targetX, targetY) {
+			var x = targetX + offset.x;
+			var y = targetY + offset.y;
+			button.transform('T'+x+','+y);
 		},
 		
-		highlight: {
-			value: function() {
-				button.attr({fill: '#00FFFF'});
-			}
+		highlight: function(){
+			button.attr({fill: '#00FFFF'});
 		},
 		
-		lowlight: {
-			value: function() {
-				button.attr({fill: 'white'});
-			}
+		lowlight: function() {
+			button.attr({fill: 'white'});			
 		}
-	});
+	};
+	
+	Mixable(self).mix(View());
+	
 	// making it reponding to click event
 	self = Selectable(self);
 	var handler = RemovingHandler(self, options);
