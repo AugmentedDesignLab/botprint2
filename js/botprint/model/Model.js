@@ -6,15 +6,15 @@ function Model (options/*options, e.g., {bus: EventBus(), name:"ModelA"}*/) {
 	options = options || {};
 	var self = {
 		bus: function(){
-			return self.options().bus;
+			return options.bus;
 		},
 
 		name: function(){
-			return self.options().name;
+			return options.name;
 		},
 
 		options: function(){
-			return opts;
+			return options;
 		}
 	};
 

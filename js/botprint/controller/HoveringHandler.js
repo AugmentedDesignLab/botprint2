@@ -4,7 +4,7 @@
 function HoveringHandler(view, options) {
 	
 	var self = {
-		events: ['mouseOut', 'mouseOver'],
+		userEvents: ['mouseOut', 'mouseOver'],
 
 		mouseOver: function(payload) {
 			view.highlight();
@@ -15,6 +15,7 @@ function HoveringHandler(view, options) {
 		}
 		
 	};
-	$.extend(self, EventHandler(view, options));
+	
+	Mixable(self).mix(EventHandler(view, options));
 	return self;
 }

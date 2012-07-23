@@ -3,31 +3,31 @@
  */
 
 function SketchingHandler(view, options) {
-	var elem = view.elem;
 	
 	var self = {
-		events: ['click', 'mouseMove', 'dblClick'],
+		userEvents: ['click', 'mouseMove', 'dblClick'],
+		
 		click: function(payload) {
-			var x = OffsetEvent(payload).offsetX;
-			var y = OffsetEvent(payload).offsetY;
+			var event = payload.event;
+			var x = RelativeCoordEvent(event).relativeX;
+			var y = RelativeCoordEvent(event).relativeY;
 
 			if(this.shape){
 				// Extend the path
 				var path = this.shape.attrs.path;
 				this.shape.attr('path', path +' L ' + x + ' ' + y);
 			}else{
-				if(view.chassis)
-					view.chassis.remove();
 				// Create a new path
 				var draw = view.draw;
 				this.shape = draw.path('M '+x+' '+y+' L ' + x + ' ' + y);
-				this.shape.attr(options.shapeAttributes);
+				this.shape.attr(view.shapeAttributes);
 			}
 		},
 		
 		mouseMove: function(payload) {
-			var x = OffsetEvent(payload).offsetX;
-			var y = OffsetEvent(payload).offsetY;
+			var event = payload.event;
+			var x = RelativeCoordEvent(event).relativeX;
+			var y = RelativeCoordEvent(event).relativeY;
 
 			if(this.shape){
 				// Modify the last path element
@@ -48,18 +48,15 @@ function SketchingHandler(view, options) {
 				 */ 
 				path.pop();
 				path.pop();
-				this.shape.attr('path', path +'Z');
-				view.chassis = this.shape;
-				// Automatically switch to EditingHandler
-				self.disable();
-				var editingHandler = EditingHandler(view);
-				editingHandler.enable();
-				self.trigger(Events.chassisShapeUpdated, {shape: this.shape});
+				this.shape.attr({path: path +'Z', stroke: null});
+				var chassis2D = Chassis2D(this.shape, {app:options.app});
+				view.doneSketching(chassis2D);				
+				options.app.trigger(ApplicationEvents.chassisShapeUpdated, {shape: this.shape});
 				this.shape = null;
 			}
 		}
 	};
 	
-	Mixable(self).mix(CanvasEventHandler(view, options));
+	Mixable(self).mix(EventHandler(view, options));
 	return self;
 }

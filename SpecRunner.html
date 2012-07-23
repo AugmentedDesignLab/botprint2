@@ -1,0 +1,66 @@
+<html>
+<head>
+    <title>Jasmine Spec Runner</title>
+
+    <link rel="shortcut icon" type="image/png" href="js/vendor/jasmine-1.2.0/jasmine_favicon.png">
+    <link rel="stylesheet" type="text/css" href="js/vendor/jasmine-1.2.0/jasmine.css">
+    <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>
+        window.jQuery || document.write('<script src="js/vendor/jquery-1.7.2.min.js"><\/script>')
+    </script>
+    <script src="js/botprint/spi/Enumerable.js"></script>
+    <script src="js/botprint/spi/Arrays.js"></script>
+    <script src="js/botprint/spi/Bindable.js"></script>
+    <script src="js/botprint/spi/EventBus.js"></script>
+    <script src="js/botprint/spi/Mixable.js"></script>
+    <script type="text/javascript" src="js/botprint/spi/Describable.js"></script>
+    <script type="text/javascript" src="js/vendor/jasmine-1.2.0/jasmine.js"></script>
+    <script type="text/javascript" src="js/vendor/jasmine-1.2.0/jasmine-html.js"></script>
+
+    <!-- include spec files here... -->
+    <script type="text/javascript" src="spec/SpecHelper.js"></script>
+    <script type="text/javascript" src="spec/RobotSpec.js"></script>
+
+    <!-- include source files here... -->
+    <script type="text/javascript" src="js/botprint/model/Model.js"></script>
+
+    <script type="text/javascript" src="js/botprint/model/Robot.js"></script>
+    <script type="text/javascript" src="js/botprint/model/Part.js"></script>
+    <script type="text/javascript" src="js/botprint/model/Sensor.js"></script>
+
+
+    <script type="text/javascript">
+        (function() {
+            var jasmineEnv = jasmine.getEnv();
+            jasmineEnv.updateInterval = 1000;
+
+            var htmlReporter = new jasmine.HtmlReporter();
+
+            jasmineEnv.addReporter(htmlReporter);
+
+            jasmineEnv.specFilter = function(spec) {
+                return htmlReporter.specFilter(spec);
+            };
+
+            var currentWindowOnload = window.onload;
+
+            window.onload = function() {
+                if (currentWindowOnload) {
+                    currentWindowOnload();
+                }
+                execJasmine();
+            };
+
+            function execJasmine() {
+                jasmineEnv.execute();
+            }
+
+        })();
+    </script>
+
+</head>
+
+<body>
+</body>
+</html>

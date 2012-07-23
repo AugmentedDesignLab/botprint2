@@ -3,13 +3,13 @@
  * @author Zhongpeng Lin
  */
 function Vertex2D(position, target, options) {
-	var draw = target.paper;
+	var draw = target.elem.paper;
 	var normalSize = 4;
 	var svg = draw.circle(position.x, position.y, normalSize);
 	svg.attr({fill: 'white', stroke: 'black'});
 	
 	var self = {
-		svg: svg,
+		elem: svg,
 		target: target,
 		handlers: [],
 		
@@ -27,19 +27,22 @@ function Vertex2D(position, target, options) {
 		
 		lowlight: function() {
 			svg.attr({r: normalSize});
-		},
-		
-		remove: function() {
-			// destructor
-			this.handlers.forEach(function(h){
-				h.disable();
-			});
-			svg.unbindAll();
-			svg.remove();
 		}
 	};
 	
-	$.extend(self, View(options));
+	$.extend(self, View());
+	// making it draggable
+	self = Draggable2D(self);
+	var dragging = VertexDraggingHandler(self, options);
+	dragging.enable();
+	self.handlers.push(dragging);
+	// making it hoverable
+	self = Hoverable2D(self);
+	var hovering = HoveringHandler(self, options);
+	hovering.enable();
+	self.handlers.push(hovering);
+	// making it removable
+	self = Removable2D(self);
 	return self;
 	
 }
