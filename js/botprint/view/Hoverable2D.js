@@ -7,11 +7,11 @@
  * @author Zhongpeng Lin
  */
 function Hoverable2D(object2D) {
-	object2D.svg.hover(function(){
-		object2D.trigger(Events.mouseOver);
-	}, function(){
-		object2D.trigger(Events.mouseOut);
+	object2D.elem.hover(function(event){
+		object2D.trigger(UserEvents.mouseOver, {event: event});
+	}, function(event){
+		object2D.trigger(UserEvents.mouseOut, {event: event});
 	});
 	
-	return object2D;	
+	return object2D;
 }

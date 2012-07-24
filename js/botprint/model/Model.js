@@ -6,21 +6,21 @@ function Model (options/*options, e.g., {bus: EventBus(), name:"ModelA"}*/) {
 	options = options || {};
 	var self = {
 		bus: function(){
-			return self.options().bus;
+			return options.bus;
 		},
 
 		name: function(){
-			return self.options().name;
+			return options.name;
 		},
 
 		options: function(){
-			return opts;
+			return options;
 		}
 	};
 
 	// Mixing it in, just smash the methods of the newly created Bindable onto
 	// this object
-	$.extend (self, Bindable (options.bus));
-	$.extend (self, Describable(options));
+	Mixable(self).mix(Bindable (options.bus));
+	Mixable(self).mix(Describable(options));
 	return self;
 }

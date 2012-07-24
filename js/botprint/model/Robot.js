@@ -5,6 +5,14 @@
 function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, chassis: C}}*/){
 	var parts 		= [];
 
+    var toArray = function(algs){
+        var algorithms = [];
+        for(var each in algs){
+            algorithms.push(algs[each]);
+        }
+        return algorithms;
+    };
+
 	var self 	= {
 		/**
 		 * assembles a Robot given a set of parts and a set of PCG
@@ -14,8 +22,8 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 		  	// iterate over all algorithms in the right order
 	      	// get the necessary data or resources for the algo to function
 		  	// return a result
-			var algs = self.options().algs;
-			if (algs && algs.length) {
+			var algs = this.options().algs;
+			if (algs) {
 				/**
 				 * The idea is to call the algorithms in a specific order,
 				 * each of which feeds the next algorithm in turn.
@@ -41,9 +49,9 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 				 *
 				 **/
 				var data = parts;
-				algs.forEach(function (elem) {
+				toArray(algs).forEach(function (elem) {
 					// e.g., function(data){ AlgorithmX(data).perform(); }
-					data = elem.callback.call(data);
+					data = elem.call(data);
 				});
 
 				// persist the assembled robot in a format understood by
@@ -51,6 +59,16 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 				self.persist(data);
 			}
 		},
+
+        contains: function(part, filter) {
+            filter = filter || function(element){ return element.name() == part.name(); };
+            var elems = self.find(filter);
+            return elems[0] != null;
+        },
+
+        count: function(){
+            return parts.length;
+        },
 
 		/**
 		 * finds the parts of interest matching a condition.
@@ -74,30 +92,40 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 		 * @param data assambled robot.
 		 */
 		persist: function(data) {
+            data = data || {};
 			console.log(data);
 			// todo(anyone) to persist the assembled Robot.
 		},
 
+        _getPart: function(idx) {
+          return parts[idx];
+        },
+
 		/**
 		 * uninstalls the parts matching a condition.
 		 * @param part part to be uninstalled.
-		 * @param filter filter condition that will help us find the elements of interest.
 		 */
-		uninstall: function(part, filter){
-			filter = filter || function(p){ return p.name() == part.name(); };
-			if(parts > 1) {
-				var elems = self.find(filter);
+		uninstall: function(part){
+            for (var node, i = 0; node = self._getPart(i); i++) {
+                if(node == part){
+					if(node.isLeaf()){
+						parts.splice(i, 1);
+					} else {
+						node.removeAll();
+						parts.splice(i, 1);
+					}
+                }
+            }
+		},
 
-				if(elems){
-					delete elems[0];
-				}
-			}
+		update: function(){
+			// to trigger an event related to this model object
 		}
 	};
 
 	// Mixing it in, just smash the methods of the newly created
 	// View onto this object
 	opts = opts || {};
-	$.extend (self, Model (opts));
+    Mixable(self).mix( Model (opts));
 	return self;
 }
