@@ -7,8 +7,8 @@ function DraggingHandler(view, options) {
 		dragStart: function(payload) {
 			payload.event.stopPropagation();
 			// remember the deviation from the initial position of view
-			dragStartX = view.getPosition().x - payload.x;
-			dragStartY = view.getPosition().y - payload.y;
+			dragStartX = view.position.x - payload.x;
+			dragStartY = view.position.y - payload.y;
 		},
 		
 		dragMove: function(payload) {
@@ -18,7 +18,7 @@ function DraggingHandler(view, options) {
 			 */ 
 			var newX = payload.x + dragStartX, newY = payload.y + dragStartY;
 			// move the circle
-			view.setPosition(newX, newY);
+			view.position = {x: newX, y: newY};
 		},
 
 		dragEnd: function(payload) {

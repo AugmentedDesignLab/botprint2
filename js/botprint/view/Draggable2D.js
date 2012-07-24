@@ -1,7 +1,7 @@
 /**
  * Decorator to make a 2D object draggable,
- * expecting the 2D object to have getPosition
- * and setPosition methods
+ * expecting the 2D object to have a position
+ * getter and setter
  * @author Zhongpeng Lin
  */
 

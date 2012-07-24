@@ -10,18 +10,18 @@ function RemoveButton(target, options) {
 	var initPosition = {x: bBox.x2-16, y: bBox.y-17};
 	var initTransform = 'T'+initPosition.x+','+initPosition.y;
 	button.transform(initTransform);
-	var targetPosition = target.getPosition();
+	var targetPosition = target.position;
 	var offset = {x: initPosition.x - targetPosition.x, y: initPosition.y - targetPosition.y};
 	
 	var self = {
 		target: target,
 		elem: button,
 		handlers: [],
-		setPosition: function(targetX, targetY) {
-			var x = targetX + offset.x;
-			var y = targetY + offset.y;
-			button.transform('T'+x+','+y);
-		},
+                set targetPosition(position) {
+			var x = position.x + offset.x;
+			var y = position.y + offset.y;
+			button.transform('T'+x+','+y);                    
+                },
 		
 		highlight: function(){
 			button.attr({fill: '#00FFFF'});

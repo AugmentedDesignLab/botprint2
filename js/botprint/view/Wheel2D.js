@@ -10,14 +10,17 @@ function Wheel2D(svg, options) {
 		id: new Date().getTime(),
 		handlers: [],
 		
-		getPosition: function() {
-			return {x: svg.attrs.x, y: svg.attrs.y};
+                // position of a wheel is the position of its center
+		get position() {
+			return {x: svg.attrs.x + svg.attrs.width * .5,
+                            y: svg.attrs.y + svg.attrs.height * .5};
 		},
 		
-		setPosition: function(x, y) {
-			svg.attr({x: x, y: y});
+		set position(pos) {
+			svg.attr({x: pos.x - svg.attrs.width * .5,
+                            y: pos.y - svg.attrs.height * .5});
 			if(this.removeButton) {
-				this.removeButton.setPosition(x, y);
+				this.removeButton.targetPosition = pos;
 			}
 		},
 		

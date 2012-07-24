@@ -13,12 +13,12 @@ function Vertex2D(position, target, options) {
 		target: target,
 		handlers: [],
 		
-		getPosition: function() {
+		get position() {
 			return {x: svg.attrs.cx, y: svg.attrs.cy};
 		},
 		
-		setPosition: function(x, y) {
-			svg.attr({cx: x, cy: y});
+		set position(pos) {
+			svg.attr({cx: pos.x, cy: pos.y});
 		},
 		
 		highlight: function() {

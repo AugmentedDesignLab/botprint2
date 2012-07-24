@@ -8,7 +8,7 @@ function VertexDraggingHandler(view, options) {
 	var self = {
 		dragMove: function(payload) {
 			self.super.dragMove(payload);
-			var position = view.getPosition();
+			var position = view.position;
 			var target = view.target;
 			// modify the target shape, which is the chassis
 			var path = target.elem.attrs.path;
