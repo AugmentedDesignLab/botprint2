@@ -78,6 +78,6 @@ function Part(opts){
 	// Mixing it in, just smash the methods of the newly created
 	// View onto this object
 	opts = opts || {};
-	$.extend (self, Model (opts));
+	Mixable(self).mix( Model (opts));
 	return self;
 }

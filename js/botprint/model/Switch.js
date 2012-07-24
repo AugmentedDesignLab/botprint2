@@ -10,6 +10,6 @@ function Switch (opts){
 
 	// Mixing it in, just smash the methods of the newly created
 	// View onto this object
-	$.extend (self, Part (opts));
+	Mixable(self).mix(Part (options));
 	return self;
 }
