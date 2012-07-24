@@ -28,11 +28,15 @@ function BatteryPack (opts){
 		 */
 		target: function(){
 			return opts.target;
+		},
+
+		update: function(){
+			// to trigger an event related to this model object
 		}
 	};
 
 	// Mixing it in, just smash the methods of the newly created
 	// View onto this object
-	$.extend (self, Part (opts));
+	Mixable(self).mix(Part (options));
 	return self;
 }
