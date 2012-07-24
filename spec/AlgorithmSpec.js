@@ -7,14 +7,34 @@ describe("PCG-Algorithms", function(){
 	var dataMaker;
 
 	beforeEach(function(){
-		dataMaker = new DataMaker();
-		deck 	  = new Deck({name:"Top", bus: dataMaker.bus});
+		dataMaker   = new DataMaker();
+		blocks 		= dataMaker.blocks();
+		deck 	    = new Deck({name:"Bottom", bus: dataMaker.bus, dimensions: { w:500, h:500, d:0 }});
 	});
 
-	afterEach(function(){});
+	afterEach(function(){
+		dataMaker = null;
+		blocks    = null;
+		deck	  = null;
+	});
 
 	describe("Once ready for packing the layout", function(){
-		it("should pack a 50 by 50 area", function(){
+		it("should pack a 50 by 50 area (via packer only)", function(){
+			var packer = new BinPacker(500, 500);
+			blocks.sort();
+			packer.fit(blocks);
+			var packed = [];
+			for(var n = 0 ; n < blocks.length ; n++) {
+				var block = blocks[n];
+				if (block.fit) {
+					packed.push(block);
+				}
+			}
+
+			expect(packed.length).toBeGreaterThan(0);
+		});
+
+		it("should pack a 50 by 50 area (via algorithm)", function(){
 			expect(true).toBeTruthy();
 		});
 	});

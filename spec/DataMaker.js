@@ -43,7 +43,15 @@ function DataMaker(){
 	return {
 		bus: 	bus,
 		robot: 	robot,
-		parts: 	parts
+		parts: 	parts,
+		blocks: function(){
+			var blocks = [];
+			bottom.select().forEach(function(elem){
+				blocks.push({w: elem.dimensions().w, h: elem.dimensions().h});
+			});
+
+			return blocks;
+		}
 	};
 }
 
