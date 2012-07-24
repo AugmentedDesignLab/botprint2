@@ -1,14 +1,12 @@
 beforeEach(function() {
     this.addMatchers({
-// example
-//        toBePlaying: function(expectedSong) {
-//            var player = this.actual;
-//            return player.currentlyPlayingSong === expectedSong &&
-//                player.isPlaying;
-//        }
-        toBeInstalled: function(parts) {
+        toBeNaked: function(parts) {
             var robot = this.actual;
-            return robot.find
+			parts.forEach(function(elem){
+				robot.uninstall(elem);
+			});
+
+			return robot.count() == 0;
         }
     });
 });

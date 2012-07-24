@@ -108,7 +108,12 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 		uninstall: function(part){
             for (var node, i = 0; node = self._getPart(i); i++) {
                 if(node == part){
-                    parts.splice(i, 1);
+					if(node.isLeaf()){
+						parts.splice(i, 1);
+					} else {
+						node.removeAll();
+						parts.splice(i, 1);
+					}
                 }
             }
 		}

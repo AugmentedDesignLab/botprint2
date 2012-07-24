@@ -37,6 +37,12 @@ function Part(opts){
 			return self.options().isLeaf;
 		},
 
+		removeAll: function(){
+			children.forEach(function(elem){
+				self.remove(elem);
+			});
+		},
+
 		/**
 		 * removes a ``child'' part.
 		 * @param child child part to be removed.
@@ -71,7 +77,7 @@ function Part(opts){
 					+ ", calling the select method on this object will be a mistake."
 			}
 			filter = filter || function(p) { return true; };
-			children.select(filter);
+			return children.select(filter);
 		}
 	};
 
