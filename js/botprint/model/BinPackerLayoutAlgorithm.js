@@ -19,7 +19,7 @@ function BinPackerLayoutAlgorithm(data){
 		pack: function(){
 			deck.select(function(block){
 				if(block.fit){
-					define(
+					self.define(
 						block.fit.x,
 						block.fit.y,
 						block.dimensions().w,
@@ -41,6 +41,6 @@ function BinPackerLayoutAlgorithm(data){
 
 	// Mixing it in, just smash the methods of the newly created
 	// View onto this object
-	$.extend (self, Algorithm (data));
+	Mixable(self).mix(Algorithm (data));
 	return self;
 }

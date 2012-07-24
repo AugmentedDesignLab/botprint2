@@ -1,23 +1,19 @@
+/**
+ * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
+ */
 describe("Robot", function(){
     var bus;
     var robot;
     var part;
+	var parts;
+	var dataMaker;
 
     beforeEach(function(){
-        bus = EventBus();
-        var options = {
-            name: "Wall-E",
-            bus:  bus,
-            algs: {
-                wheel: function() {console.log("Snapped!");},
-                chassis: function() {console.log("Sketched!");}
-            }
-
-        };
-
-        robot = new Robot(options);
-        part  = new Sensor({name:"LeftSensor", bus: bus});
-
+		dataMaker = new DataMaker();
+        bus 	= dataMaker.bus;
+        robot   = dataMaker.robot;
+		parts	= dataMaker.parts;
+		part  = new Sensor({name:"LightSensor", bus: bus});
     });
 
     afterEach(function(){
@@ -26,23 +22,32 @@ describe("Robot", function(){
         part  = null;
     });
 
-    it("should install a Part", function(){
-        robot.install(part);
-        expect(robot.count()).toEqual(1);
+	describe("Once having ALL parts installed", function(){
+		it("should have a size > 0", function(){
+			expect(robot.count()).toBeGreaterThan(0);
+		});
 
-    });
+		it("should find ANY installed part on Bottom Deck", function(){
+			var chassis    = parts[0];
 
-    it("should find the installed Part", function(){
-        robot.install(part);
-        var found = robot.contains(part);
-        expect(found).toBeTruthy();
-    });
+			var bdeck 	   = chassis.select(DataMaker.BOTTOM_DECK_FILTER)[0];
+			var found 	   = bdeck.select(DataMaker.LIGHT_SENSOR_FILTER)[0];
 
-    it("should uninstall Part", function(){
-        robot.install(part);
-        expect(robot.contains(part)).toBeTruthy();
-        robot.uninstall(part);
-        expect(robot.contains(part)).toBeFalsy();
-    });
+			expect(found != null).toBeTruthy();
+			expect(found.name()).toEqual("LightSensor");
+		});
+
+		it("should be persisted once assembled", function(){
+			spyOn(robot, 'persist');
+			robot.assemble();
+			expect(robot.persist).toHaveBeenCalledWith(jasmine.any(Array));
+		});
+	});
+
+	describe("Once having ALL parts uninstalled", function(){
+		it("should have zero parts installed", function(){
+			expect(robot).toBeNaked(parts);
+		});
+	});
 
 });
