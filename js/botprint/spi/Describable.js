@@ -3,8 +3,8 @@
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
 function Describable (options){
-	var coordinates = options.coordinates || {}; //e.g., coordinates: { x:0, y:0, z:0 };
-	var dimensions  = options.dimensions  || {}; //e.g., dimensions: { w:0, h:0, d:0 };
+	var coordinates = options.coordinates || { x:0, y:0, z:0 };
+	var dimensions  = options.dimensions  || { w:0, h:0, d:0 };
 	var shape		= options.shape 	  || {};
 	return {
 		/**
@@ -14,18 +14,9 @@ function Describable (options){
 			return shape;
 		},
 
-		/**
-		 * @return {*} the x-y-z coordinates of an object.
-		 */
-		coordinates: function(){
-			return coordinates;
-		},
-
-		/**
-		 * @return {*} the width-height-depth values.
-		 */
-		dimensions: function(){
-			return dimensions;
-		}
+		x: coordinates.x,
+		y: coordinates.y,
+		w: dimensions.w,
+		h: dimensions.h
 	};
 }

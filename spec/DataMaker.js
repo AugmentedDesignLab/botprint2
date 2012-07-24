@@ -47,7 +47,7 @@ function DataMaker(){
 		blocks: function(){
 			var blocks = [];
 			bottom.select().forEach(function(elem){
-				blocks.push({w: elem.dimensions().w, h: elem.dimensions().h});
+				blocks.push(elem);
 			});
 
 			return blocks;

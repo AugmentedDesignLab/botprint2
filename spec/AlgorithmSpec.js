@@ -20,7 +20,7 @@ describe("PCG-Algorithms", function(){
 
 	describe("Once ready for packing the layout", function(){
 		it("should pack a 50 by 50 area (via packer only)", function(){
-			var packer = new BinPacker(500, 500);
+			var packer = new BinPacker(deck);
 			blocks.sort();
 			packer.fit(blocks);
 			var packed = [];
@@ -35,6 +35,7 @@ describe("PCG-Algorithms", function(){
 		});
 
 		it("should pack a 50 by 50 area (via algorithm)", function(){
+			// todo(Huascar) do next
 			expect(true).toBeTruthy();
 		});
 	});

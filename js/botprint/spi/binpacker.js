@@ -40,7 +40,9 @@
  * }
  * ******************************************************************************/
 
-BinPacker = function(w, h) {
+BinPacker = function(deck) {
+	var w = deck.w;
+	var h = deck.h;
 	this.init(w, h);
 };
 
@@ -78,8 +80,20 @@ BinPacker.prototype = {
 
 	splitNode: function(node, w, h) {
 		node.used = true;
-		node.down  = { x: node.x,     y: node.y + h, w: node.w,     h: node.h - h };
-		node.right = { x: node.x + w, y: node.y,     w: node.w - w, h: h          };
+		node.down  = {
+			x: node.x,
+			y: node.y + h,
+			w: node.w,
+			h: node.h - h
+		};
+
+		node.right = {
+			x: node.x + w,
+			y: node.y,
+			w: node.w - w,
+			h: h
+		};
+
 		return node;
 	}
 
