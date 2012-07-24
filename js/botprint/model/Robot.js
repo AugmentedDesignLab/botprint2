@@ -116,6 +116,10 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 					}
                 }
             }
+		},
+
+		update: function(){
+			// to trigger an event related to this model object
 		}
 	};
 

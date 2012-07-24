@@ -1,3 +1,6 @@
+/**
+ * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
+ */
 describe("Robot", function(){
     var bus;
     var robot;

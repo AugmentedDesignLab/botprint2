@@ -1,3 +1,6 @@
+/**
+ * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
+ */
 beforeEach(function() {
     this.addMatchers({
         toBeNaked: function(parts) {

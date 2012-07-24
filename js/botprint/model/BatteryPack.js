@@ -28,6 +28,10 @@ function BatteryPack (opts){
 		 */
 		target: function(){
 			return opts.target;
+		},
+
+		update: function(){
+			// to trigger an event related to this model object
 		}
 	};
 

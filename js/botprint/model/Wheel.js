@@ -15,6 +15,10 @@ function Wheel (opts){
 
 		getSnappingLocation: function(){
 			return snappedAt;
+		},
+
+		update: function(){
+			// to trigger an event related to this model object
 		}
 	};
 	// Mixing it in, just smash the methods of the newly created

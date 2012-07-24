@@ -9,7 +9,11 @@ function Chassis (opts){
 	var options = {isLeaf: false};
 	$.extend(options, opts || {});
 
-	var self = this;
+	var self = {
+		update: function(){
+			// to trigger an event related to this model object
+		}
+	};
 
 	// Mixing it in, just smash the methods of the newly created
 	// View onto this object
