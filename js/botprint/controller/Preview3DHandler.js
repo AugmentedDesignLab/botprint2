@@ -5,25 +5,31 @@ function Preview3DHandler(view, options) {
 	
 	var self = {
 		appEvents: ['chassisShapeUpdated', 'wheelUpdated', 'wheelDeleted'],
-		wheels: {},
+		robotModel: Robot(),
 		
 		chassisShapeUpdated: function(payload) {
 			var chassisModel = Chassis(payload);
-			self.chassis = new Chassis3D(chassisModel);
-			var robot = new Robot3D(self.chassis, self.wheels);
+			self.robotModel.chassis = chassisModel;
+			self.robotModel.assemble();
+			
+			var robot = new Robot3D(self.robotModel);
 			view.updateRobot(robot);			
 		},
 		
 		wheelUpdated: function(payload) {
-			var w3 = new Wheel3D(payload.x, payload.y);
-			self.wheels[payload.id] = w3;
-			var robot = new Robot3D(self.chassis, self.wheels);
+			var wheelModel = Wheel({coordinates: {x: payload.x, y: payload.y}, id: payload.id});
+			self.robotModel.wheels[payload.id] = wheelModel;
+			self.robotModel.assemble();
+			
+			var robot = new Robot3D(self.robotModel);
 			view.updateRobot(robot);		
 		},
 		
 		wheelDeleted: function(payload) {
-			delete self.wheels[payload.id];
-			var robot = new Robot3D(self.chassis, self.wheels);
+			delete self.robotModel.wheels[payload.id];
+			self.robotModel.assemble();
+			
+			var robot = new Robot3D(self.robotModel);
 			view.updateRobot(robot);			
 		}
 	};
