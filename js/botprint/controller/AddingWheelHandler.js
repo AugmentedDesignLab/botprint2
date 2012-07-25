@@ -6,8 +6,8 @@ function AddingWheelHandler(view, options) {
 		userEvents: ['click'],
 
 		click: function(payload) {
-			var x = RelativeCoordEvent(payload.event).relativeX;
-			var y = RelativeCoordEvent(payload.event).relativeY;
+			var x = payload.x;
+			var y = payload.y;
 			var svg = view.draw.rect(x - Spec.wheel.width /2, y - Spec.wheel.radius,
 				Spec.wheel.width, Spec.wheel.radius * 2, 5);
 			svg.attr(view.shapeAttributes);

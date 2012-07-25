@@ -8,9 +8,8 @@ function SketchingHandler(view, options) {
 		userEvents: ['click', 'mouseMove', 'dblClick'],
 		
 		click: function(payload) {
-			var event = payload.event;
-			var x = RelativeCoordEvent(event).relativeX;
-			var y = RelativeCoordEvent(event).relativeY;
+			var x = payload.x;
+			var y = payload.y;
 
 			if(this.shape){
 				// Extend the path

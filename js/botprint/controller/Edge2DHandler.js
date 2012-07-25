@@ -28,10 +28,9 @@ function Edge2DHandler(view, options) {
 		},
 		
 		click: function(payload) {
-			var event = RelativeCoordEvent(payload.event);
 			view.target.deselect();
 			var path = view.target.elem.attrs.path;
-			path.splice(options.pathIndex, 0, ['L', event.relativeX, event.relativeY]);
+			path.splice(options.pathIndex, 0, ['L', payload.x, payload.y]);
 			view.target.elem.attr('path', path);
 			view.target.select();
 		}
