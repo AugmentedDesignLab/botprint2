@@ -8,7 +8,8 @@ function Preview3DHandler(view, options) {
 		wheels: {},
 		
 		chassisShapeUpdated: function(payload) {
-			self.chassis = new Chassis3D(payload.shape, 50);
+			var chassisModel = Chassis(payload);
+			self.chassis = new Chassis3D(chassisModel);
 			var robot = new Robot3D(self.chassis, self.wheels);
 			view.updateRobot(robot);			
 		},

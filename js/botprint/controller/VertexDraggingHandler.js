@@ -31,7 +31,9 @@ function VertexDraggingHandler(view, options) {
 		
 		dragEnd: function(payload) {
 			self.super.dragEnd(payload);
-			options.app.trigger(ApplicationEvents.chassisShapeUpdated, {shape: view.target.elem});
+			var shape = view.target.elem;
+			var chassis = Chassis({path: shape.attrs.path, transform: shape.transform(), app: options.app});
+			chassis.update();
 		}
 	};
 	Mixable(self).mix(DraggingHandler(view, options));
