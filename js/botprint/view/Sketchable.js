@@ -13,7 +13,9 @@ function Sketchable(object2D) {
 	});
 	
 	object2D.elem.dblclick(function(event){
-		object2D.trigger(UserEvents.dblClick, {event: event});
+		var relativeEvent = RelativeCoordEvent(event);
+		object2D.trigger(UserEvents.dblClick,
+				 {x: relativeEvent.relativeX, y: relativeEvent.relativeY});
 	});
 	return object2D;
 }

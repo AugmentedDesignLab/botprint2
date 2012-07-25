@@ -5,14 +5,12 @@ function DraggingHandler(view, options) {
 		userEvents: ['dragStart', 'dragMove', 'dragEnd'],
 
 		dragStart: function(payload) {
-			payload.event.stopPropagation();
 			// remember the deviation from the initial position of view
 			dragStartX = view.position.x - payload.x;
 			dragStartY = view.position.y - payload.y;
 		},
 		
 		dragMove: function(payload) {
-			payload.event.stopPropagation();
 			/* calculate the new coordinates from the
 			 * current mouse position and initial deviation
 			 */ 
@@ -22,7 +20,6 @@ function DraggingHandler(view, options) {
 		},
 
 		dragEnd: function(payload) {
-			payload.event.stopPropagation();
 		}
 		
 		

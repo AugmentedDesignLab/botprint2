@@ -8,9 +8,11 @@
  */
 function Hoverable2D(object2D) {
 	object2D.elem.hover(function(event){
-		object2D.trigger(UserEvents.mouseOver, {event: event});
+		var rEvent = RelativeCoordEvent(event);
+		object2D.trigger(UserEvents.mouseOver, {x: rEvent.relativeX, y: rEvent.relativeY});
 	}, function(event){
-		object2D.trigger(UserEvents.mouseOut, {event: event});
+		var rEvent = RelativeCoordEvent(event);
+		object2D.trigger(UserEvents.mouseOut, {x: rEvent.relativeX, y: rEvent.relativeY});
 	});
 	
 	return object2D;
