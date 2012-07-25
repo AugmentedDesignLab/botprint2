@@ -14,7 +14,7 @@ function Preview3DHandler(view, options) {
 		},
 		
 		wheelUpdated: function(payload) {
-			var w3 = new Wheel3D(payload.position);
+			var w3 = new Wheel3D(payload.x, payload.y);
 			self.wheels[payload.id] = w3;
 			var robot = new Robot3D(self.chassis, self.wheels);
 			view.updateRobot(robot);			

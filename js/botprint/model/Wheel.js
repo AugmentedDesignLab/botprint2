@@ -9,6 +9,8 @@ function Wheel (opts){
 	var snappedAt = { x:0, y:0, z:0};
 
 	var self = {
+		id: opts.id,
+		
 		snap: function(position){
 			snappedAt = position;
 		},
@@ -18,7 +20,8 @@ function Wheel (opts){
 		},
 
 		update: function(){
-			// to trigger an event related to this model object
+			self.radio.trigger(ApplicationEvents.wheelUpdated,
+                            {id: self.id, x: self.x, y: self.y});
 		}
 	};
 	// Mixing it in, just smash the methods of the newly created

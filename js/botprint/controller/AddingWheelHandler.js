@@ -12,10 +12,9 @@ function AddingWheelHandler(view, options) {
 				Spec.wheel.width, Spec.wheel.radius * 2, 5);
 			svg.attr(view.shapeAttributes);
 
-			var wheel = Wheel2D(svg, {app: options.app});
-//                        var wheel = Wheel({coordinates: wheel2D.position});
-			options.app.trigger(ApplicationEvents.wheelUpdated,
-                            {id: wheel.id, position: wheel.position});
+			var wheel2D = Wheel2D(svg, {app: options.app});
+                        var wheel = Wheel({coordinates: wheel2D.position, id: wheel2D.id, app: options.app});
+			wheel.update();
 		}
 	};
 
