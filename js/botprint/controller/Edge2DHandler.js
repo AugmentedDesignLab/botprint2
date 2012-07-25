@@ -16,8 +16,7 @@ function Edge2DHandler(view, options) {
 		
 		mouseMove: function(payload) {
 			if(self.newVertex) {
-				var event = RelativeCoordEvent(payload.event);
-				self.newVertex.attr({cx: event.relativeX, cy: event.relativeY});
+				self.newVertex.attr({cx: payload.x, cy: payload.y});
 			}
 		},
 		

@@ -24,9 +24,8 @@ function SketchingHandler(view, options) {
 		},
 		
 		mouseMove: function(payload) {
-			var event = payload.event;
-			var x = RelativeCoordEvent(event).relativeX;
-			var y = RelativeCoordEvent(event).relativeY;
+			var x = payload.x;
+			var y = payload.y;
 
 			if(this.shape){
 				// Modify the last path element
