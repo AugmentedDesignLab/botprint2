@@ -22,6 +22,10 @@ function Wheel (opts){
 		update: function(){
 			self.radio.trigger(ApplicationEvents.wheelUpdated,
                             {id: self.id, x: self.x, y: self.y});
+		},
+		
+		delete: function() {
+			self.radio.trigger(ApplicationEvents.wheelDeleted, {id: self.id});
 		}
 	};
 	// Mixing it in, just smash the methods of the newly created

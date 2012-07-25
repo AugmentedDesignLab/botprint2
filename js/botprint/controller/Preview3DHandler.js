@@ -17,12 +17,11 @@ function Preview3DHandler(view, options) {
 			var w3 = new Wheel3D(payload.x, payload.y);
 			self.wheels[payload.id] = w3;
 			var robot = new Robot3D(self.chassis, self.wheels);
-			view.updateRobot(robot);			
+			view.updateRobot(robot);		
 		},
 		
 		wheelDeleted: function(payload) {
-			var w = payload.wheel;
-			delete self.wheels[w.id];
+			delete self.wheels[payload.id];
 			var robot = new Robot3D(self.chassis, self.wheels);
 			view.updateRobot(robot);			
 		}
