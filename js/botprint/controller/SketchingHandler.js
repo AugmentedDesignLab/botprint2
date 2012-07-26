@@ -49,7 +49,7 @@ function SketchingHandler(view, options) {
 				this.shape.attr({path: path +'Z', stroke: null});
 				var chassis2D = Chassis2D(this.shape, {app:options.app});
 				view.doneSketching(chassis2D);
-				var chassis = Chassis({points: chassis2D.points, path: this.shape.attrs.path, transform: this.shape.transform(), app: options.app});
+				var chassis = Chassis({path: this.shape.attrs.path, transform: this.shape.transform(), app: options.app});
 				chassis.update();
 				this.shape = null;
 			}
