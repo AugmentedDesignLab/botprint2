@@ -7,6 +7,7 @@ function Vertex2D(position, target, options) {
 	var normalSize = 4;
 	var svg = draw.circle(position.x, position.y, normalSize);
 	svg.attr({fill: 'white', stroke: 'black'});
+	svg.node.style.cursor = 'move';
 	
 	var self = {
 		elem: svg,
@@ -22,11 +23,11 @@ function Vertex2D(position, target, options) {
 		},
 		
 		highlight: function() {
-			svg.attr({r: normalSize + 2});
+			svg.animate({r: normalSize + 2}, 200);
 		},
 		
 		lowlight: function() {
-			svg.attr({r: normalSize});
+			svg.animate({r: normalSize}, 200);
 		}
 	};
 	

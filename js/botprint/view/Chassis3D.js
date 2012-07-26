@@ -33,30 +33,28 @@ function Chassis3D(chassisModel) {
 
 Chassis3D.prototype.buildShape = function(path) {
 	var shape = new THREE.Shape();
-	var start = new THREE.Vector2();
 
 	// used to remove duplicate actions
 	var existingActions = {};
-	var cleanedPath = [];
 	for(var i = 0; i < path.length; i++)
 	{
 		var action = path[i];
 		if(!existingActions[action]){
 			existingActions[action] = true;
-			cleanedPath.push(action);
 			switch(action[0]){
 				case 'M':
 				case 'm':
 					shape.moveTo(action[1], action[2]);
-					start.set(action[1], action[2]);
 					break;
 				case 'L':
 				case 'l':
 					shape.lineTo(action[1], action[2]);
 					break;
+				case 'C':
+					shape.bezierCurveTo(action[1], action[2], action[3], action[4], action[5], action[6]);
 				case 'Z':
 				case 'z':
-					shape.lineTo(start.x, start.y);
+					shape.closePath();
 					break;
 			}
 
