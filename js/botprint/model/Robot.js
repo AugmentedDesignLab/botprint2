@@ -5,6 +5,7 @@
 function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, chassis: C}}*/){
 	var parts 		= [];
 
+	opts = opts || {};
     var toArray = function(algs){
         var algorithms = [];
         for(var each in algs){
@@ -14,6 +15,7 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
     };
 
 	var self 	= {
+		wheels: {},
 		/**
 		 * assembles a Robot given a set of parts and a set of PCG
 		 * algorithms that put these parts together.
@@ -22,7 +24,7 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 		  	// iterate over all algorithms in the right order
 	      	// get the necessary data or resources for the algo to function
 		  	// return a result
-			var algs = this.options().algs;
+			var algs = opts.algs;
 			if (algs) {
 				/**
 				 * The idea is to call the algorithms in a specific order,
@@ -125,7 +127,6 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 
 	// Mixing it in, just smash the methods of the newly created
 	// View onto this object
-	opts = opts || {};
     Mixable(self).mix( Model (opts));
 	return self;
 }

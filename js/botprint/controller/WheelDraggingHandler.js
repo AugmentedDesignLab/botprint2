@@ -2,7 +2,8 @@ function WheelDraggingHandler(view, options) {
 	var self = {
 		dragEnd: function(payload) {
 			self.super.dragEnd(payload);
-			options.app.trigger(ApplicationEvents.wheelUpdated, {wheel: view});
+                        var wheel = Wheel({coordinates: view.position, id: view.id, app: options.app});
+			wheel.update();
 		}
 	};
 	Mixable(self).mix(DraggingHandler(view, options));

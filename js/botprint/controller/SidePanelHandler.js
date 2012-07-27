@@ -4,9 +4,8 @@ function SidePanelHandler(view, options) {
 		appEvents: ['selectionChanged'],
 		
 		click: function(payload) {
-			payload.event.preventDefault();
-			var target 	= $(payload.event.target),
-				varName	= target.data('guivar');
+			var target 	= $(payload.target),
+                            varName	= target.data('guivar');
 			var varVal  = target.data ('guival');
 			view.select(target);
 			var pl = {};

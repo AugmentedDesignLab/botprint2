@@ -5,6 +5,8 @@
 function Model (options/*options, e.g., {bus: EventBus(), name:"ModelA"}*/) {
 	options = options || {};
 	var self = {
+		radio: options.app,
+		
 		bus: function(){
 			return options.bus;
 		},

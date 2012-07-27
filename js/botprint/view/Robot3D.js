@@ -2,13 +2,15 @@
  * 3D view of the robot
  * @author Zhongpeng Lin
  */
-function Robot3D(chassis, wheels/*will add more parameters for other parts later*/) {
+function Robot3D(robotModel) {
 	var geometry = new THREE.Geometry();
-	THREE.GeometryUtils.merge(geometry, chassis);
-	for(var id in wheels)
+	var chassis3D = new Chassis3D(robotModel.chassis);
+	THREE.GeometryUtils.merge(geometry, chassis3D);
+	for(var id in robotModel.wheels)
 	{
-		if(wheels.hasOwnProperty(id)){
-			THREE.GeometryUtils.merge(geometry, wheels[id]);
+		if(robotModel.wheels.hasOwnProperty(id)){
+			var wheel3D = new Wheel3D(robotModel.wheels[id]);
+			THREE.GeometryUtils.merge(geometry, wheel3D);
 		}
 	}
 

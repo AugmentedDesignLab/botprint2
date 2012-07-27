@@ -3,6 +3,8 @@ function Chassis2D(svg, options) {
 		elem: svg,
 		vertices: [],
 		edges: [],
+		points: [],
+		
 		setColor: function(color) {
 			svg.attr({fill: color});
 		},
@@ -12,43 +14,24 @@ function Chassis2D(svg, options) {
 		},
 		
 		select: function() {
+			svg.attr({stroke: '#00FFFF'});
 			var path = svg.attrs.path;
-			var start, previous;
-			path.forEach(function(action, index){
-				var position;
+			
+			self.points.forEach(function(p, index){
 				var widgetOptions = {app: options.app, pathIndex: index};
-				if(action.length == 3){
-					position = {x: action[1], y: action[2]};
-					var vertex = Vertex2D(position,
-						self,
-						widgetOptions);					
-					self.vertices.push(vertex);
-				}
-				
-				switch(action[0]) {
-					case 'M':
-					case 'm':
-						start = previous = position;
-						break;
-					case 'L':
-					case 'l':
-						var edge = Edge2D(previous, position, self, widgetOptions);
-						self.edges.push(edge);
-						previous = position;
-						break;
-					case 'Z':
-					case 'z':
-						var edge = Edge2D(previous, start, self, widgetOptions);
-						self.edges.push(edge);
-						break;
-				}
-				
+				var vertex = Vertex2D(p,
+					self,
+					widgetOptions);					
+				self.vertices.push(vertex);
+				var edge = Edge2D(p, path[index+1], self, widgetOptions);
+				self.edges.push(edge);
 			});
 			
 			this.selected = true;
 		},
 		
 		deselect: function() {
+			svg.attr({stroke: null});
 			while(self.vertices.length > 0){
 				var vertex = self.vertices.pop();
 				vertex.remove();
@@ -58,14 +41,41 @@ function Chassis2D(svg, options) {
 				edge.remove();
 			}
 			this.selected = false;
+		},
+		
+		redraw: function() {
+			// Redraw a Catmull-Rom curve
+			var path;
+			self.points.forEach(function(p, index) {
+				if(index == 0) {
+					path = ['M', p.x, p.y, 'R'];
+				} else {
+					path.push(p.x, p.y);
+				}
+			});
+			path.push('Z');
+			svg.attr('path', path);
 		}
 	};
 	
 	Mixable(self).mix(View());
 	
+	var polygonPath = svg.attrs.path;
+	polygonPath.forEach(function(action, index){
+		switch(action[0]){
+			case 'M':
+				self.points.push({x: action[1], y: action[2]});
+				break;
+			case 'L':
+				self.points.push({x: action[1], y: action[2]});
+				break;
+		}
+	});
+	self.redraw();
+	
 	var selectionHandler = SelectionHandler(Selectable(self), {app: options.app});
 	selectionHandler.enable();
-	self.trigger(UserEvents.click);
+	self.trigger(UserEvents.click, {});
 	
 	return self;
 }
