@@ -8,10 +8,14 @@
 function Chassis (opts){
 	var options = {isLeaf: false};
 	$.extend(options, opts || {});
-
 	var self = {
+		path: options.path,
+		transform: options.transform,
+		
 		update: function(){
 			// to trigger an event related to this model object
+			self.radio.trigger(ApplicationEvents.chassisShapeUpdated,
+							   {path: self.path, transform: self.transform});
 		}
 	};
 

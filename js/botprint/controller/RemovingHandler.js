@@ -11,7 +11,8 @@ function RemovingHandler(view, options) {
 			if(confirm('Are you sure you want to delete this wheel?')) {
 				view.target.remove();
 				view.remove();
-				options.app.trigger(ApplicationEvents.wheelDeleted, {wheel: view.target});
+				var wheel = Wheel({id: view.target.id, app: options.app});
+				wheel.delete();
 			} else {
 				view.target.setColor(color);
 			}
