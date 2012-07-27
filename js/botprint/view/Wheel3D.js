@@ -5,8 +5,8 @@ Wheel3D.prototype = new THREE.Mesh();
 Wheel3D.constructor = Wheel3D;
 
 function Wheel3D(wheelModel) {
-	var radius = Spec.wheel.radius;
-	var width = Spec.wheel.width;
+	var radius = PartsFolio.wheel.radius;
+	var width = PartsFolio.wheel.width;
 	var geometry = new THREE.CylinderGeometry(radius, radius, width, 50, 50, false);
 	var material = new THREE.MeshPhongMaterial();
 	THREE.Mesh.call(this,  geometry, material);

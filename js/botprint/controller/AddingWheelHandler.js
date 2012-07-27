@@ -8,8 +8,8 @@ function AddingWheelHandler(view, options) {
 		click: function(payload) {
 			var x = payload.x;
 			var y = payload.y;
-			var svg = view.draw.rect(x - Spec.wheel.width /2, y - Spec.wheel.radius,
-				Spec.wheel.width, Spec.wheel.radius * 2, 5);
+			var svg = view.draw.rect(x - PartsFolio.wheel.width /2, y - PartsFolio.wheel.radius,
+				PartsFolio.wheel.width, PartsFolio.wheel.radius * 2, 5);
 			svg.attr(view.shapeAttributes);
 
 			var wheel2D = Wheel2D(svg, {app: options.app});
