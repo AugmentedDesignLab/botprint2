@@ -40,63 +40,55 @@
  * }
  * ******************************************************************************/
 
-BinPacker = function(deck) {
-	var w = deck.w;
-	var h = deck.h;
-	this.init(w, h);
-};
+function BinPacker(polygon) {
+	var w 		= polygon.w;
+	var h 		= polygon.h;
+	var root 	= {
+		x: 0,
+		y: 0,
+		w: w,
+		h: h
+	};
 
-BinPacker.prototype = {
-	// todo(Huascar) do this in terms of a Deck object's dimensions.
-	init: function(w, h) {
-		this.root = {
-			x: 0,
-			y: 0,
-			w: w,
-			h: h
-		};
-	},
+	return {
+		fit: function(blocks) {
+			var n, node, block;
 
-	fit: function(blocks) {
-		var n, node, block;
-
-		for (n = 0; n < blocks.length; n++) {
-			block = blocks[n];
-			node = this.findNode(this.root, block.w, block.h);
-			if (node /* if node != null, then ...*/){
-				block.fit = this.splitNode(node, block.w, block.h);
+			for (n = 0; n < blocks.length; n++) {
+				block = blocks[n];
+				node = this.findNode(root, block.w, block.h);
+				if (node /* if node != null, then ...*/){
+					block.fit = this.splitNode(node, block.w, block.h);
+				}
 			}
+		},
+
+		findNode: function(root, w, h) {
+			if (root.used)
+				return this.findNode(root.right, w, h) || this.findNode(root.down, w, h);
+			else if ((w <= root.w) && (h <= root.h))
+				return root;
+			else
+				return null;
+		},
+
+		splitNode: function(node, w, h) {
+			node.used = true;
+			node.down  = {
+				x: node.x,
+				y: node.y + h,
+				w: node.w,
+				h: node.h - h
+			};
+
+			node.right = {
+				x: node.x + w,
+				y: node.y,
+				w: node.w - w,
+				h: h
+			};
+
+			return node;
 		}
-	},
-
-	findNode: function(root, w, h) {
-		if (root.used)
-			return this.findNode(root.right, w, h) || this.findNode(root.down, w, h);
-		else if ((w <= root.w) && (h <= root.h))
-			return root;
-		else
-			return null;
-	},
-
-	splitNode: function(node, w, h) {
-		node.used = true;
-		node.down  = {
-			x: node.x,
-			y: node.y + h,
-			w: node.w,
-			h: node.h - h
-		};
-
-		node.right = {
-			x: node.x + w,
-			y: node.y,
-			w: node.w - w,
-			h: h
-		};
-
-		return node;
 	}
-
-};
-
-
+}
