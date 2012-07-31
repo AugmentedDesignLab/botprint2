@@ -65,7 +65,8 @@ function Preview3D(options) {
 	$.extend(self, View());
 	var handler = Preview3DHandler(self, {app: options.app});
 	handler.enable();
-	// disallow objects from being dragged under this area
-	stage.mousemove(function(event){event.stopPropagation();});
+	// Making it Sketchable without defining handlers to it is
+	// essentially disable the sketch events on it
+	self = Sketchable(self);
 	return self;
 }

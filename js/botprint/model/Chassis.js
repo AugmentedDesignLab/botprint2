@@ -16,6 +16,10 @@ function Chassis (opts){
 			// to trigger an event related to this model object
 			self.radio.trigger(ApplicationEvents.chassisShapeUpdated,
 							   {path: self.path, transform: self.transform});
+		},
+		
+		isSelfIntersecting: function() {
+			return IntersectionDetection.isSelfIntersecting(self.path);
 		}
 	};
 
