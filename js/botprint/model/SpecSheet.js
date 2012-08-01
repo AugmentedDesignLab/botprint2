@@ -2,7 +2,7 @@
  * Specification of each part
  * @author Zhongpeng Lin
  */
-var PartsFolio = {
+var SpecSheet = {
 	wheel: {
 		width: 30,
 		radius: 30
