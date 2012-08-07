@@ -43,9 +43,12 @@
 function BinPacker(polygon) {
 	var w 		= polygon.w;
 	var h 		= polygon.h;
+	var x		= polygon.x || 0; // if we are always getting 0, then there is something wrong going on.
+	var y		= polygon.y || 0; // if we are always getting 0, then there is something wrong going on.
+
 	var root 	= {
-		x: 0,
-		y: 0,
+		x: x,
+		y: y,
 		w: w,
 		h: h
 	};

@@ -1,7 +1,7 @@
 /**
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function PartsMaker(data) {
+function MakeParts(data) {
 	var radio 		= data.app; 				// data must have this radio...otherwise, we are doomed.
 	var bus	  		= data.bus; 				// data must have this bus ... otherwise, we are doomed ++
 	var sc			= data.sort || "minside"; 	// sorting criteria

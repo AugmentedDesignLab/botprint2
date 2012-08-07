@@ -37,11 +37,10 @@ function FindMaxRectangle(data){
 	var Triples = function(array) {
 		if(array.length < 3) return [];
 
-		var points = [];
-		for( var it in array ) {
-			if (array.hasOwnProperty(it)) {
-				points.push(/*a Point*/ {x: it.x, y: it.y});
-			}
+		var points = []; // make a copy
+		for(var n = 0 ; n < array.length ; n++) {
+			var p = array[n];
+			points.push(/*a Point*/ {x: p.x, y: p.y});
 		}
 
 		var triples = [];
@@ -59,7 +58,11 @@ function FindMaxRectangle(data){
 
 	var self = {
 		gimmeMax : function() {
-			var points 	= self.data;
+			var points 	= this.data().corners || [];
+			if(points.length == 0) {
+				throw "Error: This algorithm needs an array of points in order to work."
+			}
+
 			var triples	= Triples(points); // get combinations of 3 points. i.e., 3 corner points.
 
 			// max area rectangle
