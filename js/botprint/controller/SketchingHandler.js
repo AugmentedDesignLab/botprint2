@@ -49,7 +49,17 @@ function SketchingHandler(view, options) {
 				this.shape.attr({path: path +'Z', stroke: null});
 				var chassis2D = Chassis2D(this.shape, {app:options.app});
 				view.doneSketching(chassis2D);
-				var chassis = Chassis({path: this.shape.attrs.path, transform: this.shape.transform(), app: options.app});
+				var chassis = Chassis(
+					{
+						path: this.shape.attrs.path,
+						transform: this.shape.transform(),
+						app: options.app,
+						// vertices represent the reference points from where
+						// we will start drawing the internal layout of
+						// chassis.
+						vertices: chassis2D.vertices
+					}
+				);
 				chassis.update();
 				this.shape = null;
 			}

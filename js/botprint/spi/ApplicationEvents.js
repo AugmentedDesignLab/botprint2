@@ -7,5 +7,7 @@ var ApplicationEvents = {
 	chassisShapeUpdated: 'The chassis shape is updated, payload: {shape: new_svg}',
 	wheelUpdated: 'A wheel has been added or moved, payload: {wheel: Wheel2D}',
 	selectionChanged: 'A different element on the web page is selected. payload: {target: the 2D shape selected}',
-	wheelDeleted: 'A wheel has been deleted, payload: {wheel: Wheel2D}'
+	wheelDeleted: 'A wheel has been deleted, payload: {wheel: Wheel2D}',
+	layoutUpdated: 'A layout has been updated, payload: {layout: Deck2D}',
+	layoutDeleted: 'A layout has been deleted, payload: {}'
 };

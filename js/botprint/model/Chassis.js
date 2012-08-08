@@ -6,16 +6,24 @@
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
 function Chassis (opts){
-	var options = {isLeaf: false};
+	var options 	= {isLeaf: false};
 	$.extend(options, opts || {});
+
 	var self = {
 		path: options.path,
 		transform: options.transform,
-		
+		vertices: options.vertices || [],
+
 		update: function(){
 			// to trigger an event related to this model object
-			self.radio.trigger(ApplicationEvents.chassisShapeUpdated,
-							   {path: self.path, transform: self.transform});
+			self.radio.trigger(
+				ApplicationEvents.chassisShapeUpdated,
+				{
+					path: 	   self.path,
+					transform: self.transform,
+					vertices:  self.vertices
+				}
+			);
 		}
 	};
 
