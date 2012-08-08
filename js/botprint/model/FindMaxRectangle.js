@@ -25,11 +25,11 @@ function FindMaxRectangle(data){
 		// assumption: since what we are looking is a rect, we assume that the
 		// min distance is the height and the max distance is the width
 		return {
-			area: dst * dst2,
+			area: 	dst * dst2,
 			height: Math.min(dst, dst2),
 			width:  Math.max(dst, dst2),
-			x: mid.x,
-			y: mid.y
+			x: 		mid.x,
+			y: 		mid.y
 		};
 	};
 
