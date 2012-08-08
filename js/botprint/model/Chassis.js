@@ -9,12 +9,10 @@ function Chassis (opts){
 	var options 	= {isLeaf: false};
 	$.extend(options, opts || {});
 
-	var vertices	= options.vertices || [];
-
 	var self = {
 		path: options.path,
 		transform: options.transform,
-		vertices: vertices,
+		vertices: options.vertices || [],
 
 		update: function(){
 			// to trigger an event related to this model object

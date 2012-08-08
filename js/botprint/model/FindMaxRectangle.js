@@ -2,6 +2,8 @@
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
 function FindMaxRectangle(data){
+	var normalize = 800;
+
 	// calculates the distance btw two points
 	var distance = function(a, b){
 		return Math.pow(a.x - b.x, 2) +  Math.pow(a.y - b.y, 2);
@@ -26,8 +28,8 @@ function FindMaxRectangle(data){
 		// min distance is the height and the max distance is the width
 		return {
 			area: 	dst * dst2,
-			height: Math.min(dst, dst2),
-			width:  Math.max(dst, dst2),
+			height: (Math.min(dst, dst2))/normalize,
+			width:  (Math.max(dst, dst2))/normalize,
 			x: 		mid.x,
 			y: 		mid.y
 		};

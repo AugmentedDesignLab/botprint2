@@ -46,20 +46,23 @@ function BinPacker(polygon) {
 	var x		= polygon.x || 0; // if we are always getting 0, then there is something wrong going on.
 	var y		= polygon.y || 0; // if we are always getting 0, then there is something wrong going on.
 
-	var root 	= {
-		x: x,
-		y: y,
-		w: w,
-		h: h
-	};
-
 	return {
+		init: function(){
+			this.root = {
+				x: x,
+				y: y,
+				w: w,
+				h: h
+			};
+		},
+
 		fit: function(blocks) {
+			this.init();
 			var n, node, block;
 
 			for (n = 0; n < blocks.length; n++) {
 				block = blocks[n];
-				node = this.findNode(root, block.w, block.h);
+				node = this.findNode(this.root, block.w, block.h);
 				if (node /* if node != null, then ...*/){
 					block.fit = this.splitNode(node, block.w, block.h);
 				}

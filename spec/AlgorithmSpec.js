@@ -28,8 +28,8 @@ describe("A PCG Algorithm", function(){
 		var max		= FindMaxRectangle({corners: points});
 
 		expect(max.area).toBe(306);
-		expect(max.height).toBe(17);
-		expect(max.width).toBe(18);
+		expect(max.height).toBe(0.02125);
+		expect(max.width).toBe(0.0225);
 		expect(max.x).toBe(0);
 		expect(max.y).toBe(0);
 	});

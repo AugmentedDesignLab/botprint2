@@ -34,11 +34,16 @@ function LayoutHandler(view, options) {
 			// 5. pass svg to Layout2D
 			// 6. update layout domain object (call update())
 
-			var points 		= chassisModel.vertices;
+			var vertices 	= chassisModel.vertices;
+			var points		= [];
+			vertices.forEach(function(each){
+				points.push({x: each.position.x, y: each.position.y});
+			});
+
 			var max			= FindMaxRectangle({corners: points});
 			var parts       = MakeParts({app: radio, bus: bus});
 
-			var outline	= PackLayout({app: radio, bus: bus, rect: max, parts: parts, name: "Bottom"});
+			var outline		= PackLayout({app: radio, bus: bus, rect: max, parts: parts, name: "Bottom"});
 
 			var rendered	= RenderLayout({paper: view.draw, layout: outline}); // return {view.draw.set(), text};
 
@@ -47,9 +52,7 @@ function LayoutHandler(view, options) {
 
 			// inform interested parties.
 			outline.update();
-
-			vop.deck2D 	= deck2D;
-			vop.outline	= outline;
+			vop.update(deck2D, outline);
 		},
 
 		layoutUpdated: function(payload) {

@@ -20,12 +20,13 @@ function RenderLayout(data) {
 			var svgSet		= paper.set(); // use sets to group independent svgs...
 
 			outline.select().forEach(function(each){
+				console.log(each.x + "-" + each.y);
 				// get random color
 				var color = Raphael.getColor();
 				svgSet.push(
 					paper.rect(
-						each.x, each.y,
-						each.w, each.h
+						each.fit.x, each.fit.y,
+						each.fit.w, each.fit.h
 					).attr({fill: color, stroke: color})
 				);
 			});
