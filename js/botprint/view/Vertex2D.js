@@ -7,33 +7,37 @@ function Vertex2D(position, target, options) {
 	var normalSize = 4;
 	var svg = draw.circle(position.x, position.y, normalSize);
 	svg.attr({fill: 'white', stroke: 'black'});
+	svg.node.style.cursor = 'move';
 	
 	var self = {
 		elem: svg,
 		target: target,
 		handlers: [],
 		
-		getPosition: function() {
+		get position() {
 			return {x: svg.attrs.cx, y: svg.attrs.cy};
 		},
 		
-		setPosition: function(x, y) {
-			svg.attr({cx: x, cy: y});
+		set position(pos) {
+			svg.attr({cx: pos.x, cy: pos.y});
 		},
 		
 		highlight: function() {
-			svg.attr({r: normalSize + 2});
+			svg.animate({r: normalSize + 2}, 200);
 		},
 		
 		lowlight: function() {
-			svg.attr({r: normalSize});
+			svg.animate({r: normalSize}, 200);
 		}
 	};
 	
 	$.extend(self, View());
 	// making it draggable
-	self = Draggable2D(self);
-	var dragging = VertexDraggingHandler(self, options);
+	self = Draggable2D(self)
+	// pass vertices too, so that we can send them to the LayoutHandler.
+	var extra = {vertices: target.vertices};
+	$.extend(extra, options);
+	var dragging = VertexDraggingHandler(self, extra);
 	dragging.enable();
 	self.handlers.push(dragging);
 	// making it hoverable

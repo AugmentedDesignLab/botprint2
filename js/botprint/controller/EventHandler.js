@@ -24,13 +24,12 @@ function EventHandler(view, options) {
 		disable: function() {
 			var thisHandler = this;
 			thisHandler.appEvents.forEach(function(ev){
-			    self.unbind(ApplicationEvents[ev], thisHandler[ev]);
+				options.app.unbind(ApplicationEvents[ev], thisHandler[ev]);
 			});
 			thisHandler.userEvents.forEach(function(ev){
 			    view.unbind(UserEvents[ev], thisHandler[ev]);
 			});			
-		},
-
+		}
 	};
 	
 	$.extend(self, Bindable(view.bus));

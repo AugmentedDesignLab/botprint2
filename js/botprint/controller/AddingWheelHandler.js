@@ -2,24 +2,20 @@
  * @author Zhongpeng Lin
  */
 function AddingWheelHandler(view, options) {
-	var wheelDef = {
-		width: 30,
-		height: 60,
-		radius: 5,
-	};
-	
 	var self = {
 		userEvents: ['click'],
 
 		click: function(payload) {
-			var x = RelativeCoordEvent(payload.event).relativeX;
-			var y = RelativeCoordEvent(payload.event).relativeY;
-			var svg = view.draw.rect(x - wheelDef.width/2, y - wheelDef.height/2,
-				wheelDef.width, wheelDef.height, wheelDef.radius);
+			var x = payload.x;
+			var y = payload.y;
+			console.log(x + "-" + y);
+			var svg = view.draw.rect(x - SpecSheet.wheel.width /2, y - SpecSheet.wheel.radius,
+				SpecSheet.wheel.width, SpecSheet.wheel.radius * 2, 5);
 			svg.attr(view.shapeAttributes);
 
-			var wheel = Wheel2D(svg, {app: options.app});
-			options.app.trigger(ApplicationEvents.wheelUpdated, {wheel: wheel});
+			var wheel2D = Wheel2D(svg, {app: options.app});
+			var wheel = Wheel({coordinates: wheel2D.position, id: wheel2D.id, app: options.app});
+			wheel.update();
 		}
 	};
 

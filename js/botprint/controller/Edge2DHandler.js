@@ -16,8 +16,7 @@ function Edge2DHandler(view, options) {
 		
 		mouseMove: function(payload) {
 			if(self.newVertex) {
-				var event = RelativeCoordEvent(payload.event);
-				self.newVertex.attr({cx: event.relativeX, cy: event.relativeY});
+				self.newVertex.attr({cx: payload.x, cy: payload.y});
 			}
 		},
 		
@@ -28,11 +27,11 @@ function Edge2DHandler(view, options) {
 		},
 		
 		click: function(payload) {
-			var event = RelativeCoordEvent(payload.event);
 			view.target.deselect();
-			var path = view.target.elem.attrs.path;
-			path.splice(options.pathIndex, 0, ['L', event.relativeX, event.relativeY]);
-			view.target.elem.attr('path', path);
+			var points = view.target.points;
+			points.splice(options.pathIndex+1, 0, {x: payload.x, y: payload.y});
+			view.target.redraw();
+			
 			view.target.select();
 		}
 	};

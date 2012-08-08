@@ -1,15 +1,17 @@
 /**
  * @author Zhongpeng Lin
  */
-function Edge2D(start, end, target, options) {
+function Edge2D(start, path, target, options) {
 	var draw = target.elem.paper;
-	var svg = draw.path('M '+start.x+' '+start.y+' L '+end.x+' '+end.y);
-	svg.attr({stroke: '#00FFFF', 'stroke-width': 4});
+	var svg = draw.path('M '+start.x+' '+start.y+' '+path);
+	svg.attr({opacity: 0, 'stroke-width': 10});
 	svg.insertAfter(target.elem);
+	svg.node.style.cursor = 'crosshair';
+
 	var self = {
 		elem: svg,
 		handlers: [],
-		target: target
+		target: target,
 	};
 	
 	Mixable(self).mix(View());

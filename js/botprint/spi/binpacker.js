@@ -40,63 +40,61 @@
  * }
  * ******************************************************************************/
 
-BinPacker = function(deck) {
-	var w = deck.w;
-	var h = deck.h;
-	this.init(w, h);
-};
+function BinPacker(polygon) {
+	var w 		= polygon.w;
+	var h 		= polygon.h;
+	var x		= polygon.x || 0; // if we are always getting 0, then there is something wrong going on.
+	var y		= polygon.y || 0; // if we are always getting 0, then there is something wrong going on.
 
-BinPacker.prototype = {
-	// todo(Huascar) do this in terms of a Deck object's dimensions.
-	init: function(w, h) {
-		this.root = {
-			x: 0,
-			y: 0,
-			w: w,
-			h: h
-		};
-	},
+	return {
+		init: function(){
+			this.root = {
+				x: x,
+				y: y,
+				w: w,
+				h: h
+			};
+		},
 
-	fit: function(blocks) {
-		var n, node, block;
+		fit: function(blocks) {
+			this.init();
+			var n, node, block;
 
-		for (n = 0; n < blocks.length; n++) {
-			block = blocks[n];
-			node = this.findNode(this.root, block.w, block.h);
-			if (node /* if node != null, then ...*/){
-				block.fit = this.splitNode(node, block.w, block.h);
+			for (n = 0; n < blocks.length; n++) {
+				block = blocks[n];
+				node = this.findNode(this.root, block.w, block.h);
+				if (node /* if node != null, then ...*/){
+					block.fit = this.splitNode(node, block.w, block.h);
+				}
 			}
+		},
+
+		findNode: function(root, w, h) {
+			if (root.used)
+				return this.findNode(root.right, w, h) || this.findNode(root.down, w, h);
+			else if ((w <= root.w) && (h <= root.h))
+				return root;
+			else
+				return null;
+		},
+
+		splitNode: function(node, w, h) {
+			node.used = true;
+			node.down  = {
+				x: node.x,
+				y: node.y + h,
+				w: node.w,
+				h: node.h - h
+			};
+
+			node.right = {
+				x: node.x + w,
+				y: node.y,
+				w: node.w - w,
+				h: h
+			};
+
+			return node;
 		}
-	},
-
-	findNode: function(root, w, h) {
-		if (root.used)
-			return this.findNode(root.right, w, h) || this.findNode(root.down, w, h);
-		else if ((w <= root.w) && (h <= root.h))
-			return root;
-		else
-			return null;
-	},
-
-	splitNode: function(node, w, h) {
-		node.used = true;
-		node.down  = {
-			x: node.x,
-			y: node.y + h,
-			w: node.w,
-			h: node.h - h
-		};
-
-		node.right = {
-			x: node.x + w,
-			y: node.y,
-			w: node.w - w,
-			h: h
-		};
-
-		return node;
 	}
-
-};
-
-
+}

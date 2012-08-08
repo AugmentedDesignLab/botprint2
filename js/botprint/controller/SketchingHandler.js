@@ -8,9 +8,8 @@ function SketchingHandler(view, options) {
 		userEvents: ['click', 'mouseMove', 'dblClick'],
 		
 		click: function(payload) {
-			var event = payload.event;
-			var x = RelativeCoordEvent(event).relativeX;
-			var y = RelativeCoordEvent(event).relativeY;
+			var x = payload.x;
+			var y = payload.y;
 
 			if(this.shape){
 				// Extend the path
@@ -25,9 +24,8 @@ function SketchingHandler(view, options) {
 		},
 		
 		mouseMove: function(payload) {
-			var event = payload.event;
-			var x = RelativeCoordEvent(event).relativeX;
-			var y = RelativeCoordEvent(event).relativeY;
+			var x = payload.x;
+			var y = payload.y;
 
 			if(this.shape){
 				// Modify the last path element
@@ -50,8 +48,19 @@ function SketchingHandler(view, options) {
 				path.pop();
 				this.shape.attr({path: path +'Z', stroke: null});
 				var chassis2D = Chassis2D(this.shape, {app:options.app});
-				view.doneSketching(chassis2D);				
-				options.app.trigger(ApplicationEvents.chassisShapeUpdated, {shape: this.shape});
+				view.doneSketching(chassis2D);
+				var chassis = Chassis(
+					{
+						path: this.shape.attrs.path,
+						transform: this.shape.transform(),
+						app: options.app,
+						// vertices represent the reference points from where
+						// we will start drawing the internal layout of
+						// chassis.
+						vertices: chassis2D.vertices
+					}
+				);
+				chassis.update();
 				this.shape = null;
 			}
 		}

@@ -4,11 +4,10 @@
 Chassis3D.prototype = new THREE.Mesh();
 Chassis3D.constructor = Chassis3D;
 
-function Chassis3D(svg, height) {
-	var toShape = new SVG2Shape();
+function Chassis3D(chassisModel) {
 	var material = new THREE.MeshPhongMaterial();
-	var shape = toShape.convert(svg);
-	var geometry = shape.extrude({amount: height});
+	var shape = this.buildShape(chassisModel.path);
+	var geometry = shape.extrude({amount: SpecSheet.chassis.height});
 	geometry.computeBoundingBox();
 	var bBox = geometry.boundingBox;
 	// record the position of the geometry
@@ -21,7 +20,7 @@ function Chassis3D(svg, height) {
 	THREE.Mesh.call(this,  geometry, material);
 	this.position = position;
 	// replay transforms in original SVG
-	$.each(shape.transforms, function(index, t){
+	$.each(chassisModel.transform, function(index, t){
 		if(t[0] == 'T')
 		{
 			this.translateX(t[1]);
@@ -31,3 +30,35 @@ function Chassis3D(svg, height) {
 		}
 	});
 }
+
+Chassis3D.prototype.buildShape = function(path) {
+	var shape = new THREE.Shape();
+
+	// used to remove duplicate actions
+	var existingActions = {};
+	for(var i = 0; i < path.length; i++)
+	{
+		var action = path[i];
+		if(!existingActions[action]){
+			existingActions[action] = true;
+			switch(action[0]){
+				case 'M':
+				case 'm':
+					shape.moveTo(action[1], action[2]);
+					break;
+				case 'L':
+				case 'l':
+					shape.lineTo(action[1], action[2]);
+					break;
+				case 'C':
+					shape.bezierCurveTo(action[1], action[2], action[3], action[4], action[5], action[6]);
+				case 'Z':
+				case 'z':
+					shape.closePath();
+					break;
+			}
+
+		}
+	}
+	return shape;
+};

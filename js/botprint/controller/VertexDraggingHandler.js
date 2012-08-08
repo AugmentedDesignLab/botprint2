@@ -4,34 +4,34 @@
  */
 
 function VertexDraggingHandler(view, options) {
-	
 	var self = {
 		dragMove: function(payload) {
 			self.super.dragMove(payload);
-			var position = view.getPosition();
+			var position = view.position;
 			var target = view.target;
 			// modify the target shape, which is the chassis
-			var path = target.elem.attrs.path;
-			path[options.pathIndex][1] = position.x;
-			path[options.pathIndex][2] = position.y;
-			target.elem.attr({path: path});
-			// update adjacent edges
-			var numVertices = target.edges.length;
-			var edge1 = target.edges[(options.pathIndex+numVertices-1)%numVertices].elem;
-			path = edge1.attrs.path;
-			path[1][1] = position.x;
-			path[1][2] = position.y;
-			edge1.attr('path', path);
-			var edge2 = target.edges[options.pathIndex].elem;
-			path = edge2.attrs.path;
-			path[0][1] = position.x;
-			path[0][2] = position.y;
-			edge2.attr('path', path);
+			target.points[options.pathIndex] = position;
+			target.redraw();
 		},
 		
 		dragEnd: function(payload) {
 			self.super.dragEnd(payload);
-			options.app.trigger(ApplicationEvents.chassisShapeUpdated, {shape: view.target.elem});
+			var shape = view.target.elem;
+			var chassis = Chassis(
+				{
+					path: shape.attrs.path,
+					transform: shape.transform(),
+					app: options.app,
+					// vertices represent the reference points from where
+					// we will start drawing the internal layout of
+					// chassis.
+					vertices: options.vertices
+				}
+			);
+			chassis.update();
+			// force to redraw the edges
+			view.target.deselect();
+			view.target.select();
 		}
 	};
 	Mixable(self).mix(DraggingHandler(view, options));
