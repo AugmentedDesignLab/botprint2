@@ -9,7 +9,13 @@ function Deck (opts){
 
 	var self = {
 		update: function(){
-			// to trigger an event related to this model object
+			var event	= ApplicationEvents.layoutUpdated;
+			var payload = {x: self.x, y: self.y, w: self.w, h:self.h};
+			self.radio.trigger(event, payload);
+		},
+
+		delete: function() {
+			self.radio.trigger(ApplicationEvents.layoutDeleted, {});
 		}
 	};
 

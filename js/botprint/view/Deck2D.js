@@ -32,6 +32,7 @@ function Deck2D(rendered, options) {
 	var hovering = HoveringHandler(self, options);
 	hovering.enable();
 	self.handlers.push(hovering);
-
+	// making it removable
+	self = Removable2D(self);
 	return self;
 }
