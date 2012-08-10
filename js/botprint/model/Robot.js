@@ -120,6 +120,14 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
             }
 		},
 
+		validateChassis: function() {
+			return self.chassis && self.chassis.isSelfIntersecting();
+		},
+		
+		validateWheels: function() {
+			
+		},
+		
 		update: function(){
 			// to trigger an event related to this model object
 		}
