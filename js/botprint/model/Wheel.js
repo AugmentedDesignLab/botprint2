@@ -28,7 +28,7 @@ function Wheel (opts){
 			self.radio.trigger(ApplicationEvents.wheelDeleted, {id: self.id});
 		},
 		
-		isIntersectingWith: function(other) {
+		isOverlappingWith: function(other) {
 			var size =  new Vector2D(PartsFolio.wheel.width, PartsFolio.wheel.radius*2);
 			var topLeft1 = new Point2D(self.x-size.x/2, self.y-size.y/2);
 			var bottomRight1 = new Point2D(self.x+size.x/2, self.y+size.y/2);

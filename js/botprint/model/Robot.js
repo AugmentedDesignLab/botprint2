@@ -15,6 +15,11 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
     };
 
 	var self 	= {
+		// Used by JSON.stringify.	
+		toJSON: function() {
+			return {chassis: self.chassis, wheels:self.wheels};
+		},
+		
 		wheels: {},
 		/**
 		 * assembles a Robot given a set of parts and a set of PCG
@@ -120,16 +125,63 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
             }
 		},
 
-		validateChassis: function() {
-			return self.chassis && self.chassis.isSelfIntersecting();
+		updateChassis: function(chassis) {
+			self.chassis = chassis;
+			self.validate();
+		},
+		
+		updateWheel: function(wheel) {
+			self.wheels[wheel.id] = wheel;
+			self.validate();
+		},
+		
+		deleteWheel: function(id) {
+			delete self.wheels[id];
+			self.validate();
+		},
+		
+		validate: function() {
+			if(self.validateChassis() && self.validateWheels()) {
+				self.update();
+			}
 		},
 		
 		validateWheels: function() {
+			var wheels = [];
+			for(var id in self.wheels) {
+				if(self.wheels.hasOwnProperty(id)) {
+					wheels.push(self.wheels[id]);
+				}
+			}
+			var invalidWheels = [];
+			for(var i=0; i<wheels.length; i++){
+				for(var j=i+1; j<wheels.length; j++) {
+					if(wheels[i].isOverlappingWith(wheels[j])){
+						invalidWheels.push(wheels[i].id);
+						invalidWheels.push(wheels[j].id);
+					}
+				}
+			}
 			
+			self.radio.trigger(ApplicationEvents.wheelsOverlapping,
+							   {wheels: invalidWheels});
+			return invalidWheels.length == 0;
+		},
+		
+		validateChassis: function() {
+			if(self.chassis.isSelfIntersecting()) {
+				self.radio.trigger(ApplicationEvents.chassisSelfIntersecting, {});
+				return false;
+			} else {
+				self.radio.trigger(ApplicationEvents.chassisValidated, {});
+				return true;
+			}
 		},
 		
 		update: function(){
-			// to trigger an event related to this model object
+			// TODO: making the event bus serialize all payload values automatically
+			var json = JSON.stringify(self);
+			self.radio.trigger(ApplicationEvents.robotUpdated, {robot: json});
 		}
 	};
 

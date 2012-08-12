@@ -4,13 +4,12 @@
  * @author Zhongpeng Lin
  */
 function Wheel2D(svg, options) {
-	
 	var self = {
 		elem: svg,
 		id: new Date().getTime(),
 		handlers: [],
 		
-                // position of a wheel is the position of its center
+        // position of a wheel is the position of its center
 		get position() {
 			return {x: svg.attrs.x + svg.attrs.width * .5,
                             y: svg.attrs.y + svg.attrs.height * .5};
@@ -18,7 +17,7 @@ function Wheel2D(svg, options) {
 		
 		set position(pos) {
 			svg.attr({x: pos.x - svg.attrs.width * .5,
-                            y: pos.y - svg.attrs.height * .5});
+					 y: pos.y - svg.attrs.height * .5});
 			if(this.removeButton) {
 				this.removeButton.targetPosition = pos;
 			}
@@ -31,12 +30,12 @@ function Wheel2D(svg, options) {
 		lowlight: function() {
 			svg.attr({stroke: null});
 		},
-
-		setColor: function(color) {
-			svg.attr({fill: color});
+		
+		set color(c) {
+			svg.attr({fill: c});
 		},
 		
-		getColor: function() {
+		get color(){
 			return svg.attrs.fill;
 		},
 		
@@ -69,6 +68,10 @@ function Wheel2D(svg, options) {
 	self.trigger(UserEvents.click);
 	// making it removable
 	self = Removable2D(self);
-		
+	
+	var errorHandler = WheelErrorHandler(self, options);
+	errorHandler.enable();
+	self.handlers.push(errorHandler);
+	
 	return self;
 }

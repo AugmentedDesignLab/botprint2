@@ -5,11 +5,11 @@ function Chassis2D(svg, options) {
 		edges: [],
 		points: [],
 		
-		setColor: function(color) {
-			svg.attr({fill: color});
+		set color(c) {
+			svg.attr({fill: c});
 		},
 		
-		getColor: function(color) {
+		get color(){
 			return svg.attrs.fill;
 		},
 		
@@ -41,6 +41,18 @@ function Chassis2D(svg, options) {
 				edge.remove();
 			}
 			this.selected = false;
+		},
+		
+		warn: function() {
+			self.diswarn();
+			self. glow = svg.glow({color: 'red'});
+		},
+		
+		diswarn: function() {
+			if(self.glow) {
+				self.glow.remove();
+				self.glow = null;
+			}
 		},
 		
 		redraw: function() {
@@ -77,5 +89,7 @@ function Chassis2D(svg, options) {
 	selectionHandler.enable();
 	self.trigger(UserEvents.click, {});
 	
+	var errorHandler = ChassisErrorHandler(self, {app: options.app});
+	errorHandler.enable();
 	return self;
 }
