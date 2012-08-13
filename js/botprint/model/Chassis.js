@@ -9,6 +9,7 @@ function Chassis (opts){
 	var options = {isLeaf: false};
 	$.extend(options, opts || {});
 	var self = {
+		replacer: ['path', 'transform'],
 		path: options.path,
 		transform: options.transform,
 		

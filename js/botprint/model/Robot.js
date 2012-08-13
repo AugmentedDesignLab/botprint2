@@ -177,12 +177,6 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 				return true;
 			}
 		},
-		
-		update: function(){
-			// TODO: making the event bus serialize all payload values automatically
-			var json = JSON.stringify(self);
-			self.radio.trigger(ApplicationEvents.robotUpdated, {robot: json});
-		}
 	};
 
 	// Mixing it in, just smash the methods of the newly created

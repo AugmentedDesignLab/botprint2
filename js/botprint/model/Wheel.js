@@ -9,6 +9,7 @@ function Wheel (opts){
 	var snappedAt = { x:0, y:0, z:0};
 
 	var self = {
+		replacer: ['id','x','y'],
 		id: opts.id,
 		
 		snap: function(position){
