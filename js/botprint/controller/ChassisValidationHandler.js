@@ -1,4 +1,4 @@
-function ChassisErrorHandler(view, options) {
+function ChassisValidationHandler(view, options) {
 	var self = {
 		appEvents: ['chassisSelfIntersecting', 'chassisValidated'],
 		

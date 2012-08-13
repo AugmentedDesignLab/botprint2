@@ -89,7 +89,7 @@ function Chassis2D(svg, options) {
 	selectionHandler.enable();
 	self.trigger(UserEvents.click, {});
 	
-	var errorHandler = ChassisErrorHandler(self, {app: options.app});
+	var errorHandler = ChassisValidationHandler(self, {app: options.app});
 	errorHandler.enable();
 	return self;
 }

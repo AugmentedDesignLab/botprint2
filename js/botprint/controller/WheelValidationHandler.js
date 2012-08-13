@@ -1,4 +1,4 @@
-function WheelErrorHandler(view, options) {
+function WheelValidationHandler(view, options) {
 	var normalColor = view.color;
 	var self = {
 		appEvents: ['wheelsOverlapping'],

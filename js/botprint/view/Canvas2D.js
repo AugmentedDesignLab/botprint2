@@ -68,7 +68,7 @@ function Canvas2D(options) {
 	self.sketchingHandler = SketchingHandler(self, {app: options.app});
 	self.sketchingHandler.enable();
 	
-	self.validationHandler = ValidationHandler(self, {app: options.app});
+	self.validationHandler = ValidationRouter(self, {app: options.app});
 	self.validationHandler.enable();
 	return self;
 }

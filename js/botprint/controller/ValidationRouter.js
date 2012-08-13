@@ -1,4 +1,4 @@
-function ValidationHandler(view, options) {
+function ValidationRouter(view, options) {
 	// private variable
 	var robotModel = Robot({app:options.app});
 	

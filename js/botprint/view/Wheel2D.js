@@ -69,7 +69,7 @@ function Wheel2D(svg, options) {
 	// making it removable
 	self = Removable2D(self);
 	
-	var errorHandler = WheelErrorHandler(self, options);
+	var errorHandler = WheelValidationHandler(self, options);
 	errorHandler.enable();
 	self.handlers.push(errorHandler);
 	
