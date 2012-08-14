@@ -3,20 +3,23 @@ function ValidationRouter(view, options) {
 	var robotModel = Robot({app:options.app});
 	
 	var self = {
-		appEvents: ['chassisShapeUpdated', 'wheelUpdated', 'wheelDeleted'],
-
-		chassisShapeUpdated: function(payload) {
-			var chassisModel = Chassis(payload);
-			robotModel.updateChassis(chassisModel);
-		},
+		appEvents: ['partUpdated', 'wheelDeleted', 'partAdded'],
 		
-		wheelUpdated: function(payload) {
-			var wheelModel = Wheel({coordinates: {x: payload.x, y: payload.y}, id: payload.id});
-			robotModel.updateWheel(wheelModel);
+		partAdded: function(payload) {
+			var partAttr = JSON.parse(payload.part);
+			var partClass = eval(partAttr.name);
+			var part = partClass();
+			$.extend(part, partAttr);
+			robotModel.install(part);
+		},
+
+		partUpdated: function(payload) {
+			var part = JSON.parse(payload.part);
+			robotModel.updatePart(part);
 		},
 		
 		wheelDeleted: function(payload) {
-			robotModel.deleteWheel(payload.id);
+			robotModel.uninstall(payload.id);
 		}
 	};
 	Mixable(self).mix(EventHandler(view, options));

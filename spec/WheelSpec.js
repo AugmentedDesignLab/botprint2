@@ -12,13 +12,13 @@ describe('A wheel', function() {
 		expect(w1.isOverlappingWith(w2)).toBe(false);
 	});
 	
-	it('should serialize the coordinates', function() {
-		var wJSON = JSON.stringify(w1, w1.replacer);
-		expect(wJSON.indexOf('"x":100,"y":100')).not.toBeLessThan(0);
+	it('should serialize the coordinates and name', function() {
+		var wJSON = JSON.stringify(w1);
+		expect(wJSON.indexOf('"name":"Wheel","x":100,"y":100')).not.toBeLessThan(0);
 	});
 	
 	it('should not serialize super', function() {
-		var wJSON = JSON.stringify(w1, w1.replacer);
+		var wJSON = JSON.stringify(w1);
 		expect(wJSON.indexOf('super')).toBeLessThan(0);
 	});
 });

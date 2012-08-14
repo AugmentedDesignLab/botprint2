@@ -27,14 +27,16 @@ describe('A chassis', function() {
 		expect(chassis1.isSelfIntersecting()).toBe(true);
 	});
 	
-	it('should serialize path', function() {
-		var cJSON = JSON.stringify(chassis1, chassis1.replacer);
+	it('should serialize path and name', function() {
+debugger;
+		var cJSON = JSON.stringify(chassis1);
 		var pJSON = JSON.stringify(path1);
 		expect(cJSON.indexOf(pJSON)).not.toBeLessThan(0);
+		expect(cJSON.indexOf('"name":"Chassis"')).not.toBeLessThan(0);
 	});
 	
 	it('should not serialize super', function() {
-		var cJSON = JSON.stringify(chassis1, chassis1.replacer);
+		var cJSON = JSON.stringify(chassis1);
 		expect(cJSON.indexOf('super')).toBeLessThan(0);
 	});
 });

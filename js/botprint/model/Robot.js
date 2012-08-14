@@ -3,8 +3,6 @@
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
 function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, chassis: C}}*/){
-	var parts 		= [];
-
 	opts = opts || {};
     var toArray = function(algs){
         var algorithms = [];
@@ -15,12 +13,15 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
     };
 
 	var self 	= {
-		// Used by JSON.stringify.	
-		toJSON: function() {
-			return {chassis: self.chassis, wheels:self.wheels};
-		},
+		serializable: ['parts'],
 		
-		wheels: {},
+		parts: [],
+		get chassis() {
+			if(!self._chassis) {
+				self._chassis = self.find(function(p) {return p.name == 'Chassis';})[0];
+			}
+			return self._chassis;
+		},
 		/**
 		 * assembles a Robot given a set of parts and a set of PCG
 		 * algorithms that put these parts together.
@@ -55,7 +56,7 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 				 * snapped wheels, and the proper wiring.
 				 *
 				 **/
-				var data = parts;
+				var data = self.parts;
 				toArray(algs).forEach(function (elem) {
 					// e.g., function(data){ AlgorithmX(data).perform(); }
 					data = elem.call(data);
@@ -74,7 +75,7 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
         },
 
         count: function(){
-            return parts.length;
+            return self.parts.length;
         },
 
 		/**
@@ -83,7 +84,7 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 		 * @return {*} matched elements.
 		 */
 		find: function(filter){
-			return parts.select(filter);
+			return self.parts.select(filter);
 		},
 
 		/**
@@ -91,7 +92,14 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 		 * @param part robot part to be installed.
 		 */
 		install: function(part) {
-			parts.push(part);
+			self.parts.push(part);
+			self.validate();
+		},
+		
+		updatePart: function(part) {
+			var existingPart = self._getPart(part.id);
+			$.extend(existingPart, part);
+			self.validate();
 		},
 
 		/**
@@ -104,42 +112,33 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 			// todo(anyone) to persist the assembled Robot.
 		},
 
-        _getPart: function(idx) {
-          return parts[idx];
+        _getPart: function(id) {
+			var p = self.find(function(part){return part.id == id;});
+			if(p.length > 0)
+				return p[0];
+			else
+		        return null;
         },
 
 		/**
 		 * uninstalls the parts matching a condition.
 		 * @param part part to be uninstalled.
 		 */
-		uninstall: function(part){
-            for (var node, i = 0; node = self._getPart(i); i++) {
-                if(node == part){
+		uninstall: function(id){
+			self.parts.forEach(function(node, i) {
+				if(node.id == id) {
 					if(node.isLeaf()){
-						parts.splice(i, 1);
+						self.parts.splice(i, 1);
 					} else {
 						node.removeAll();
-						parts.splice(i, 1);
+						self.parts.splice(i, 1);
 					}
-                }
-            }
+					return;
+				}
+			});
+			self.validate();
 		},
 
-		updateChassis: function(chassis) {
-			self.chassis = chassis;
-			self.validate();
-		},
-		
-		updateWheel: function(wheel) {
-			self.wheels[wheel.id] = wheel;
-			self.validate();
-		},
-		
-		deleteWheel: function(id) {
-			delete self.wheels[id];
-			self.validate();
-		},
-		
 		validate: function() {
 			if(self.validateChassis() && self.validateWheels()) {
 				self.update();
@@ -147,12 +146,10 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 		},
 		
 		validateWheels: function() {
-			var wheels = [];
-			for(var id in self.wheels) {
-				if(self.wheels.hasOwnProperty(id)) {
-					wheels.push(self.wheels[id]);
-				}
-			}
+			var wheels = self.find(function(p){
+				return p.name == 'Wheel';
+			});
+			
 			var invalidWheels = [];
 			for(var i=0; i<wheels.length; i++){
 				for(var j=i+1; j<wheels.length; j++) {
@@ -177,6 +174,11 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 				return true;
 			}
 		},
+		
+		update: function() {
+			var json = JSON.stringify(self);
+			self.radio.trigger(ApplicationEvents.robotUpdated, {robot: json});
+		}
 	};
 
 	// Mixing it in, just smash the methods of the newly created

@@ -5,6 +5,7 @@
 function Part(opts){
 	var children = [];
 	var self = {
+		id: opts.id,
 		/**
 		 * adds a new ``child'' part.
 		 * @param child part to be added.
@@ -78,7 +79,25 @@ function Part(opts){
 			}
 			filter = filter || function(p) { return true; };
 			return children.select(filter);
+		},
+
+		update: function(){
+			/* All attributes of self will be stringified by default.
+			 * However, it is encouraged to specify a list of attributes
+			 * in the replacer, so that only those attributes will be
+			 * stringified. Alternatively, a subclass can define a
+			 * toJSON method, and return an object that will be stringified
+			 * instead of self
+			 */
+			var json = JSON.stringify(this);
+			self.radio.trigger(ApplicationEvents.partUpdated, {part: json});
+		},
+		
+		create: function() {
+			var json = JSON.stringify(this);
+			self.radio.trigger(ApplicationEvents.partAdded, {part: json});			
 		}
+
 	};
 
 	// Mixing it in, just smash the methods of the newly created

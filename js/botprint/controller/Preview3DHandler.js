@@ -7,7 +7,9 @@ function Preview3DHandler(view, options) {
 		appEvents: ['robotUpdated'],
 		
 		robotUpdated: function(payload) {
-			var robot = JSON.parse(payload.robot);
+			var robotAttrs = JSON.parse(payload.robot);
+			var robot = Robot();
+			$.extend(robot, robotAttrs);
 			var robot3D = new Robot3D(robot);
 			view.updateRobot(robot3D);
 		}

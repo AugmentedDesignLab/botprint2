@@ -4,6 +4,7 @@ function Chassis2D(svg, options) {
 		vertices: [],
 		edges: [],
 		points: [],
+		id: new Date().getTime(),
 		
 		set color(c) {
 			svg.attr({fill: c});
