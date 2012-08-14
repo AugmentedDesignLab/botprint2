@@ -15,7 +15,7 @@ function SidePanelHandler(view, options) {
 		
 		selectionChanged: function(payload) {
 			var color;
-			var colorRGB = payload.target.getColor();
+			var colorRGB = payload.target.color;
 			switch(colorRGB) {
 				case '#FF0000': color = 'red'; break;
 				case '#00FF00': color = 'green'; break;
