@@ -6,20 +6,20 @@
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
 function Chassis (opts){
-	var options = {isLeaf: false};
+	var options = {isLeaf: false, name: 'Chassis'};
 	$.extend(options, opts || {});
 	var self = {
-		path: options.path,
+		serializable: ['id', 'name', 'path', 'transform'],
+
+		path: options.path || [],
 		transform: options.transform,
-		
-		update: function(){
-			// to trigger an event related to this model object
-			self.radio.trigger(ApplicationEvents.chassisShapeUpdated,
-							   {path: self.path, transform: self.transform});
-		},
 		
 		isSelfIntersecting: function() {
 			return IntersectionDetection.isSelfIntersecting(self.path);
+		},
+		
+		accept: function(visitor) {
+			return visitor.visitChassis(this);
 		}
 	};
 

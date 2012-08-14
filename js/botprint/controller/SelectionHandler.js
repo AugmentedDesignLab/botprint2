@@ -21,7 +21,7 @@ function SelectionHandler(view, options) {
 		
 		optionChanged: function(payload) {
 			if(view.selected && payload.color) {
-				view.setColor(payload.color);
+				view.color = payload.color;
 			}
 		}
 	};

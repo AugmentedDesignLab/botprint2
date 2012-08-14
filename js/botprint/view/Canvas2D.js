@@ -58,10 +58,6 @@ function Canvas2D(options) {
 		
 		select: function() {},
 		deselect: function() {},
-		getColor: function() {
-			// Force SidePanel to use default color when canvas is selected
-			return null;
-		}
 	};
 	
 	$.extend(self, View());
@@ -72,5 +68,7 @@ function Canvas2D(options) {
 	self.sketchingHandler = SketchingHandler(self, {app: options.app});
 	self.sketchingHandler.enable();
 	
+	self.validationHandler = ValidationRouter(self, {app: options.app});
+	self.validationHandler.enable();
 	return self;
 }

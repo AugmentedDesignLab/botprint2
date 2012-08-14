@@ -18,7 +18,10 @@ function VertexDraggingHandler(view, options) {
 		dragEnd: function(payload) {
 			self.super.dragEnd(payload);
 			var shape = view.target.elem;
-			var chassis = Chassis({path: shape.attrs.path, transform: shape.transform(), app: options.app});
+			var chassis = Chassis({path: shape.attrs.path,
+								  transform: shape.transform(),
+								  app: options.app,
+								  id: view.target.id});
 			chassis.update();
 			// force to redraw the edges
 			view.target.deselect();
