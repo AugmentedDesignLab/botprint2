@@ -15,7 +15,7 @@ function Canvas2D(options) {
 		shapeAttributes: {
 				'stroke': '#F8F8F8',
 				'stroke-opacity': 1,
-				'stroke-width': 2,
+				'stroke-width': 3,
 				'stroke-linecap': 'round',
 				'stroke-linejoin': 'round'
 		},
