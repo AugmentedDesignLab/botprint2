@@ -4,8 +4,6 @@
  */
 function Bindable (bus) {
 	bus = bus || EventBus();
-	var queue = [];
-	var running = false;
 	return {
 		/**
 		 * The bind method adds a function as an event listener.
