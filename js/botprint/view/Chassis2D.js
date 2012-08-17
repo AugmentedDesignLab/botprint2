@@ -91,5 +91,6 @@ function Chassis2D(svg, options) {
 	
 	var errorHandler = ChassisValidationHandler(self, {app: options.app});
 	errorHandler.enable();
+	
 	return self;
 }

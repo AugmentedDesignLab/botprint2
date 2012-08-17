@@ -103,13 +103,11 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 		},
 
 		/**
-		 * persists the assambled robot.
-		 * @param data assambled robot.
+		 * persists a part of robot.
+		 * @param data the Blob object of the robot part.
 		 */
 		persist: function(data) {
-            data = data || {};
-			console.log(data);
-			// todo(anyone) to persist the assembled Robot.
+			saveAs(data,'botprint.svg');
 		},
 
         _getPart: function(id) {

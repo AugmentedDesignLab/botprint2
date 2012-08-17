@@ -5,6 +5,7 @@
  */
 function Selectable(object2D) {
     object2D.elem.click(function(event) {
+        event.preventDefault();
         event.stopPropagation();
         var relativeEvent = RelativeCoordEvent(event);
         object2D.trigger(UserEvents.click,

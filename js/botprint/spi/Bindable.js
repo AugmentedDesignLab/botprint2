@@ -4,6 +4,8 @@
  */
 function Bindable (bus) {
 	bus = bus || EventBus();
+	var queue = [];
+	var running = false;
 	return {
 		/**
 		 * The bind method adds a function as an event listener.
@@ -42,7 +44,16 @@ function Bindable (bus) {
 		 * @param {String} event The event to trigger.
 		 */
 		trigger:function (event, payload) {
-			bus.publish(event, payload)
+			queue.push([event, payload]);
+			if(running)
+				return;
+			else{
+				running = true;
+				for(var item = queue.shift(); item; item = queue.shift()) {
+					bus.publish(item[0], item[1]);
+				}
+				running = false;
+			}
 		}
 	};
 }
