@@ -7,7 +7,7 @@ function ChassisValidationHandler(view, options) {
 		},
 		
 		chassisValidated: function(payload) {
-			view.diswarn();
+			view.unwarn();
 		}
 	};
 	Mixable(self).mix(EventHandler(view, options));

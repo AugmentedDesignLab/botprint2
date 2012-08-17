@@ -51,7 +51,7 @@ function Chassis2D(svg, options) {
 			svg.attr({stroke: 'red'});
 		},
 		
-		diswarn: function() {
+		unwarn: function() {
 			svg.attr({stroke: null});
 		},
 		
