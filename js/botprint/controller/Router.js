@@ -28,7 +28,9 @@ function Router(view, options) {
 				return;
 			}
 			var path = view.chassis.elem.node;
-			robotModel.persist(path.toSVGBlob());
+			var bb = new BlobBuilder;
+			bb.append(path.toXML());
+			robotModel.persist(bb.getBlob('image/svg+xml;charset=utf-8'));
 		}
 	};
 	Mixable(self).mix(EventHandler(view, options));
