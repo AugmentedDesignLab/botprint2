@@ -42,7 +42,7 @@ function Bindable (bus) {
 		 * @param {String} event The event to trigger.
 		 */
 		trigger:function (event, payload) {
-			bus.publish(event, payload)
+			bus.publish(event, payload);
 		}
 	};
 }

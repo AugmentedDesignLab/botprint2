@@ -12,4 +12,5 @@ var ApplicationEvents = {
 	chassisSelfIntersecting: 'The chassis shape is self-intersecting, {}',
 	chassisValidated: 'The chassis shape is validated, {}',
 	partAdded: 'A new part has been added, payload: {part: json}',
+	saveChassis: 'User wants to save the chassis. payload: {}'
 };

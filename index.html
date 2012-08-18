@@ -49,9 +49,9 @@
 					<br/>
 
 					<div class="palette-set clearfix">
-						<h2>Done sketching</h2>
-						<a href="#" class="default" data-guivar="doneSketching"
-						data-guival="true">Print</a>
+						<h2>Save Chassis Design</h2>
+						<a href="#" data-guivar="doneSketching"
+						data-guival="true">Save</a>
 					</div>
 				</div>
 
@@ -70,14 +70,16 @@
 		</div>
 
 		<!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
 		<script>
-			window.jQuery || document.write('<script src="js/vendor/jquery-1.7.2.min.js"><\/script>')
+			window.jQuery || document.write('<script src="js/vendor/jquery-1.7.2.js"><\/script>')
 		</script>
 		<script src="js/vendor/raphael.js"></script>
 		<script src="js/vendor/Three.js"></script>
 		<script src="js/vendor/KevLinDev/2D.js"></script>
 		<script src="js/vendor/KevLinDev/Intersection.js"></script>
+		<script type="text/javascript" src="js/vendor/FileSaver.js"></script>
+		<script type="text/javascript" src="js/vendor/BlobBuilder.js"></script>
 		
 		<!-- spi -->
 		<script src="js/botprint/spi/Enumerable.js"></script>
@@ -91,6 +93,7 @@
 		<script src="js/botprint/spi/UserEvents.js"></script>
 		<script src="js/botprint/spi/Describable.js"></script>
 		<script src="js/botprint/spi/IntersectionDetection.js"></script>
+		<script type="text/javascript" src="js/botprint/spi/SVGPathElement.js"></script>
 		
 		<!-- Model -->
 		<script src="js/botprint/model/PartsFolio.js"></script>
@@ -115,8 +118,7 @@
 		<script src="js/botprint/controller/Edge2DHandler.js"></script>
 		<script type="text/javascript" src="js/botprint/controller/ChassisValidationHandler.js"></script>
 		<script type="text/javascript" src="js/botprint/controller/WheelValidationHandler.js"></script>
-		<script type="text/javascript" src="js/botprint/controller/ValidationRouter.js"></script>
-		
+		<script type="text/javascript" src="js/botprint/controller/Router.js"></script>
 		
 		<!-- Views -->
 		<script src="js/botprint/view/View.js"></script>

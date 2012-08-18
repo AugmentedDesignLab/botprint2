@@ -15,7 +15,7 @@ function Chassis2D(svg, options) {
 		},
 		
 		select: function() {
-			svg.attr({stroke: '#00FFFF'});
+			self.glow = svg.glow({color: self.color});
 			var path = svg.attrs.path;
 			
 			self.points.forEach(function(p, index){
@@ -32,7 +32,10 @@ function Chassis2D(svg, options) {
 		},
 		
 		deselect: function() {
-			svg.attr({stroke: null});
+			if(self.glow) {
+				self.glow.remove();
+				self.glow = null;
+			}
 			while(self.vertices.length > 0){
 				var vertex = self.vertices.pop();
 				vertex.remove();
@@ -45,15 +48,11 @@ function Chassis2D(svg, options) {
 		},
 		
 		warn: function() {
-			self.diswarn();
-			self. glow = svg.glow({color: 'red'});
+			svg.attr({stroke: 'red'});
 		},
 		
-		diswarn: function() {
-			if(self.glow) {
-				self.glow.remove();
-				self.glow = null;
-			}
+		unwarn: function() {
+			svg.attr({stroke: null});
 		},
 		
 		redraw: function() {
@@ -92,5 +91,6 @@ function Chassis2D(svg, options) {
 	
 	var errorHandler = ChassisValidationHandler(self, {app: options.app});
 	errorHandler.enable();
+	
 	return self;
 }
