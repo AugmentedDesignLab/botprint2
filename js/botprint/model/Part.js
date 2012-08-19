@@ -84,10 +84,8 @@ function Part(opts){
 		update: function(){
 			/* All attributes of self will be stringified by default.
 			 * However, it is encouraged to specify a list of attributes
-			 * in the replacer, so that only those attributes will be
-			 * stringified. Alternatively, a subclass can define a
-			 * toJSON method, and return an object that will be stringified
-			 * instead of self
+			 * in the serializable array, so that only those attributes will be
+			 * stringified.
 			 */
 			var json = JSON.stringify(this);
 			self.radio.trigger(ApplicationEvents.partUpdated, {part: json});
