@@ -51,17 +51,17 @@
 		var _circles = paper.set();
 
 		self._init = function(){
-			for(var i = 0; i < Autosketch.CURVE_COUNT - 1; i++){
+			for(var i = 0; i < Autosketch.MIN_LINE_COUNT - 1; i++){
 				(function(idx){
 					setTimeout(function(){
-						drawRandomOuterAndInnerRectangles(self);
+						sketch(self);
 					}, 500 * idx);
 				}(i));
 
 				moveCirclesToFront(self);
 			}
 
-			drawMask(self);
+			drawMask(self); // gives the illusion of the the Rect being smoothly drawn
 		};
 
 		self.paper 		= function(){ return _paper;   };
@@ -71,30 +71,38 @@
 		self.dh			= _options.dh;
 
 
-		function drawRandomOuterAndInnerRectangles(autosketch) {
-			var points = createTransformationPoints(); //createRandomPoints();
-			var twins  = createTwinPoints(points);
-			var color  = createRandomColor();
 
-			pickExperiment("gradient", points, twins, color, autosketch);
+		function sketch(autosketch) {
+			var color = Autosketch.randomColor();
+			var outer  = new Rectangle(
+				controlPoints(),
+				color
+			);
+
+			draw(outer, color, autosketch);
+
+			Rectangle.scaledDown(outer);
+
+			for(var item = outer.inner; item != null; item = item.inner){
+				draw(item, color, autosketch);
+			}
 		}
 
-		function createTwinPoints(points) {
-			var twins = new Points ();
-			points.each(function (p, i){
-				twins.add(new Point(p.x, p.y + Autosketch.Y_SEPARATION));
-			});
-			return twins;
-		}
 
 
-		function pickExperiment(name, points, twins, color, autosketch) {
-			if(name == "gradient") {
-
-				//drawCurve(points,  color, autosketch);
-				drawCircle(points, color, autosketch);
-				drawCircle(twins, color, autosketch);
-				drawRectangle(points, twins, color, autosketch);
+		function draw(rectangle, color, autosketch) {
+			if(!rectangle.fit) {
+				drawCircle(rectangle.top, color, autosketch);
+				drawCircle(rectangle.bottom, color, autosketch);
+				drawRectangle(rectangle.top, rectangle.bottom, color, autosketch);
+			} else {
+				var tops  = new Points();
+				tops.add(rectangle.topLeft);
+				tops.add(rectangle.topRight);
+				var botts = new Points();
+				botts.add(rectangle.bottomLeft);
+				botts.add(rectangle.bottomRight);
+				drawRectangle(tops, botts, color, autosketch);
 			}
 		}
 
@@ -103,7 +111,7 @@
 			pointsPath.attr ({
 				'stroke':color,
 				'fill':"none",
-				'opacity':0.3,
+				'opacity':0.1,
 				"stroke-width": 3
 			})
 				.toBack()
@@ -142,41 +150,6 @@
 			});
 		}
 
-		// deprecated
-		function drawCurve(points, color, autosketch) {
-			var pathstr = [];
-
-			points.each(function(p, i, isFirst, isLast){
-				if(isFirst){
-					// isLast is not use ok.
-					console.log(isLast);
-					pathstr.push('M', p.x, p.upY(i), 'R');
-				} else {
-					pathstr.push(p.x, p.upY(i));
-				}
-			});
-
-			points.backEach(function(p, i, isFirst, isLast){
-				if(isLast) {
-					pathstr.push('L', p.x, p.downY(i), 'R');
-				} else {
-					pathstr.push(p.x, p.downY(i));
-				}
-			});
-
-			autosketch.paper().path (pathstr)
-				.attr ({
-					'stroke':'none',
-					'fill':color,
-					'opacity':0
-				})
-				.toBack ()
-				.animate ({
-					'opacity':0.5
-				}, 3000);
-
-		}
-
 		function drawCircle(points, color, autosketch) {
 			points.each(function (point, i) {
 				var circle = autosketch.paper().circle(point.x, point.y, 0);
@@ -205,7 +178,7 @@
 			});
 		}
 
-		function createTransformationPoints(){
+		function controlPoints(){
 			var w 		= _options.dw - Autosketch.PADDING;
 			var h 		= _options.dh - Autosketch.PADDING;
 			var points 	= new Points ();
@@ -234,34 +207,6 @@
 			return points;
 		}
 
-		// deprecated
-		function createRandomPoints () {
-			var w 		= _options.dw - Autosketch.PADDING;
-			var h 		= _options.dh - Autosketch.PADDING;
-			var points 	= new Points ();
-
-
-
-			for (var i = 0; i <= Autosketch.POINT_LEN; i++) {
-				var x = parseInt(w / Autosketch.POINT_LEN) * i + Autosketch.PADDING/2;
-				var y = random() % h + Autosketch.PADDING/2;
-
-				console.log("x=" + x + ", y=" + y);
-				points.add(new Point(x, y));
-			}
-
-			return points;
-		}
-
-
-		function random () {
-			return parseInt (Math.random () * (1 << 10));
-		}
-
-		function createRandomColor () {
-			return random ().toString (16).replace (/.*(\w{3})/, '#$1');
-		}
-
 
 		function moveCirclesToFront(autosketch) {
 			autosketch.circles().toFront();
@@ -286,55 +231,15 @@
 
 	};
 
-	Autosketch.PADDING 		  = 200;
-	Autosketch.CURVE_COUNT 	  = 2; //4
-	Autosketch.POINT_LEN      = 5;
-	Autosketch.RADIUS		  = 4;
-	Autosketch.MARGIN_LEFT    = 300;
-	Autosketch.X_SEPARATION   = 100;
-	Autosketch.Y_SEPARATION   = 200;
-
-	Autosketch.nudge = function(p){
-		return [p[0] + Autosketch.randomItem(-2,2), p[1] + Autosketch.randomItem(-2, 2)];
-	};
-
-	Autosketch.randomItem = function(a, b){
-		// 'Returns an integer between a and b, inclusive';
-		// 'If b is not specified, returns an integer between 0 and a';
-		if (b === undefined){
-			b = a;
-			a = 0;
-		}
-		return Math.floor(Math.random() * (b-a + 1)) + a;
-	};
-
-	Autosketch.line = function(path, a, b){
-		var x1 = a.x;
-		var y1 = a.y;
-		var x2 = b.x;
-		var y2 = b.y;
-
-		var dx = (x2 - x1) / 3;
-		var dy = (y2 - y1) / 3;
-
-		var splitline = [[x1,y1],[x1,y1],[x1+dx,y1+dy],[x1+dx*2,y1+dy*2],[x2,y2],[x2,y2]];
-		var overlines = Autosketch.choice([1,1,1,1,1,1,1,2,2,2,3]);
-
-		for (var i = 0; i < overlines; i++){
-			path.curve(splitline.map(Autosketch.nudge));
-		}
-	};
-
-	Autosketch.choice = function(list){
-		// This is an exclusive, or mutating choice that
-		// picks a random item from a list and removes that
-		// item before returning it
-		var idx = Autosketch.randomItem(0, list.length - 1);
-		var item = list[idx];
-		list.splice(idx, 1); // remove item from list
-		return item;
-	};
-
+	Autosketch.PADDING 		  		= 200;
+	Autosketch.MIN_LINE_COUNT 	  	= 2; //4
+	Autosketch.POINT_LEN      		= 5;
+	Autosketch.RADIUS		  		= 4;
+	Autosketch.MARGIN_LEFT    		= 300;
+	Autosketch.X_SEPARATION   		= 100;
+	Autosketch.Y_SEPARATION   		= 200;
+	Autosketch.random 				= function(){return parseInt (Math.random () * (1 << 10))};
+	Autosketch.randomColor			= function(){return Autosketch.random ().toString (16).replace (/.*(\w{3})/, '#$1');};
 
 
 	var Point = function(x, y){
@@ -343,30 +248,12 @@
 		self.x = x || 0;
 		self.y = y || 0;
 
-		self.upY = function(idx) {
-			return self.y - (idx * Point.DIFF_RATIO);
-		};
-
-		self.downY = function(idx) {
-			return self.y + (idx * Point.DIFF_RATIO);
-		};
-
-		self.rightX = function(idx) {
-			return self.x + (idx * Point.DIFF_RATIO);
-		};
-
-		self.leftX = function(idx) {
-			return self.x - (idx * Point.DIFF_RATIO);
-		};
-
 		self.distanceTo = function(q){
 			var x = self.x;
 			var y = self.y;
 			return Math.sqrt(x * q.x + y * q.y) || 0;
 		};
 	};
-
-	Point.DIFF_RATIO = 10;
 
 	/**
 	 * solves the counterclockwise problem: Given three points a, b, c, is a-b-c a
@@ -400,8 +287,6 @@
 	Point.clockwise = function(a, b, c){
 		return Point.ccw(a, b, c) == -1;
 	};
-
-
 
 	// a, b are Point objects
 	var Line  = function(a, b){
@@ -458,6 +343,96 @@
 		};
 
 	};
+
+	var Rectangle  = function(points, color) {
+		var top 	= points || new Points();
+		var bottom	= makeBottomPoints(top);
+
+		var self = this;
+
+		self.topLeft 		= top.head();
+		self.bottomLeft 	= bottom.head();
+		self.topRight		= top.tail();
+		self.bottomRight 	= bottom.tail();
+		self.width			= self.topLeft.distanceTo(self.topRight);
+		self.height			= self.topLeft.distanceTo(self.bottomLeft);
+		self.center			= calculateCenter(self.topLeft, self.bottomRight);
+		self.color			= color;
+		self.top			= top;
+		self.bottom			= bottom;
+		self.markers		= function(){
+			var markers = new Points();
+			markers.add(self.topLeft);
+			markers.add(self.topRight);
+			markers.add(self.bottomLeft);
+			markers.add(self.bottomRight);
+
+			return markers;
+		};
+
+
+		self.replicate		= function(){ return new Rectangle(top, color);};
+
+		function calculateCenter(topleft, bottomright) {
+			var x = (topleft.x + (bottomright.x - topleft.x)/2);
+			var y = (topleft.y - (topleft.y  - bottomright.y)/2);
+			return new Point(x, y);
+		}
+
+		function makeBottomPoints(points) {
+			var twins = new Points ();
+			points.each(function (p, i){
+				twins.add(new Point(p.x, p.y + Autosketch.Y_SEPARATION));
+			});
+			return twins;
+		}
+
+
+	};
+
+	Rectangle.scaledDown = function(rectangle, k) {
+		k = k || 0;
+		if(k == 0) {
+			return Rectangle.shrink(
+				rectangle,
+				rectangle.center
+			);
+		} else {
+			return Rectangle.scaledDown(
+				Rectangle.shrink(
+					rectangle,
+					rectangle.center),
+				k - 1);
+		}
+	};
+
+	Rectangle.shrink = function(outer, center){
+		var inner = outer.replicate();
+		// subtracts the center from each vertex point xi =xi−x', yi=yi−y'.
+		inner.markers().each(function(p, i){
+			p.x = p.x - center.x;
+			p.y = p.y - center.y;
+		});
+
+
+		// scales each vertex point xi=alpha*xi, yi=alpha*yi.
+		inner.markers().each(function(p, i){
+			p.x = Rectangle.SCALE * p.x;
+			p.y = Rectangle.SCALE * p.y;
+		});
+
+		// shifts back the center xi=xi+x', yi=yi+y'.
+		inner.markers().each(function(p, i){
+			p.x = p.x + center.x;
+			p.y = p.y + center.y;
+		});
+
+		inner.fit 	= true;
+		outer.inner = inner;
+		return inner;
+	};
+
+	Rectangle.SCALE = 0.7;
 
 	if(autosketch) autosketch().play();
 	else {
