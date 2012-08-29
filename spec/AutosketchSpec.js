@@ -49,7 +49,7 @@ describe ("The Autosketch algorithm", function () {
 			x = x || 0;
 			y = y || 0;
 			w = w || 0;
-			h = h || h;
+			h = h || 0;
 
 			// top left
 			var upperleft	= new Point(x, y);         // A.x, A.y

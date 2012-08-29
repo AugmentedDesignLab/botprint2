@@ -2,14 +2,14 @@
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
 /**
- * RecursiveRectangle(Rectangle, K){
- *     ScaledRect = ScaleDown(Rectangle, Rectangle.center);
- *     if(K == 1) return ScaledRect;
- *     else		  return RecursiveRectangle(ScaledRect, K -1);
+ * InR(Rectangle, K){
+ *     I = Inner(Rectangle, Rectangle.center);
+ *     if(K == 1) return I;
+ *     else		  return InR(I, K -1);
  * }
  *
- * ScaleDown(Rectangle, Center){
- *     points = EMPTY U Rectangle.Points;
+ * Inner(Rectangle, Center){
+ *     I = Replicate(Rectangle);
  *     N	  = points.length;
  *     for(i<-0 until N){
  *         points{i}.x -= Center.x;
@@ -22,8 +22,8 @@
  *         points{i}.y += Center.y;
  *     }
  *
- *     Rectangle.update(points);
- *     return Rectangle;
+ *     Rectangle.I = I
+ *     return I;
  * }
  */
 (function () {
@@ -74,39 +74,30 @@
 
 		function sketch(autosketch) {
 			var color = Autosketch.randomColor();
-			var outer  = new Rectangle(
-				controlPoints(),
-				color
-			);
+			var seed  = controlPoints();
+			var outer = new R(Points.union(seed, R.of(seed)), color);
 
 			draw(outer, color, autosketch);
 
-			Rectangle.scaledDown(outer);
+			InR(outer, 3);
 
 			for(var item = outer.inner; item != null; item = item.inner){
-				draw(item, color, autosketch);
+				draw(item, color, autosketch, false);
 			}
 		}
 
 
-
-		function draw(rectangle, color, autosketch) {
-			if(!rectangle.fit) {
-				drawCircle(rectangle.top, color, autosketch);
-				drawCircle(rectangle.bottom, color, autosketch);
-				drawRectangle(rectangle.top, rectangle.bottom, color, autosketch);
-			} else {
-				var tops  = new Points();
-				tops.add(rectangle.topLeft);
-				tops.add(rectangle.topRight);
-				var botts = new Points();
-				botts.add(rectangle.bottomLeft);
-				botts.add(rectangle.bottomRight);
-				drawRectangle(tops, botts, color, autosketch);
+		function draw(rectangle, color, autosketch, markers) {
+			markers = markers || true;
+			if(markers){
+				drawCircle(rectangle.points, color, autosketch);
+				drawCircle(rectangle.points, color, autosketch);
 			}
+
+			drawMasterpiece(rectangle, color, autosketch);
 		}
 
-		function drawRectangle(points, twins, color, autosketch) {
+		function drawMasterpiece(rectangle, color, autosketch){
 			var pointsPath = autosketch.paper().path();
 			pointsPath.attr ({
 				'stroke':color,
@@ -120,33 +111,8 @@
 				'stroke-opacity': 1.0
 			}, 3000);
 
-
-			// 1. iterate over the the top line
-			points.each(function(p, i, isFirst, isLast){
+			rectangle.each(function(p, i, isFirst, isLast){
 				pointsPath[isFirst ? "moveTo" : "lineTo"](p.x, p.y);
-			});
-
-			// 2. do the right side
-			var right = new Points();
-
-			right.add(points.tail());
-			right.add(twins.tail());
-
-			right.each(function(p, i, isFirst, isLast){
-				pointsPath[isFirst ? "moveTo" : "vlineTo"](p.x, p.y);
-			});
-
-			// 3. try going in reverse
-			twins.backEach(function(p, i, isFirst, isLast){
-				pointsPath[isLast ? "moveTo" : "lineTo"](p.x, p.y);
-			});
-
-			var left = new Points();
-			left.add(twins.head());
-			left.add(points.head());
-
-			left.each(function(p, i, isFirst, isLast){
-				pointsPath[isFirst ? "moveTo" : "vlineTo"](p.x, p.y);
 			});
 		}
 
@@ -238,8 +204,13 @@
 	Autosketch.MARGIN_LEFT    		= 300;
 	Autosketch.X_SEPARATION   		= 100;
 	Autosketch.Y_SEPARATION   		= 200;
-	Autosketch.random 				= function(){return parseInt (Math.random () * (1 << 10))};
-	Autosketch.randomColor			= function(){return Autosketch.random ().toString (16).replace (/.*(\w{3})/, '#$1');};
+
+	Autosketch.random 				= function(){
+		return parseInt (Math.random () * (1 << 10));
+	};
+	Autosketch.randomColor			= function(){
+		return Autosketch.random ().toString (16).replace (/.*(\w{3})/, '#$1');
+	};
 
 
 	var Point = function(x, y){
@@ -251,7 +222,7 @@
 		self.distanceTo = function(q){
 			var x = self.x;
 			var y = self.y;
-			return Math.sqrt(x * q.x + y * q.y) || 0;
+			return Math.sqrt(Math.pow(x - q.x, 2) +  Math.pow(y - q.y, 2));
 		};
 	};
 
@@ -276,16 +247,8 @@
 		else                return  0;
 	};
 
-	Point.collinear = function(a, b, c) {
-		return Point.ccw(a, b, c) == 0;
-	};
-
-	Point.counterclockwise = function(a, b, c){
-		return Point.ccw(a, b, c) == 1;
-	};
-
-	Point.clockwise = function(a, b, c){
-		return Point.ccw(a, b, c) == -1;
+	Point.of = function(p){
+		return new Point(p.x, p.y);
 	};
 
 	// a, b are Point objects
@@ -301,7 +264,7 @@
 		 * @param q second line segment.
 		 */
 		self.intersectWith = function(q) {
-			var test1, test2 = 0;
+			var test1 = 0, test2 = 0;
 			test1 = Point.ccw(self.p1, self.p2, q.p1) * Point.ccw(self.p1, self.p2, q.p2);
 			test2 = Point.ccw(q.p1, q.p2, self.p1) * Point.ccw(q.p1, q.p2, self.p2);
 			return (test1 <= 0) && (test2 <= 0);
@@ -318,12 +281,16 @@
 			_points.push(point);
 		};
 
-		self.head = function(){
-			return _points[0];
+		self.point = function(idx){
+			return _points[idx];
 		};
 
-		self.tail = function(){
-			return _points[_points.length - 1];
+		self.size = function(){
+			return _points.length;
+		};
+
+		self.log = function(){
+			console.log(_points);
 		};
 
 		self.each = function(callback) {
@@ -344,95 +311,107 @@
 
 	};
 
-	var Rectangle  = function(points, color) {
-		var top 	= points || new Points();
-		var bottom	= makeBottomPoints(top);
+	Points.union = function(a, b){
+		var result  = new Points();
+		var closing = new Point();
+		a.each(function(p, i, isFirst, isLast){
+			if(isFirst) { closing = p; }
+			result.add(p);
+		});
 
+		b.backEach(function(p){ result.add(p);});
+
+		result.add(closing);
+
+		return result;
+	};
+
+	var Inner = function(rectangle, center){
+		var inner = rectangle.replicate();
+		inner.points.log();
+		inner.points.each(function(p, i){
+			// subtracts the center from each vertex point
+			p.x = p.x - center.x;
+			p.y = p.y - center.y;
+
+			// scales each vertex point
+			p.x = Inner.SCALE * p.x;
+			p.y = Inner.SCALE * p.y;
+
+			// shifts back the center
+			p.x = p.x + center.x;
+			p.y = p.y + center.y;
+		});
+
+	    rectangle.inner = inner;
+		return inner;
+	};
+
+	Inner.SCALE = 0.7;
+
+	/**
+	 * InR algorithm, which recursively inscribe an scaled down version of an
+	 * outer rectangle.
+	 *
+	 * @param rectangle outer rectangle.
+	 * @param k # of scaled down rectangles to be inscribed.
+	 * @return {*} a scaled down rectangle.
+	 * @constructor
+	 */
+	var InR = function(rectangle, k){
+		k			= k || 1;
+		var center  = rectangle.center;
+		if(k == 1) 	{ return Inner(rectangle, center); 				}
+		else		{ return InR(Inner(rectangle, center), k - 1); 	}
+	};
+
+	// Helper object representing the Rectangle datatype.
+	var R = function(points/*union of top&bottom points*/, color){
+		var len  = points.size();
+		var lo   = 0;
+		var hi   = len - 2;
+		var mid  = Math.floor(lo + (hi - lo) / 2);
 		var self = this;
 
-		self.topLeft 		= top.head();
-		self.bottomLeft 	= bottom.head();
-		self.topRight		= top.tail();
-		self.bottomRight 	= bottom.tail();
-		self.width			= self.topLeft.distanceTo(self.topRight);
-		self.height			= self.topLeft.distanceTo(self.bottomLeft);
-		self.center			= calculateCenter(self.topLeft, self.bottomRight);
-		self.color			= color;
-		self.top			= top;
-		self.bottom			= bottom;
-		self.markers		= function(){
-			var markers = new Points();
-			markers.add(self.topLeft);
-			markers.add(self.topRight);
-			markers.add(self.bottomLeft);
-			markers.add(self.bottomRight);
+		self.each 	 		= points.each;
 
-			return markers;
+		// bug coordinates for br, bl are all screwed up.
+
+		self.topLeft 		= points.point(lo) 		|| 0;
+		self.topRight 		= points.point(mid) 	|| 0;
+		self.bottomRight 	= points.point(mid + 1) || 0;
+		self.bottomLeft 	= points.point(hi)  	|| 0;
+		self.center  		= calculateCenter(self.topLeft, self.bottomRight)  || 0;
+		self.color   		= color;
+		self.width	 		= self.topLeft.distanceTo(self.topRight);
+		self.height	 		= self.topLeft.distanceTo(self.bottomLeft);
+		self.points			= points;
+
+		self.replicate = function() {
+			var seed = new Points();
+			seed.add(Point.of(self.topLeft));
+			seed.add(Point.of(self.topRight));
+			seed.add(Point.of(self.bottomRight));
+			seed.add(Point.of(self.bottomLeft));
+			seed.add(Point.of(self.topLeft)); // we need this to close the path.
+			return new R(seed, Autosketch.randomColor());
+
 		};
-
-
-		self.replicate		= function(){ return new Rectangle(top, color);};
 
 		function calculateCenter(topleft, bottomright) {
 			var x = (topleft.x + (bottomright.x - topleft.x)/2);
 			var y = (topleft.y - (topleft.y  - bottomright.y)/2);
 			return new Point(x, y);
 		}
-
-		function makeBottomPoints(points) {
-			var twins = new Points ();
-			points.each(function (p, i){
-				twins.add(new Point(p.x, p.y + Autosketch.Y_SEPARATION));
-			});
-			return twins;
-		}
-
-
 	};
 
-	Rectangle.scaledDown = function(rectangle, k) {
-		k = k || 0;
-		if(k == 0) {
-			return Rectangle.shrink(
-				rectangle,
-				rectangle.center
-			);
-		} else {
-			return Rectangle.scaledDown(
-				Rectangle.shrink(
-					rectangle,
-					rectangle.center),
-				k - 1);
-		}
+	R.of = function(seed){
+		var twins = new Points ();
+		seed.each(function (p){
+			twins.add(new Point(p.x, p.y + Autosketch.Y_SEPARATION));
+		});
+		return twins;
 	};
-
-	Rectangle.shrink = function(outer, center){
-		var inner = outer.replicate();
-		// subtracts the center from each vertex point xi =xi−x', yi=yi−y'.
-		inner.markers().each(function(p, i){
-			p.x = p.x - center.x;
-			p.y = p.y - center.y;
-		});
-
-
-		// scales each vertex point xi=alpha*xi, yi=alpha*yi.
-		inner.markers().each(function(p, i){
-			p.x = Rectangle.SCALE * p.x;
-			p.y = Rectangle.SCALE * p.y;
-		});
-
-		// shifts back the center xi=xi+x', yi=yi+y'.
-		inner.markers().each(function(p, i){
-			p.x = p.x + center.x;
-			p.y = p.y + center.y;
-		});
-
-		inner.fit 	= true;
-		outer.inner = inner;
-		return inner;
-	};
-
-	Rectangle.SCALE = 0.7;
 
 	if(autosketch) autosketch().play();
 	else {
