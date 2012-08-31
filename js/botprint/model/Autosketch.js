@@ -64,6 +64,15 @@
 			return result;
 		};
 
+		_circles.pushIfAbsent = function(obj){
+			if(!this.contains(obj)){
+				this.push(obj);
+				return true;
+			}
+
+			return false;
+		};
+
 		self._init = function(){
 			for(var i = 0; i < Autosketch.MIN_LINE_COUNT - 1; i++){
 				(function(idx){
@@ -93,7 +102,7 @@
 
 			draw(outer, color, autosketch);
 
-			InR(outer, 3);
+			InR(outer);
 
 			for(var item = outer.inner; item != null; item = item.inner){
 				draw(item, color, autosketch, false);
@@ -148,8 +157,7 @@
 							this.attr({ 'r': 3 });
 						}, circle, circle);
 
-					if(!autosketch.circles().contains(circle)) {
-						autosketch.circles().push(circle);
+					if(autosketch.circles().pushIfAbsent(circle)){
 						setTimeout(function () {
 							circle.animate({
 								'opacity': 0.5,
