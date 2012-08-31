@@ -49,6 +49,20 @@
 
 		var _paper 	 = paper;
 		var _circles = paper.set();
+		_circles.contains = function(obj){
+			var result = false;
+			for(var i = 0; i < this.items.length; i++){
+				var each = this.items[i];
+				if(each.attrs.cx == obj.attrs.cx
+				   && each.attrs.cy == obj.attrs.cy
+				   && each.attrs.r == obj.attrs.r){
+					result = true;
+					break;
+				}
+			}
+
+			return result;
+		};
 
 		self._init = function(){
 			for(var i = 0; i < Autosketch.MIN_LINE_COUNT - 1; i++){
@@ -117,30 +131,34 @@
 		}
 
 		function drawCircle(points, color, autosketch) {
-			points.each(function (point, i) {
-				var circle = autosketch.paper().circle(point.x, point.y, 0);
-				circle
-					.attr({
-						'stroke': '#333',
-						'stroke-width': 1,
-						'stroke-opacity': 0.2,
-						'fill': color,
-						'opacity': 0
-					})
-					.hover(function () {
-						this.attr({ 'r': 20 });
-					}, function () {
-						this.attr({ 'r': 3 });
-					}, circle, circle);
+			points.each(function (point, i, isFirst, isLast) {
+				if(!isLast){
+					var circle = autosketch.paper().circle(point.x, point.y, 0);
+					circle
+						.attr({
+							'stroke': '#333',
+							'stroke-width': 1,
+							'stroke-opacity': 0.2,
+							'fill': color,
+							'opacity': 0
+						})
+						.hover(function () {
+							this.attr({ 'r': 20 });
+						}, function () {
+							this.attr({ 'r': 3 });
+						}, circle, circle);
 
-				autosketch.circles().push(circle);
+					if(!autosketch.circles().contains(circle)) {
+						autosketch.circles().push(circle);
+						setTimeout(function () {
+							circle.animate({
+								'opacity': 0.5,
+								'r': Autosketch.RADIUS
+							}, 1200, 'elastic')
+						}, i*500);
+					}
 
-				setTimeout(function () {
-					circle.animate({
-						'opacity': 0.5,
-						'r': Autosketch.RADIUS
-					}, 1200, 'elastic')
-				}, i*500);
+				}
 			});
 		}
 
