@@ -47,15 +47,14 @@
 
 		paper = paper || Raphael(0, 0, _options.dw, _options.dh);
 
-		var _paper 	 = paper;
-		var _circles = paper.set();
-		_circles.contains = function(obj){
+		var set = paper.set();
+		set.contains = function(obj){
 			var result = false;
 			for(var i = 0; i < this.items.length; i++){
 				var each = this.items[i];
 				if(each.attrs.cx == obj.attrs.cx
-				   && each.attrs.cy == obj.attrs.cy
-				   && each.attrs.r == obj.attrs.r){
+					&& each.attrs.cy == obj.attrs.cy
+					&& each.attrs.r == obj.attrs.r){
 					result = true;
 					break;
 				}
@@ -64,7 +63,7 @@
 			return result;
 		};
 
-		_circles.pushIfAbsent = function(obj){
+		set.pushIfAbsent = function(obj){
 			if(!this.contains(obj)){
 				this.push(obj);
 				return true;
@@ -72,6 +71,39 @@
 
 			return false;
 		};
+
+		// enriched Raphael.set();
+		var eSet = function(rset){
+			rset.contains = function(obj){
+				var result = false;
+				for(var i = 0; i < this.items.length; i++){
+					var each = this.items[i];
+					if(each.attrs.cx == obj.attrs.cx
+						&& each.attrs.cy == obj.attrs.cy
+						&& each.attrs.r == obj.attrs.r){
+						result = true;
+						break;
+					}
+				}
+
+				return result;
+			};
+
+			rset.pushIfAbsent = function(obj){
+				if(!this.contains(obj)){
+					this.push(obj);
+					return true;
+				}
+
+				return false;
+			};
+
+			return rset;
+		};
+
+		var _paper 	  = paper;
+		var _blankets = eSet(paper.set());
+		var _circles  = eSet(paper.set());
 
 		self._init = function(){
 			for(var i = 0; i < Autosketch.MIN_LINE_COUNT - 1; i++){
@@ -87,22 +119,26 @@
 			drawMask(self); // gives the illusion of the the Rect being smoothly drawn
 		};
 
-		self.paper 		= function(){ return _paper;   };
-		self.circles	= function(){ return _circles; };
-		self.play  		= function(){ self._init();    };
-		self.dw			= _options.dw;
-		self.dh			= _options.dh;
+		self.paper 		 = function(){ return _paper;   };
+		self.circles	 = function(){ return _circles; };
+		self.blankets    = function(){ return _blankets;};
+		self.play  		 = function(){ self._init();    };
+		self.dw			 = _options.dw;
+		self.dh			 = _options.dh;
+		self.isDrag		 =  -1;
+		self.unhighlight = function () {};
 
+		self.update 	 = function(){};
 
 
 		function sketch(autosketch) {
 			var color = Autosketch.randomColor();
 			var seed  = controlPoints();
-			var outer = new R(Points.union(seed, R.of(seed)), color);
-
-			draw(outer, color, autosketch);
+			var outer = new R(Points.translateOnY(seed), color);
 
 			InR(outer);
+
+			draw(outer, color, autosketch, true);
 
 			for(var item = outer.inner; item != null; item = item.inner){
 				draw(item, color, autosketch, false);
@@ -111,10 +147,9 @@
 
 
 		function draw(rectangle, color, autosketch, markers) {
-			markers = markers || true;
 			if(markers){
 				drawCircle(rectangle.points, color, autosketch);
-				drawCircle(rectangle.points, color, autosketch);
+				drawBlanket(rectangle.points, color, autosketch);
 			}
 
 			drawMasterpiece(rectangle, color, autosketch);
@@ -139,6 +174,42 @@
 			});
 		}
 
+		function drawBlanket(points, color, autosketch){
+			var r = (autosketch.dw - 60) / points.size();
+			points.each(function (point, i, isFirst, isLast) {
+				if(!isLast){
+					var circle = autosketch.paper().circle(point.x, point.y, r);
+					circle
+						.attr({stroke: "none", fill: color, opacity: 0})
+						.mouseover(function () {
+							if (autosketch.isDrag + 1) {
+								autosketch.unhighlight = function () {};
+							} else {
+								autosketch.circles().items[i].animate({r: 10}, 200);
+							}
+						})
+						.mouseout(function () {
+							if (autosketch.isDrag + 1) {
+								autosketch.unhighlight = function () {
+									autosketch.circles().items[i].animate({r: 5}, 200);
+								};
+							} else {
+								autosketch.circles().items[i].animate({r: 5}, 200);
+							}
+						})
+						.drag(function (dx, dy) {
+							var start = this.start;
+							start && autosketch.update(start.i, start.p + dy);
+						}, function (x, y) {
+							this.start = {i: i, m: y, p:point.y};
+						});
+					autosketch.circles().pushIfAbsent(circle);
+
+				}
+			});
+
+		}
+
 		function drawCircle(points, color, autosketch) {
 			points.each(function (point, i, isFirst, isLast) {
 				if(!isLast){
@@ -150,12 +221,7 @@
 							'stroke-opacity': 0.2,
 							'fill': color,
 							'opacity': 0
-						})
-						.hover(function () {
-							this.attr({ 'r': 20 });
-						}, function () {
-							this.attr({ 'r': 3 });
-						}, circle, circle);
+						});
 
 					if(autosketch.circles().pushIfAbsent(circle)){
 						setTimeout(function () {
@@ -352,6 +418,20 @@
 		return result;
 	};
 
+	Points.translateOnY = function(seed){
+		return Points.translate(seed, 0, Autosketch.Y_SEPARATION);
+	};
+
+	Points.translate = function(seed, xsep, ysep){
+		xsep = xsep ? xsep : 0;
+		ysep = ysep ? ysep : 0;
+		var twins = new Points ();
+		seed.each(function (p){
+			twins.add(new Point(p.x + xsep, p.y + ysep));
+		});
+		return Points.union(seed, twins);
+	};
+
 	var Inner = function(rectangle, center){
 		var inner = rectangle.replicate();
 		inner.points.log();
@@ -429,14 +509,6 @@
 			var y = (topleft.y - (topleft.y  - bottomright.y)/2);
 			return new Point(x, y);
 		}
-	};
-
-	R.of = function(seed){
-		var twins = new Points ();
-		seed.each(function (p){
-			twins.add(new Point(p.x, p.y + Autosketch.Y_SEPARATION));
-		});
-		return twins;
 	};
 
 	if(autosketch) autosketch().play();
