@@ -1,5 +1,4 @@
-function Automator(sketchable){
-
+function Automator(sketchable, options){
 	// point data type
 	var Point = function(x, y){
 		var self = this;
@@ -83,11 +82,18 @@ function Automator(sketchable){
 
 	};
 
+	options = options || { points: [
+	/*TL*/{x:186, y:200},
+	/*BL*/{x:186, y:385},
+	/*BR*/{x:560, y:385},
+	/*TR*/{x:560, y:200}
+	]};
+
 	var corners = new Points();
-	corners.add(Point.make(186, 200)); // Topleft
-	corners.add(Point.make(186, 385)); // BottomLeft
-	corners.add(Point.make(560, 385)); // BottomRight
-	corners.add(Point.make(560, 200)); // TopRight
+	for(var i = 0; i < options.points.length; i++){
+		var each = options.points[i];
+		corners.add(Point.make(each.x, each.y));
+	}
 
 	var self = {
 		play: function(){
