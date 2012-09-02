@@ -1,3 +1,6 @@
+/**
+ * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
+ */
 function Automator(sketchable, options){
 	options = options || { points: [
 	/*TL*/{x:186, y:200},
