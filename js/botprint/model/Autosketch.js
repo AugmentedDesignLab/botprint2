@@ -172,6 +172,9 @@
 			rectangle.each(function(p, i, isFirst, isLast){
 				pointsPath[isFirst ? "moveTo" : "lineTo"](p.x, p.y);
 			});
+
+			var ft = paper.freeTransform(pointsPath);
+			ft.setOpts({ rotate: false, drag: false, draw:'bboxCorners', keepAxe: false});
 		}
 
 		function drawBlanket(points, color, autosketch){

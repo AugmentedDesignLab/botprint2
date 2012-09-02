@@ -72,7 +72,7 @@ Raphael.fn.freeTransform = function(subject, options, callback) {
 			snap: { rotate: 0, scale: 0, drag: 0 },
 			snapDist: { rotate: 0, scale: 0, drag: 7 },
 			size: 5,
-			centerhandle: true // added by (Huascar)
+			keepAxe: false // added by (Huascar)
 		},
 		subject: subject
 	};
@@ -96,6 +96,8 @@ Raphael.fn.freeTransform = function(subject, options, callback) {
 			y: ft.attrs.size.y / 2 * ft.attrs.scale.y
 		};
 
+
+		// Draws the L shape handlers; starting from the center of the drawn polygon.
 		ft.axes.map(function(axis) {
 			if ( ft.handles[axis] ) {
 				var
@@ -195,7 +197,7 @@ Raphael.fn.freeTransform = function(subject, options, callback) {
 
 		ft.axes.map(function(axis) {
 			// added by Huascar
-			if(ft.opts.centerhandle) {
+			if(ft.opts.keepAxe) {
 				ft.handles[axis] = {};
 
 				ft.handles[axis].line = paper
@@ -230,6 +232,7 @@ Raphael.fn.freeTransform = function(subject, options, callback) {
 
 			for ( i = ( ft.opts.scale.indexOf('bboxCorners') >= 0 ? 0 : 4 ); i < ( ft.opts.scale.indexOf('bboxSides') === -1 ? 4 : 8 ); i ++ ) {
 				handle = {};
+				console.log(i);
 
 				handle.axis     = i % 2 ? 'x' : 'y';
 				handle.isCorner = i < 4;
