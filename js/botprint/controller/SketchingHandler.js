@@ -60,7 +60,13 @@ function SketchingHandler(view, options) {
 						vertices: chassis2D.vertices
 					}
 				);
-				chassis.update();
+
+				(function(chassis){
+					setTimeout(function(){
+						chassis.update();
+					}, 5);
+				}(chassis));
+
 				this.shape = null;
 			}
 		}
