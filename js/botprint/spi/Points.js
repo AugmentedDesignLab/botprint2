@@ -10,6 +10,36 @@ var Points = function() {
 		_points.push(point);
 	};
 
+	self.append = function(other){
+		other.each(function(p, i){
+			self.add(p);
+		});
+	};
+
+	self.contains = function(point){
+		var result = false;
+		for(var i = 0; i < _points.length; i++){
+			var each = _points[i];
+			if(each.x == point.x
+				&& each.y == point.y){
+				result = true;
+				break;
+			}
+		}
+
+		return result;
+	};
+
+
+	self.addIfAbsent = function(point){
+		if(!self.contains(point)){
+			self.add(point);
+			return true;
+		}
+
+		return false;
+	};
+
 	self.point = function(idx){
 		return _points[idx];
 	};
