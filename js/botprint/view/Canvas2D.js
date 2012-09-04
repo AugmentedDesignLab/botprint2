@@ -15,7 +15,7 @@ function Canvas2D(options) {
 		shapeAttributes: {
 				'stroke': '#F8F8F8',
 				'stroke-opacity': 1,
-				'stroke-width': 2,
+				'stroke-width': 3,
 				'stroke-linecap': 'round',
 				'stroke-linejoin': 'round'
 		},
@@ -65,11 +65,7 @@ function Canvas2D(options) {
 		},
 
 		select: function() {},
-		deselect: function() {},
-		getColor: function() {
-			// Force SidePanel to use default color when canvas is selected
-			return null;
-		}
+		deselect: function() {}
 	};
 	
 	$.extend(self, View());
@@ -79,6 +75,8 @@ function Canvas2D(options) {
 	self = Sketchable(self);
 	self.sketchingHandler = SketchingHandler(self, {app: options.app});
 	self.sketchingHandler.enable();
-
+	
+	self.router = Router(self, {app: options.app});
+	self.router.enable();
 	return Automator(self).play();
 }

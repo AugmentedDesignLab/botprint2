@@ -55,19 +55,20 @@ function SketchingHandler(view, options) {
 						path: this.shape.attrs.path,
 						transform: this.shape.transform(),
 						app: options.app,
+						id: chassis2D.id,
 						// vertices represent the reference points from where
 						// we will start drawing the internal layout of
 						// chassis.
 						vertices: chassis2D.vertices
-					}
-				);
+					});
 
-				(function(chassis){
-					setTimeout(function(){
-						chassis.update();
-					}, 5);
-				}(chassis));
+				chassis.create();
 
+//				(function(chassis){
+//					setTimeout(function(){
+//						chassis.create();
+//					}, 5);
+//				}(chassis));
 				this.shape = null;
 			}
 		}
