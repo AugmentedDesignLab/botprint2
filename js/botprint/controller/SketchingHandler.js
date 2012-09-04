@@ -51,6 +51,7 @@ function SketchingHandler(view, options) {
 				view.doneSketching(chassis2D);
 				var chassis = Chassis(
 					{
+						shape: this.shape,
 						path: this.shape.attrs.path,
 						transform: this.shape.transform(),
 						app: options.app,

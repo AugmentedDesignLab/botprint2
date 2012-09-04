@@ -13,12 +13,14 @@ function Chassis (opts){
 		path: options.path,
 		transform: options.transform,
 		vertices: options.vertices || [],
+		shape: options.shape,
 
 		update: function(){
 			// to trigger an event related to this model object
 			self.radio.trigger(
 				ApplicationEvents.chassisShapeUpdated,
 				{
+					shape:     self.shape,
 					path: 	   self.path,
 					transform: self.transform,
 					vertices:  self.vertices

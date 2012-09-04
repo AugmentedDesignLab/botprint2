@@ -556,9 +556,19 @@ Raphael.fn.freeTransform = function(subject, options, callback) {
 	};
 
 	/**
+	 * Get the Bounding Box corner points
+	 */
+	ft.getCorners = function(){
+		ft.hideHandles();
+		return ft.cornerPoints;
+	};
+
+	/**
 	 * Remove handles
 	 */
 	ft.hideHandles = function() {
+		ft.cornerPoints = getBBox();
+
 		ft.items.map(function(item) {
 			item.el.undrag();
 		});

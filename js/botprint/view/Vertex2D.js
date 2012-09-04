@@ -33,7 +33,7 @@ function Vertex2D(position, target, options) {
 	
 	$.extend(self, View());
 	// making it draggable
-	self = Draggable2D(self)
+	self = Draggable2D(self);
 	// pass vertices too, so that we can send them to the LayoutHandler.
 	var extra = {vertices: target.vertices};
 	$.extend(extra, options);
