@@ -132,23 +132,6 @@ function LayoutHandler(view, options) {
 		else		{ return InR(Inner(rectangle, center), k - 1); 	}
 	};
 
-	var Translate = function(idx){
-		var result;
-		switch(idx){
-			case 0: result = "TL"; break;
-			case 1: result = "TR"; break;
-			case 2: result = "BR"; break;
-			case 3: result = "BL"; break;
-			case 4: result = "TLTR"; break;
-			case 5: result = "TRBR"; break;
-			case 6: result = "BRBL"; break;
-			case 7: result = "BLTL"; break;
-		}
-
-		return result;
-	};
-	
-
 	var vop = Cache();
 
 	var self = {
@@ -162,7 +145,7 @@ function LayoutHandler(view, options) {
 
 			InR(rectangle);
 
-			var violations      = self.validate(chassisModel.vertices, rectangle.inner);
+			var valid      = self.gimmeValid(chassisModel.vertices, rectangle.inner);
 
 			var parts       	= MakeParts(
 				{
@@ -175,11 +158,9 @@ function LayoutHandler(view, options) {
 				{
 					app: radio,
 					bus: bus,
-					rect: rectangle.inner,
+					rect: valid,
 					parts: parts,
-					name: "Bottom",
-					violations: violations,
-					gap: Rectangle.GAP
+					name: "Bottom"
 				}
 			);
 
@@ -207,8 +188,8 @@ function LayoutHandler(view, options) {
 			vop.outline.delete();
 		},
 
-		validate: function(vertices, rectangle){
-			var answer = {};
+		gimmeValid: function(vertices, rectangle){
+			var answer = rectangle;
 
 
 			// set up
@@ -239,17 +220,21 @@ function LayoutHandler(view, options) {
 				var each = vertices[i];
 				var p = Point.make(each.position.x, each.position.y);
 
-				checkingPoints.each(function(each, j){
-					var separation, distance;
-					separation = each.distanceTo(center) + Rectangle.GAP;
-					distance   = each.distanceTo(p);
-					answer[Translate(j)] = distance >= separation;
-					console.log(distance);
-				});
+				var separation, distance;
+				for(var idx = 0; idx < checkingPoints.size(); idx++){
+					var e = checkingPoints.point(idx);
+					separation = e.distanceTo(center) + Rectangle.GAP;
+					distance   = p.distanceTo(center);
+					if(distance < separation){
+						console.log("it is invalid, shrink once more.");
+						InR(rectangle);
+						return rectangle.inner;
+					}
+				}
 			}
 
 
-			console.log(answer);
+
 			return answer;
 		},
 
