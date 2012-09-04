@@ -11,7 +11,7 @@ function Edge2D(start, path, target, options) {
 	var self = {
 		elem: svg,
 		handlers: [],
-		target: target,
+		target: target
 	};
 	
 	Mixable(self).mix(View());

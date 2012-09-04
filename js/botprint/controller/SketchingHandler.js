@@ -51,6 +51,7 @@ function SketchingHandler(view, options) {
 				view.doneSketching(chassis2D);
 				var chassis = Chassis(
 					{
+						shape: this.shape,
 						path: this.shape.attrs.path,
 						transform: this.shape.transform(),
 						app: options.app,
@@ -60,7 +61,13 @@ function SketchingHandler(view, options) {
 						vertices: chassis2D.vertices
 					}
 				);
-				chassis.update();
+
+				(function(chassis){
+					setTimeout(function(){
+						chassis.update();
+					}, 5);
+				}(chassis));
+
 				this.shape = null;
 			}
 		}

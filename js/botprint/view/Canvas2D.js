@@ -56,10 +56,14 @@ function Canvas2D(options) {
 			this.selectionHandler = selectionHandler;
 			// adding the layout handler, so that the layout gets automatically generated
 			// every time we sketch or update a chassis.
+			self.generateLayout();
+		},
+
+		generateLayout: function(){
 			this.layoutHandler = LayoutHandler(this, {app:options.app});
 			this.layoutHandler.enable();
 		},
-		
+
 		select: function() {},
 		deselect: function() {},
 		getColor: function() {
@@ -75,6 +79,6 @@ function Canvas2D(options) {
 	self = Sketchable(self);
 	self.sketchingHandler = SketchingHandler(self, {app: options.app});
 	self.sketchingHandler.enable();
-	
-	return self;
+
+	return Automator(self).play();
 }

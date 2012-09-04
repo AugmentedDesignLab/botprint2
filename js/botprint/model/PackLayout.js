@@ -5,6 +5,52 @@
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
 function PackLayout(data/*{app: radio, bus: bus, rect: max, parts: parts}*/){
+	var Relax = function(polygon, violations, gap){
+		var width = 0, height = 0, x = 0, y = 0;
+		if(!violations.BLTL || !violations.BL || !violations.TL){
+			if(!violations.BL){
+				x 		= polygon.topLeft().x   + gap;
+				y 		= polygon.topLeft().y   - gap;
+				width  	= polygon.width()  		- gap;
+				height	= polygon.height() 		- gap;
+			} else {
+				x = polygon.topLeft().x + gap;
+				y = polygon.topLeft().y + gap;
+				width  = polygon.width() - gap;
+				height = polygon.height() - gap;
+			}
+		} else if (!violations.BRBL){
+			x 		= polygon.topLeft().x;
+			y 		= polygon.topLeft().y  	- gap;
+			width  	= polygon.width() 		- gap;
+			height 	= polygon.height() 		- gap;
+		} else if (!violations.TLTR){
+			x 		= polygon.topLeft().x;
+			y 		= polygon.topLeft().y  	+ gap;
+			width  	= polygon.width() 		- gap;
+			height 	= polygon.height() 		- gap;
+		} else if(!violations.TRBR || !violations.BR || !violations.TR) {
+			if(!violations.BR){
+				x 		= polygon.topLeft().x   - gap;
+				y 		= polygon.topLeft().y   - gap;
+				width  	= polygon.width()  		- gap;
+				height	= polygon.height() 		- gap;
+			} else {
+				x = polygon.topLeft().x   - gap;
+				y = polygon.topLeft().y   + gap;
+				width  = polygon.width()  - gap;
+				height = polygon.height() - gap;
+			}
+		}
+
+		return {
+			x: x || polygon.topLeft().x,
+			y: y || polygon.topLeft().y,
+			w: width || polygon.width(),
+			h: height || polygon.height()
+		};
+	};
+
 	var self = {
 		now: function() {
 			var data 	= this.data();
@@ -14,12 +60,18 @@ function PackLayout(data/*{app: radio, bus: bus, rect: max, parts: parts}*/){
 			var bus     = data.bus;
 			var radio   = data.app;
 
+			var violations = data.violations;
+			var gap		   = data.gap;
+			polygon.points.log();
+			var relaxed    = Relax(polygon, violations, gap);
+
 			var options = {
 				name:name,
 				bus: bus,
 				app: radio,
-				coordinates: {x: polygon.x, 	y: polygon.y			},
-				dimensions:  {w: polygon.width, h: polygon.height, d:0 	}
+				coordinates: {x: relaxed.x, 	y: relaxed.y 		},
+				dimensions:  {w: relaxed.w, 	h: relaxed.h, d:0 	},
+				polygon: polygon
 			};
 
 			var deck 	= Deck(options);

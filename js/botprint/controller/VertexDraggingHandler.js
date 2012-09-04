@@ -19,6 +19,7 @@ function VertexDraggingHandler(view, options) {
 			var shape = view.target.elem;
 			var chassis = Chassis(
 				{
+					shape: shape,
 					path: shape.attrs.path,
 					transform: shape.transform(),
 					app: options.app,
