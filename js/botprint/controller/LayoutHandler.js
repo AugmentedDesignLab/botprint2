@@ -91,6 +91,8 @@ function LayoutHandler(view, options) {
 		}
 	};
 
+	Rectangle.GAP = 10; // this defines the boundary of a valid layout
+
 	var Inner = function(rectangle, center){
 		var inner = rectangle.clone();
 		inner.points.each(function(p, i){
@@ -129,6 +131,22 @@ function LayoutHandler(view, options) {
 		if(k == 1) 	{ return Inner(rectangle, center); 				}
 		else		{ return InR(Inner(rectangle, center), k - 1); 	}
 	};
+
+	var Translate = function(idx){
+		var result;
+		switch(idx){
+			case 0: result = "TL"; break;
+			case 1: result = "TR"; break;
+			case 2: result = "BR"; break;
+			case 3: result = "BL"; break;
+			case 4: result = "TLTR"; break;
+			case 5: result = "TRBR"; break;
+			case 6: result = "BRBL"; break;
+			case 7: result = "BLTL"; break;
+		}
+
+		return result;
+	};
 	
 
 	var vop = Cache();
@@ -144,6 +162,8 @@ function LayoutHandler(view, options) {
 
 			InR(rectangle);
 
+			var violations      = self.validate(chassisModel.vertices, rectangle.inner);
+
 			var parts       	= MakeParts(
 				{
 					app: radio,
@@ -158,8 +178,8 @@ function LayoutHandler(view, options) {
 					rect: rectangle.inner,
 					parts: parts,
 					name: "Bottom",
-					cwidth: rectangle.width(),
-					cheight: rectangle.height()
+					violations: violations,
+					gap: Rectangle.GAP
 				}
 			);
 
@@ -185,6 +205,52 @@ function LayoutHandler(view, options) {
 		clear: function (){
 			vop.deck2D.remove();
 			vop.outline.delete();
+		},
+
+		validate: function(vertices, rectangle){
+			var answer = {};
+
+
+			// set up
+			var checkingPoints = new Points();
+			var points = rectangle.points;
+			var center = rectangle.center();
+
+			var size   = points.size();
+
+			for(var q = 0; q < 8; q++){
+				var cx, cy, j, k;
+				if(q < 4) {
+					checkingPoints.add(Point.of(points.point(q)));
+				} else {
+					j  = q % 4;
+					k  = ( j + 1 ) % size;
+					cx = ( points.point(j).x + points.point(k).x ) / 2;
+					cy = ( points.point(j).y + points.point(k).y ) / 2;
+					checkingPoints.add(Point.make(cx, cy));
+				}
+			}
+
+			// validate
+			for(var i = 0; i < vertices.length; i++){
+
+				if(checkingPoints.size() > 8) break;
+
+				var each = vertices[i];
+				var p = Point.make(each.position.x, each.position.y);
+
+				checkingPoints.each(function(each, j){
+					var separation, distance;
+					separation = each.distanceTo(center) + Rectangle.GAP;
+					distance   = each.distanceTo(p);
+					answer[Translate(j)] = distance >= separation;
+					console.log(distance);
+				});
+			}
+
+
+			console.log(answer);
+			return answer;
 		},
 
 		layoutDeleted: function(payload) {
