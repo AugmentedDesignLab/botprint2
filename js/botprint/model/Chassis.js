@@ -10,12 +10,11 @@ function Chassis (opts){
 	$.extend(options, opts || {});
 
 	var self = {
-		serializable: ['id', 'name', 'path', 'transform', 'vertices', 'shape'],
+		serializable: ['id', 'name', 'path', 'transform', 'corners'],
 
 		path: options.path || [],
 		transform: options.transform,
-		vertices: options.vertices || [],
-		shape: options.shape,
+		corners: options.corners,
 		
 		isSelfIntersecting: function() {
 			return IntersectionDetection.isSelfIntersecting(self.path);
