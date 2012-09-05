@@ -34,7 +34,7 @@ describe("Robot", function(){
 			var found 	   = bdeck.select(DataMaker.LIGHT_SENSOR_FILTER)[0];
 
 			expect(found != null).toBeTruthy();
-			expect(found.name()).toEqual("LightSensor");
+			expect(found.name).toEqual("LightSensor");
 		});
 
 		it("should be persisted once assembled", function(){
@@ -42,11 +42,19 @@ describe("Robot", function(){
 			robot.assemble();
 			expect(robot.persist).toHaveBeenCalledWith(jasmine.any(Array));
 		});
-	});
-
-	describe("Once having ALL parts uninstalled", function(){
-		it("should have zero parts installed", function(){
-			expect(robot).toBeNaked(parts);
+		
+		it('should serialize parts', function() {
+			var json = JSON.stringify(robot);
+			expect(json.indexOf('super')).toBeLessThan(0);
+			expect(json.indexOf('"path":[["M"')).toBeGreaterThan(0);
+		});
+		
+		it('should deserialize chassis', function() {
+			var json = JSON.stringify(robot);
+			var attrs = JSON.parse(json);
+			var dRobot = Robot();
+			$.extend(dRobot, attrs);
+			expect(dRobot.chassis.path.length).toBeGreaterThan(0);
 		});
 	});
 

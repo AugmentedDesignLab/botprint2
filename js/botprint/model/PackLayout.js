@@ -18,8 +18,9 @@ function PackLayout(data/*{app: radio, bus: bus, rect: max, parts: parts}*/){
 				name:name,
 				bus: bus,
 				app: radio,
-				coordinates: {x: polygon.x, 	y: polygon.y			},
-				dimensions:  {w: polygon.width, h: polygon.height, d:0 	}
+				coordinates: {x: polygon.topLeft().x, 	y: polygon.topLeft().y 		},
+				dimensions:  {w: polygon.width() , 	h: polygon.height(), d:0 	},
+				polygon: polygon
 			};
 
 			var deck 	= Deck(options);

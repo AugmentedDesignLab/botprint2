@@ -4,17 +4,19 @@ function Chassis2D(svg, options) {
 		vertices: [],
 		edges: [],
 		points: [],
+		id: new Date().getTime(),
 		
-		setColor: function(color) {
-			svg.attr({fill: color});
+		set color(c) {
+			svg.attr({fill: c});
 		},
 		
-		getColor: function(color) {
+		get color(){
 			return svg.attrs.fill;
 		},
 		
 		select: function() {
-			svg.attr({stroke: '#00FFFF'});
+			// todo(Huascar) fix this.. glow on original sketch wont go away.
+			//self.glow = svg.glow({color: self.color});
 			var path = svg.attrs.path;
 			
 			self.points.forEach(function(p, index){
@@ -31,7 +33,10 @@ function Chassis2D(svg, options) {
 		},
 		
 		deselect: function() {
-			svg.attr({stroke: null});
+			if(self.glow) {
+				self.glow.remove();
+				self.glow = null;
+			}
 			while(self.vertices.length > 0){
 				var vertex = self.vertices.pop();
 				vertex.remove();
@@ -41,6 +46,14 @@ function Chassis2D(svg, options) {
 				edge.remove();
 			}
 			this.selected = false;
+		},
+		
+		warn: function() {
+			svg.attr({stroke: 'red'});
+		},
+		
+		unwarn: function() {
+			svg.attr({stroke: null});
 		},
 		
 		redraw: function() {
@@ -76,6 +89,9 @@ function Chassis2D(svg, options) {
 	var selectionHandler = SelectionHandler(Selectable(self), {app: options.app});
 	selectionHandler.enable();
 	self.trigger(UserEvents.click, {});
+	
+	var errorHandler = ChassisValidationHandler(self, {app: options.app});
+	errorHandler.enable();
 	
 	return self;
 }

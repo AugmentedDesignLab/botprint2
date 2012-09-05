@@ -11,6 +11,7 @@ function Vertex2D(position, target, options) {
 	
 	var self = {
 		elem: svg,
+		draw: draw,
 		target: target,
 		handlers: [],
 		
@@ -33,11 +34,8 @@ function Vertex2D(position, target, options) {
 	
 	$.extend(self, View());
 	// making it draggable
-	self = Draggable2D(self)
-	// pass vertices too, so that we can send them to the LayoutHandler.
-	var extra = {vertices: target.vertices};
-	$.extend(extra, options);
-	var dragging = VertexDraggingHandler(self, extra);
+	self = Draggable2D(self);
+	var dragging = VertexDraggingHandler(self, options);
 	dragging.enable();
 	self.handlers.push(dragging);
 	// making it hoverable

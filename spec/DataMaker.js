@@ -1,9 +1,10 @@
 // todo(Huascar) delete it once PartsMaker is ready for primetime.
 function DataMaker(){
-	var bus		= new EventBus();
+	var bus			= EventBus();
+	var radio		= Bindable(bus);
 	var options = {
 		name: "Wall-E",
-		bus:  bus,
+		app: radio,
 		algs: {
 			wheel:   function() {console.log("Snapped!");  return []; },
 			chassis: function() {console.log("Sketched!"); return []; }
@@ -11,30 +12,37 @@ function DataMaker(){
 
 	};
 
-	var robot	= Robot(options);
-	var chassis = Chassis({name:"Chassis", bus: bus});
-	var top  	= Deck({name:"Top", bus: bus, dimensions: { w:500, h:500, d:0 }});
-	var bottom  = Deck({name:"Bottom", bus: bus, dimensions: { w:500, h:500, d:0 }});
+	var robot	= new Robot(options);
+	var chassis = new Chassis({name:"Chassis", app: radio,
+							  path: [
+								['M',236,311],
+								['C', 220,339,312,459,347,454],
+								['C', 381,449,459,304,441,281],
+								['C',422,257,251,282,236,311],
+								['Z']
+							 ]});
+	var top  	= new Deck({name:"Top", app: radio, dimensions: { w:500, h:500, d:0 }});
+	var bottom  = new Deck({name:"Bottom", app: radio, dimensions: { w:500, h:500, d:0 }});
 
-	top.add(PowerAmplifier({name:"PowerAmplifier", bus: bus, dimensions: { w:200, h:200, d:0 }}));
-	top.add(Microcontroller({name:"Arduino", bus: bus, dimensions: { w:200, h:200, d:0 }}));
+	top.add(PowerAmplifier({name:"PowerAmplifier", app: radio, dimensions: { w:200, h:200, d:0 }}));
+	top.add(Microcontroller({name:"Arduino", app: radio, dimensions: { w:200, h:200, d:0 }}));
 
-	bottom.add(Sensor({name:"LightSensor", bus: bus, dimensions: { w:25, h:25, d:0 }}));
-	bottom.add(Sensor({name:"MotionSensor", bus: bus, dimensions: { w:25, h:25, d:0 }}));
-	bottom.add(BatteryPack({name:"AA-BatteryPack", bus: bus, dimensions: { w:100, h:100, d:0 }}));
-	bottom.add(BatteryPack({name:"9Volt-BatteryPack", bus: bus, dimensions: { w:100, h:100, d:0 }}));
-	bottom.add(Motor({name:"Motor", bus: bus, dimensions: { w:80, h:80, d:0 }}));
-	bottom.add(Motor({name:"PowerSwitch", bus: bus, dimensions: { w:80, h:80, d:0 }}));
+	bottom.add(new Sensor({name:"LightSensor", app: radio, dimensions: { w:25, h:25, d:0 }}));
+	bottom.add(new Sensor({name:"MotionSensor", app: radio, dimensions: { w:25, h:25, d:0 }}));
+	bottom.add(new BatteryPack({name:"AA-BatteryPack", app: radio, dimensions: { w:100, h:100, d:0 }}));
+	bottom.add(new BatteryPack({name:"9Volt-BatteryPack", app: radio, dimensions: { w:100, h:100, d:0 }}));
+	bottom.add(new Motor({name:"Motor", app: radio, dimensions: { w:80, h:80, d:0 }}));
+	bottom.add(new Motor({name:"PowerSwitch", app: radio, dimensions: { w:80, h:80, d:0 }}));
 
 	chassis.add(top);
 	chassis.add(bottom);
 
 	var parts	= [
 		chassis,
-		Wheel({name:"W1", bus: bus}),
-		Wheel({name:"W2", bus: bus}),
-		Wheel({name:"W3", bus: bus}),
-		Wheel({name:"W4", bus: bus})
+		new Wheel({name:"Wheel", app: radio, dimensions: { w:50, h:70, d:0 }}),
+		new Wheel({name:"Wheel", app: radio, dimensions: { w:50, h:70, d:0 }}),
+		new Wheel({name:"Wheel", app: radio, dimensions: { w:50, h:70, d:0 }}),
+		new Wheel({name:"Wheel", app: radio, dimensions: { w:50, h:70, d:0 }})
 	];
 
 	parts.forEach(function(elem){
@@ -56,5 +64,5 @@ function DataMaker(){
 	};
 }
 
-DataMaker.BOTTOM_DECK_FILTER  = function(element){ return element.name() == "Bottom"; };
-DataMaker.LIGHT_SENSOR_FILTER = function(element){ return element.name() == "LightSensor"; };
+DataMaker.BOTTOM_DECK_FILTER  = function(element){ return element.name == "Bottom"; };
+DataMaker.LIGHT_SENSOR_FILTER = function(element){ return element.name == "LightSensor"; };

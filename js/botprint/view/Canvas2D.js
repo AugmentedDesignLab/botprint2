@@ -15,7 +15,7 @@ function Canvas2D(options) {
 		shapeAttributes: {
 				'stroke': '#F8F8F8',
 				'stroke-opacity': 1,
-				'stroke-width': 2,
+				'stroke-width': 3,
 				'stroke-linecap': 'round',
 				'stroke-linejoin': 'round'
 		},
@@ -56,16 +56,16 @@ function Canvas2D(options) {
 			this.selectionHandler = selectionHandler;
 			// adding the layout handler, so that the layout gets automatically generated
 			// every time we sketch or update a chassis.
+			self.generateLayout();
+		},
+
+		generateLayout: function(){
 			this.layoutHandler = LayoutHandler(this, {app:options.app});
 			this.layoutHandler.enable();
 		},
-		
+
 		select: function() {},
-		deselect: function() {},
-		getColor: function() {
-			// Force SidePanel to use default color when canvas is selected
-			return null;
-		}
+		deselect: function() {}
 	};
 	
 	$.extend(self, View());
@@ -76,5 +76,7 @@ function Canvas2D(options) {
 	self.sketchingHandler = SketchingHandler(self, {app: options.app});
 	self.sketchingHandler.enable();
 	
-	return self;
+	self.router = Router(self, {app: options.app});
+	self.router.enable();
+	return Automator(self).play();
 }

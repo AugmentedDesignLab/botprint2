@@ -8,14 +8,13 @@ function AddingWheelHandler(view, options) {
 		click: function(payload) {
 			var x = payload.x;
 			var y = payload.y;
-			console.log(x + "-" + y);
 			var svg = view.draw.rect(x - SpecSheet.wheel.width /2, y - SpecSheet.wheel.radius,
 				SpecSheet.wheel.width, SpecSheet.wheel.radius * 2, 5);
-			svg.attr(view.shapeAttributes);
+			svg.attr({fill: 'white'});
 
 			var wheel2D = Wheel2D(svg, {app: options.app});
 			var wheel = Wheel({coordinates: wheel2D.position, id: wheel2D.id, app: options.app});
-			wheel.update();
+			wheel.create();
 		}
 	};
 

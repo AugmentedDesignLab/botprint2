@@ -23,17 +23,6 @@ describe("A PCG Algorithm", function(){
 		expect(parts.length).toBe(25); // Yeah! We have 25 parts to play with!
 	});
 
-	it("should easily find its max working area.", function(){
-		var points	= [{x:1, y:4}, {x:0, y:3}, {x:0, y:0}, {x:3, y:0}, {x:3, y:3}];
-		var max		= FindMaxRectangle({corners: points});
-
-		expect(max.area).toBe(306);
-		expect(max.height).toBe(0.02125);
-		expect(max.width).toBe(0.0225);
-		expect(max.x).toBe(0);
-		expect(max.y).toBe(0);
-	});
-
 	describe("Once given a 50x50 area", function(){
 		it("should generate a layout (via packer only)", function(){
 			var packer = new BinPacker(deck);
