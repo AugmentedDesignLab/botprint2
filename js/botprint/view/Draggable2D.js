@@ -13,7 +13,7 @@ function Draggable2D(object2D) {
 	}, function(x, y, event){
 		event.stopPropagation();
 		object2D.trigger(UserEvents.dragStart, {x: x, y: y});
-	}, function(){
+	}, function(event){
 		event.stopPropagation();
 		object2D.trigger(UserEvents.dragEnd, {});
 	});

@@ -17,17 +17,15 @@ function LayoutHandler(view, options) {
 		};
 	};
 
-	var Corners = function(view, shape){
-		// use Raphael.freetransform to get always acurate bounding box's corner points.
-		var ft = view.draw.freeTransform(shape);
-		var corners = ft.getCorners();
+	var Vertices = function(path){
 		var result  = new Points();
-		for(var i = 0; i < corners.length; i++){
-			if(i < 4){
-				var each  = corners[i];
-				var point = Point.make(each.x, each.y);
-				result.add(point);
-			}
+		var len     = path.length;
+		for(var i = 0; i < len; i++){
+			if(i === len-1) break;
+			var element = path[i];
+			var plen    = element.length;
+			var point = Point.make(element[plen - 2], element[plen - 1]);
+			result.addIfAbsent(point);
 		}
 		return result;
 	};
@@ -135,17 +133,18 @@ function LayoutHandler(view, options) {
 	var vop = Cache();
 
 	var self = {
-		appEvents: ['chassisShapeUpdated', 'layoutUpdated', 'layoutDeleted'],
-		chassisShapeUpdated: function(payload) {
+		appEvents: ['partUpdated', 'layoutUpdated', 'layoutDeleted'],
+		partUpdated: function(payload) {
+			var attr = JSON.parse(payload.part);
 			self.clear();
-			var chassisModel	= Chassis(payload);
-			var shape			= chassisModel.shape;
-			var corners			= Corners(view, shape);
+			var chassisModel	= Chassis(attr);
+			var corners			= Points.of(chassisModel.corners);
 			var rectangle		= new Rectangle(corners);
+			var vertices		= Vertices(chassisModel.path);
 
 			InR(rectangle);
 
-			var valid      = self.gimmeValid(chassisModel.vertices, rectangle.inner);
+			var valid      = self.gimmeValid(vertices, rectangle.inner);
 
 			var parts       	= MakeParts(
 				{
@@ -189,9 +188,6 @@ function LayoutHandler(view, options) {
 		},
 
 		gimmeValid: function(vertices, rectangle){
-			var answer = rectangle;
-
-
 			// set up
 			var checkingPoints = new Points();
 			var points = rectangle.points;
@@ -213,12 +209,13 @@ function LayoutHandler(view, options) {
 			}
 
 			// validate
-			for(var i = 0; i < vertices.length; i++){
+			for(var i = 0; i < vertices.size(); i++){
 
 				if(checkingPoints.size() > 8) break;
 
-				var each = vertices[i];
-				var p = Point.make(each.position.x, each.position.y);
+				var each = vertices.point(i);
+				vertices.log();
+				var p = Point.make(each.x, each.y);
 
 				var separation, distance;
 				for(var idx = 0; idx < checkingPoints.size(); idx++){
@@ -235,7 +232,7 @@ function LayoutHandler(view, options) {
 
 
 
-			return answer;
+			return rectangle;
 		},
 
 		layoutDeleted: function(payload) {
