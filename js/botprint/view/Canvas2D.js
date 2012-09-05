@@ -54,10 +54,18 @@ function Canvas2D(options) {
 			var selectionHandler = SelectionHandler(this, {app:options.app});
 			selectionHandler.enable();
 			this.selectionHandler = selectionHandler;
+			// adding the layout handler, so that the layout gets automatically generated
+			// every time we sketch or update a chassis.
+			self.generateLayout();
 		},
-		
+
+		generateLayout: function(){
+			this.layoutHandler = LayoutHandler(this, {app:options.app});
+			this.layoutHandler.enable();
+		},
+
 		select: function() {},
-		deselect: function() {},
+		deselect: function() {}
 	};
 	
 	$.extend(self, View());
@@ -70,5 +78,5 @@ function Canvas2D(options) {
 	
 	self.router = Router(self, {app: options.app});
 	self.router.enable();
-	return self;
+	return Automator(self).play();
 }

@@ -29,8 +29,7 @@ function EventHandler(view, options) {
 			thisHandler.userEvents.forEach(function(ev){
 			    view.unbind(UserEvents[ev], thisHandler[ev]);
 			});			
-		},
-
+		}
 	};
 	
 	$.extend(self, Bindable(view.bus));

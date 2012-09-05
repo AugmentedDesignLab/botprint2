@@ -3,7 +3,7 @@
  */
 
 function SketchingHandler(view, options) {
-	
+
 	var self = {
 		userEvents: ['click', 'mouseMove', 'dblClick'],
 		
@@ -48,12 +48,24 @@ function SketchingHandler(view, options) {
 				path.pop();
 				this.shape.attr({path: path +'Z', stroke: null});
 				var chassis2D = Chassis2D(this.shape, {app:options.app});
+				var corners   = Corners(view, this.shape);
 				view.doneSketching(chassis2D);
-				var chassis = Chassis({path: this.shape.attrs.path,
-									  transform: this.shape.transform(),
-									  app: options.app,
-									  id: chassis2D.id});
+				var chassis = Chassis(
+					{
+						corners: corners,
+						path: this.shape.attrs.path,
+						transform: this.shape.transform(),
+						app: options.app,
+						id: chassis2D.id
+					});
+
 				chassis.create();
+
+				(function(chassis){
+					setTimeout(function(){
+						chassis.update();
+					}, 5);
+				}(chassis));
 				this.shape = null;
 			}
 		}
