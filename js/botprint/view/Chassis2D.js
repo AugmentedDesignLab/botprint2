@@ -15,7 +15,8 @@ function Chassis2D(svg, options) {
 		},
 		
 		select: function() {
-			self.glow = svg.glow({color: self.color});
+			// todo(Huascar) fix this.. glow on original sketch wont go away.
+			//self.glow = svg.glow({color: self.color});
 			var path = svg.attrs.path;
 			
 			self.points.forEach(function(p, index){

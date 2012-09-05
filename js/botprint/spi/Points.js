@@ -69,3 +69,12 @@ var Points = function() {
 	};
 
 };
+
+Points.of = function(pointsArray){
+	var ret = new Points();
+	pointsArray.forEach(function(each){
+		ret.add(Point.make(each.x, each.y));
+	});
+
+	return ret;
+};

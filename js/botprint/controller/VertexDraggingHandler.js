@@ -18,20 +18,19 @@ function VertexDraggingHandler(view, options) {
 		dragEnd: function(payload) {
 			self.super.dragEnd(payload);
 			var shape = view.target.elem;
+			var corners = Corners(view, shape);
 			var chassis = Chassis(
 				{
-					shape: shape,
+					corners: corners,
 					path: shape.attrs.path, 
 					transform: shape.transform(), 
 					app: options.app,
-					// vertices represent the reference points from where
-					// we will start drawing the internal layout of
-					// chassis.
-					vertices: options.vertices,
 					id: view.target.id
 				}
 			);
+
 			chassis.update();
+
 			// force to redraw the edges
 			view.target.deselect();
 			view.target.select();
