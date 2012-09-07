@@ -5,6 +5,17 @@ function LayoutHandler(view, options) {
 	var radio 		= options.app;
 	var bus			= view.bus;
 
+	// Helper object that encapsulates a result
+	var Result = function(a, c) {
+		return {
+			x:a.x,
+			y:a.y,
+			w:a.w,
+			h:a.h,
+			cartoon: c
+		}
+	};
+
 	// Helper Object for caching the layout and its view
 	var Cache		= function(deck2D, outline) {
 		return {
@@ -144,7 +155,7 @@ function LayoutHandler(view, options) {
 
 			InR(rectangle);
 
-			var valid      = self.gimmeValid(vertices, rectangle.inner);
+			var valid      		= ValidInnerRectangle({vertices:vertices, rect:rectangle.inner});
 
 			var parts       	= MakeParts(
 				{
@@ -163,13 +174,25 @@ function LayoutHandler(view, options) {
 				}
 			);
 
-			var rendered	= RenderLayout(
-				{
-					paper: view.draw,
-					layout: outline
-				}
-			);
+			self.generateLayout(view.draw, outline, radio, bus);
+		},
 
+		// similar to sketching handler, this handler handles the generation of layout.
+		generateLayout: function(paper, outline, radio, bus){
+			var svgSet		= paper.set(); // use sets to group independent svgs...
+			outline.select().forEach(function(each){
+				console.log(each.x + "-" + each.y);
+				// get random color
+				var color = Raphael.getColor();
+				svgSet.push(
+					paper.rect(
+						each.fit.x, each.fit.y,
+						each.fit.w, each.fit.h
+					).attr({fill: color, stroke: color})
+				);
+			});
+
+			var rendered = Result(outline, svgSet);
 			// show layout on canvas
 			var deck2D 		= Deck2D(rendered, {app: radio, bus:bus});
 
@@ -185,54 +208,6 @@ function LayoutHandler(view, options) {
 		clear: function (){
 			vop.deck2D.remove();
 			vop.outline.delete();
-		},
-
-		gimmeValid: function(vertices, rectangle){
-			// set up
-			var checkingPoints = new Points();
-			var points = rectangle.points;
-			var center = rectangle.center();
-
-			var size   = points.size();
-
-			for(var q = 0; q < 8; q++){
-				var cx, cy, j, k;
-				if(q < 4) {
-					checkingPoints.add(Point.of(points.point(q)));
-				} else {
-					j  = q % 4;
-					k  = ( j + 1 ) % size;
-					cx = ( points.point(j).x + points.point(k).x ) / 2;
-					cy = ( points.point(j).y + points.point(k).y ) / 2;
-					checkingPoints.add(Point.make(cx, cy));
-				}
-			}
-
-			// validate
-			for(var i = 0; i < vertices.size(); i++){
-
-				if(checkingPoints.size() > 8) break;
-
-				var each = vertices.point(i);
-				vertices.log();
-				var p = Point.make(each.x, each.y);
-
-				var separation, distance;
-				for(var idx = 0; idx < checkingPoints.size(); idx++){
-					var e = checkingPoints.point(idx);
-					separation = e.distanceTo(center) + Rectangle.GAP;
-					distance   = p.distanceTo(center);
-					if(distance < separation){
-						console.log("it is invalid, shrink once more.");
-						InR(rectangle);
-						return rectangle.inner;
-					}
-				}
-			}
-
-
-
-			return rectangle;
 		},
 
 		layoutDeleted: function(payload) {

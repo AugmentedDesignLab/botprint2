@@ -78,5 +78,6 @@ function Canvas2D(options) {
 	
 	self.router = Router(self, {app: options.app});
 	self.router.enable();
-	return Automator(self).play();
+	Automator(self).play();
+	return self;
 }

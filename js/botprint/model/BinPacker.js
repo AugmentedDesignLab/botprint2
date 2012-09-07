@@ -46,7 +46,7 @@ function BinPacker(polygon) {
 	var x		= polygon.x || 0; // if we are always getting 0, then there is something wrong going on.
 	var y		= polygon.y || 0; // if we are always getting 0, then there is something wrong going on.
 
-	return {
+	var self = {
 		init: function(){
 			this.root = {
 				x: x,
@@ -96,5 +96,10 @@ function BinPacker(polygon) {
 
 			return node;
 		}
-	}
+	};
+
+	// Mixing it in, just smash the methods of the newly created
+	// View onto this object
+	Mixable(self).mix(Algorithm ({polygon: polygon}));
+	return self;
 }
