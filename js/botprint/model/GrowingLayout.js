@@ -7,7 +7,7 @@
 function GrowingLayout(vertices){
 	vertices = vertices || [];
 
-	return {
+	var self = {
 
 		score: function(block, results) {
 
@@ -98,4 +98,9 @@ function GrowingLayout(vertices){
 
 		}
 	};
+
+	// Mixing it in, just smash the methods of the newly created
+	// View onto this object
+	Mixable(self).mix(Algorithm ({vertices: vertices}));
+	return self;
 }
