@@ -24,7 +24,7 @@ function Wheel (opts){
 		},
 		
 		isOverlappingWith: function(other) {
-			var size =  new Vector2D(PartsFolio.wheel.width, PartsFolio.wheel.radius*2);
+			var size =  new Vector2D(SpecSheet.wheel.width, SpecSheet.wheel.radius*2);
 			var topLeft1 = new Point2D(self.x-size.x/2, self.y-size.y/2);
 			var bottomRight1 = new Point2D(self.x+size.x/2, self.y+size.y/2);
 			var topLeft2 = new Point2D(other.x-size.x/2,  other.y-size.y/2);
