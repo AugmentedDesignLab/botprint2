@@ -159,7 +159,8 @@ function LayoutHandler(view, options) {
 				{
 					vertices:vertices,
 					rect:rectangle.inner,
-					gap: Rectangle.GAP
+					gap: Rectangle.GAP,
+					inr: InR
 				}
 			);
 

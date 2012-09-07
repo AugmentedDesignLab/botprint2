@@ -10,6 +10,7 @@ function ValidInnerRectangle(data){
 			var rectangle = data.rect;
 			var vertices  = data.vertices;
 			var gap		  = data.gap;
+			var inr       = data.inr;
 
 			// set up
 			var checkingPoints = new Points();
@@ -47,7 +48,7 @@ function ValidInnerRectangle(data){
 					distance   = p.distanceTo(center);
 					if(distance < separation){
 						console.log("it is invalid, shrink once more.");
-						InR(rectangle);
+						inr(rectangle);
 						return rectangle.inner;
 					}
 				}
