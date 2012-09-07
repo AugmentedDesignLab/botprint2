@@ -155,7 +155,13 @@ function LayoutHandler(view, options) {
 
 			InR(rectangle);
 
-			var valid      		= ValidInnerRectangle({vertices:vertices, rect:rectangle.inner});
+			var valid      		= ValidInnerRectangle(
+				{
+					vertices:vertices,
+					rect:rectangle.inner,
+					gap: Rectangle.GAP
+				}
+			);
 
 			var parts       	= MakeParts(
 				{
