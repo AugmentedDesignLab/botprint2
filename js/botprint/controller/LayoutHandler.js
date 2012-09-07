@@ -5,6 +5,17 @@ function LayoutHandler(view, options) {
 	var radio 		= options.app;
 	var bus			= view.bus;
 
+	// Helper object that encapsulates a result
+	var Result = function(a, c) {
+		return {
+			x:a.x,
+			y:a.y,
+			w:a.w,
+			h:a.h,
+			cartoon: c
+		}
+	};
+
 	// Helper Object for caching the layout and its view
 	var Cache		= function(deck2D, outline) {
 		return {
@@ -163,13 +174,25 @@ function LayoutHandler(view, options) {
 				}
 			);
 
-			var rendered	= RenderLayout(
-				{
-					paper: view.draw,
-					layout: outline
-				}
-			);
+			self.generateLayout(view.draw, outline, radio, bus);
+		},
 
+		// similar to sketching handler, this handler handles the generation of layout.
+		generateLayout: function(paper, outline, radio, bus){
+			var svgSet		= paper.set(); // use sets to group independent svgs...
+			outline.select().forEach(function(each){
+				console.log(each.x + "-" + each.y);
+				// get random color
+				var color = Raphael.getColor();
+				svgSet.push(
+					paper.rect(
+						each.fit.x, each.fit.y,
+						each.fit.w, each.fit.h
+					).attr({fill: color, stroke: color})
+				);
+			});
+
+			var rendered = Result(outline, svgSet);
 			// show layout on canvas
 			var deck2D 		= Deck2D(rendered, {app: radio, bus:bus});
 
