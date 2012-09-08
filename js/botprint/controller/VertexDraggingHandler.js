@@ -18,11 +18,19 @@ function VertexDraggingHandler(view, options) {
 		dragEnd: function(payload) {
 			self.super.dragEnd(payload);
 			var shape = view.target.elem;
-			var chassis = Chassis({path: shape.attrs.path,
-								  transform: shape.transform(),
-								  app: options.app,
-								  id: view.target.id});
+			var corners = Corners(view, shape);
+			var chassis = Chassis(
+				{
+					corners: corners,
+					path: shape.attrs.path, 
+					transform: shape.transform(), 
+					app: options.app,
+					id: view.target.id
+				}
+			);
+
 			chassis.update();
+
 			// force to redraw the edges
 			view.target.deselect();
 			view.target.select();

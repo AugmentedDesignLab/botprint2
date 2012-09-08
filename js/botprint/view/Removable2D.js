@@ -6,8 +6,10 @@ function Removable2D(object2D) {
 		this.handlers.forEach(function(h){
 			h.disable();
 		});
-		this.elem.unbindAll();
-		this.elem.remove();		
+		if(this.elem.unbindAll){
+			this.elem.unbindAll();
+		}
+		this.elem.remove();
 	};
 	return object2D;
 }

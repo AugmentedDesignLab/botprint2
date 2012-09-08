@@ -7,7 +7,7 @@ Chassis3D.constructor = Chassis3D;
 function Chassis3D(chassisModel) {
 	var material = new THREE.MeshPhongMaterial();
 	var shape = this.buildShape(chassisModel.path);
-	var geometry = shape.extrude({amount: PartsFolio.chassis.height});
+	var geometry = shape.extrude({amount: SpecSheet.chassis.height});
 	geometry.computeBoundingBox();
 	var bBox = geometry.boundingBox;
 	// record the position of the geometry
