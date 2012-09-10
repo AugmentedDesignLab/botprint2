@@ -11,6 +11,7 @@ function Vertex2D(position, target, options) {
 	
 	var self = {
 		elem: svg,
+		draw: draw,
 		target: target,
 		handlers: [],
 		

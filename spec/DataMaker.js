@@ -1,5 +1,6 @@
+// todo(Huascar) delete it once PartsMaker is ready for primetime.
 function DataMaker(){
-	var bus			= EventBus()
+	var bus			= EventBus();
 	var radio		= Bindable(bus);
 	var options = {
 		name: "Wall-E",
@@ -23,8 +24,8 @@ function DataMaker(){
 	var top  	= new Deck({name:"Top", app: radio, dimensions: { w:500, h:500, d:0 }});
 	var bottom  = new Deck({name:"Bottom", app: radio, dimensions: { w:500, h:500, d:0 }});
 
-	top.add(new Breadboard({name:"Breadboard", app: radio, dimensions: { w:200, h:200, d:0 }}));
-	top.add(new Microcontroller({name:"Arduino", app: radio, dimensions: { w:200, h:200, d:0 }}));
+	top.add(PowerAmplifier({name:"PowerAmplifier", app: radio, dimensions: { w:200, h:200, d:0 }}));
+	top.add(Microcontroller({name:"Arduino", app: radio, dimensions: { w:200, h:200, d:0 }}));
 
 	bottom.add(new Sensor({name:"LightSensor", app: radio, dimensions: { w:25, h:25, d:0 }}));
 	bottom.add(new Sensor({name:"MotionSensor", app: radio, dimensions: { w:25, h:25, d:0 }}));

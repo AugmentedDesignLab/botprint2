@@ -6,10 +6,7 @@ var IntersectionDetection = {
 		}
 		
 		function equal(vect1, vect2) {
-			if(vect1.x == vect2.x && vect1.y == vect2.y)
-				return true;
-			else
-				return false;
+			return vect1.x == vect2.x && vect1.y == vect2.y;
 		}
 		
 		var intersect;

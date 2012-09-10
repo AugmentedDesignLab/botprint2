@@ -8,16 +8,18 @@
 function Chassis (opts){
 	var options = {isLeaf: false, name: 'Chassis'};
 	$.extend(options, opts || {});
+
 	var self = {
-		serializable: ['id', 'name', 'path', 'transform'],
+		serializable: ['id', 'name', 'path', 'transform', 'corners'],
 
 		path: options.path || [],
 		transform: options.transform,
+		corners: options.corners,
 		
 		isSelfIntersecting: function() {
 			return IntersectionDetection.isSelfIntersecting(self.path);
 		},
-		
+
 		accept: function(visitor) {
 			return visitor.visitChassis(this);
 		}
