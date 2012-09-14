@@ -5,6 +5,8 @@
 function EventBus (deliveryStrategy) {
 	deliveryStrategy =  deliveryStrategy || new DeliveryStrategy();
 
+	function noop(){}
+
 	return {
 		/**
 		 * The subscribe method adds a function as an event listener.
@@ -17,7 +19,7 @@ function EventBus (deliveryStrategy) {
 		 * is triggered.
 		 */
 		subscribe:function (event, callback, subscriber) {
-			deliveryStrategy.checkin(event, {
+			deliveryStrategy.admit(event, {
 				subscriber: subscriber,
 				callback:   callback
 			});
@@ -34,7 +36,7 @@ function EventBus (deliveryStrategy) {
 		 * is triggered.
 		 */
 		unsubscribe:function (event, callback, subscriber) {
-			deliveryStrategy.checkout(event, {
+			deliveryStrategy.dismiss(event, {
 				subscriber: subscriber,
 				callback:   callback
 			});
@@ -49,10 +51,10 @@ function EventBus (deliveryStrategy) {
 		 * @param {String} event The event to trigger.
 		 */
 		publish:function (event, payload/*payload is a record object*/) {
-			deliveryStrategy.onEvent(
+			deliveryStrategy.deliver(
 				event,
 				payload,
-				function(){ console.log("Yeah baby!"); });
+				noop);
 		}
 	};
 }
