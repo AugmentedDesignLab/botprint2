@@ -92,13 +92,13 @@ function DeliveryStrategy () {
 	// one entry queue, always, to determine which event is being handled.
 	// whichever event is here has the priority to finalize its processing. everybody has to wait.
 	// this works as long as everybody share the same event bus.
-	var lock 		= new Queue();
+	var serving 	= new Queue();
 	// next event in line to be processed.
-	var nextInLine  = new Queue();
+	var waiting  	= new Queue();
 
 
 	return {
-		checkin:function (event, eventCallback) {
+		admit:function (event, eventCallback) {
 			if(eventCallbacks[event]) {
 				eventCallbacks[event].enqueue(eventCallback);
 			} else {
@@ -108,7 +108,7 @@ function DeliveryStrategy () {
 			}
 		},
 
-		checkout: function(event, eventCallback){
+		dismiss: function(event, eventCallback){
 			var queue = eventCallbacks[event];
 			if(queue){
 				var inTheClub  = new Queue();
@@ -124,24 +124,33 @@ function DeliveryStrategy () {
 			}
 		},
 
-		_acquireLock: function(event){
-			if(lock.isEmpty()) {
-				return lock.enqueue(event) != null;
+		defer: function(event, payload, completionCallback) {
+			waiting.enqueue({
+					event: event, payload: payload, completionCallback: completionCallback
+				}
+			);
+		},
+
+		focusOn: function(event, payload, completionCallback){
+			if(serving.isEmpty()) {
+				return serving.enqueue(event) != null;
 			} else {
+				this.defer(event, payload, completionCallback);
 				return false;
 			}
 		},
 
-		_processNextInLine: function(){
-			lock.dequeue();
-			var next = nextInLine.dequeue();
+		tryNext: function(){
+			serving.dequeue();
+			var next = waiting.dequeue();
 			if(next){
-				this.onEvent(next.event, next.payload, next.completionCallback);
+				this.deliver(next.event, next.payload, next.completionCallback);
 			}
 		},
 
-		onEvent:function (event, payload, completionCallback) {
-			if(this._acquireLock(event)){
+
+		deliver:function (event, payload, completionCallback) {
+			if(this.focusOn(event, payload, completionCallback)){
 				var queue = eventCallbacks[event];
 				if(queue){
 					var processed  = new Queue();
@@ -157,12 +166,7 @@ function DeliveryStrategy () {
 					completionCallback.call();
 				}
 
-				this._processNextInLine();
-			} else {
-				nextInLine.enqueue({
-					event: event, payload: payload, completionCallback: completionCallback
-					}
-				);
+				this.tryNext();
 			}
 		}
 	};
