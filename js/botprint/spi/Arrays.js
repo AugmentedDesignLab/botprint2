@@ -11,5 +11,14 @@ Array.prototype.remove = function(array, from, to) {
 
 Array.prototype.select = Array.prototype.filter;
 
+Array.prototype.chunkIt = function(array, num){
+	var len = array.length, out = [], i = 0;
+	while (i < len) {
+		var size = Math.ceil((len - i) / num--);
+		out.push(array.slice(i, i += size));
+	}
+	return out;
+};
+
 //Mixing enumerable into Array.prototype
 $.extend(Array.prototype, Enumerable());
