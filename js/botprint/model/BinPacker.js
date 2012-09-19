@@ -62,6 +62,7 @@ function BinPacker(polygon) {
 
 			for (n = 0; n < blocks.length; n++) {
 				block = blocks[n];
+				if(block.fit) continue;
 				node = this.findNode(this.root, block.w, block.h);
 				if (node /* if node != null, then ...*/){
 					block.fit = this.splitNode(node, block.w, block.h);
