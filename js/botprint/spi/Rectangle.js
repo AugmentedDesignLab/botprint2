@@ -61,6 +61,16 @@ var Rectangle = function(points){
 	}
 };
 
+Rectangle.travel = function(rectangle, onX, onY){
+	var t = rectangle.clone();
+	t.points.each(function(p, i){
+		p.x = p.x + onX;
+		p.y = p.y + onY;
+	});
+
+	return t;
+};
+
 Rectangle.make = function(points){
 	return new Rectangle(points);
 };
