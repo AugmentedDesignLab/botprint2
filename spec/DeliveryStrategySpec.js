@@ -36,10 +36,10 @@ describe("A DeliveryStrategy", function(){
 
 
 
-		strategy.checkin("arithmetic", {callback:sum});
-		strategy.checkin("arithmetic", {callback:sub});
-		strategy.checkin("arithmetic", {callback:mult});
-		strategy.onEvent("arithmetic", {a:2, b:2}, ready);
+		strategy.admit("arithmetic", {callback:sum});
+		strategy.admit("arithmetic", {callback:sub});
+		strategy.admit("arithmetic", {callback:mult});
+		strategy.deliver("arithmetic", {a:2, b:2}, ready);
 
 		expect(sumcalled).toBe(true);
 		expect(subcalled).toBe(true);
