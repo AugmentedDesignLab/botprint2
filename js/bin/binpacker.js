@@ -60,6 +60,7 @@ BinPacker.prototype = {
 		// from 0 ... N-1 blocks (e.g., N = 4 => from 0 ... 3)
 		for (n = 0; n < blocks.length; n++) {
 			block = blocks[n];
+			if(block.fit) continue;
 			node = this.findNode(this.root, block.w, block.h);
 			if (node /* if node != null, then ...*/){
 				// 2. node != null since node == root, then split the root...
