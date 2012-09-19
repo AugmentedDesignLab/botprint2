@@ -3,10 +3,16 @@
  */
 function Automator(sketchable, options){
 	options = options || { points: [
-	/*TL*/{x:186, y:200},
-	/*BL*/{x:186, y:385},
-	/*BR*/{x:560, y:385},
-	/*TR*/{x:560, y:200}
+		{x:424, y: 145},
+		{x:405, y: 270},
+		{x:251, y: 272},
+		{x:362, y: 357},
+		{x:307, y: 517},
+		{x:435, y: 420},
+		{x:542, y: 502},
+		{x:516, y: 351},
+		{x:599, y: 273},
+		{x:484, y: 272}
 	]};
 
 	var corners = new Points();

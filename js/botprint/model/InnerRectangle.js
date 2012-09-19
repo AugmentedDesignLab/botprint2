@@ -33,4 +33,4 @@ function InnerRectangle(data){
 	return self.inner();
 }
 
-InnerRectangle.SCALE = 0.6;
+InnerRectangle.SCALE = 0.1234;
