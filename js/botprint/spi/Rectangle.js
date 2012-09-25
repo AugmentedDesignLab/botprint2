@@ -55,10 +55,38 @@ var Rectangle = function(points){
 	};
 
 	function calculateCenter(topleft, bottomright) {
-		var x = (topleft.x + (bottomright.x - topleft.x)/2);
-		var y = (topleft.y - (topleft.y  - bottomright.y)/2);
+		var x = (topleft.x + (bottomright.x - topleft.x)/2) + Rectangle.GAP;
+		var y = (topleft.y - (topleft.y  - bottomright.y)/2) + Rectangle.GAP;
 		return new Point(x, y);
 	}
+};
+
+Rectangle.travel = function(rectangle, onX, onY){
+	var t = rectangle.clone();
+	t.points.each(function(p, i){
+		p.x = p.x + onX;
+		p.y = p.y + onY;
+	});
+
+	return t;
+};
+
+Rectangle.make = function(points){
+	return new Rectangle(points);
+};
+
+Rectangle.of   = function(x, y, size){
+	var rectsize = size/2;
+	var points   = new Points();
+	var tl		 = Point.of(x, y);
+	var tr       = Point.of(x + rectsize, y);
+	var br       = Point.of(x + rectsize, y + rectsize);
+	var bl       = Point.of(x, y + rectsize);
+	points.add(tl);
+	points.add(tr);
+	points.add(br);
+	points.add(bl);
+	return Rectangle.make(points);
 };
 
 Rectangle.GAP = 10; // this defines the boundary of a valid layout

@@ -48,8 +48,8 @@ function ValidInnerRectangle(data){
 					distance   = p.distanceTo(center);
 					if(distance < separation){
 						console.log("it is invalid, shrink once more.");
-						inr(rectangle);
-						return rectangle.inner;
+						//inr(rectangle);
+						return rectangle;
 					}
 				}
 			}

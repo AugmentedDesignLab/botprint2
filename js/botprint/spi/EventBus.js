@@ -2,8 +2,10 @@
  * EventBus API.
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function EventBus () {
-	var eventCallbacks = {};
+function EventBus (deliveryStrategy) {
+	deliveryStrategy =  deliveryStrategy || new DeliveryStrategy();
+
+	function noop(){}
 
 	return {
 		/**
@@ -17,9 +19,7 @@ function EventBus () {
 		 * is triggered.
 		 */
 		subscribe:function (event, callback, subscriber) {
-			eventCallbacks[event] = eventCallbacks[event] || [];
-
-			eventCallbacks[event].push ({
+			deliveryStrategy.admit(event, {
 				subscriber: subscriber,
 				callback:   callback
 			});
@@ -36,11 +36,10 @@ function EventBus () {
 		 * is triggered.
 		 */
 		unsubscribe:function (event, callback, subscriber) {
-			if(eventCallbacks[event]){
-				eventCallbacks[event] = eventCallbacks[event].filter(function(elem){
-					return elem.subscriber != subscriber || elem.callback != callback
-				});
-			}
+			deliveryStrategy.dismiss(event, {
+				subscriber: subscriber,
+				callback:   callback
+			});
 		},
 
 		/**
@@ -52,12 +51,10 @@ function EventBus () {
 		 * @param {String} event The event to trigger.
 		 */
 		publish:function (event, payload/*payload is a record object*/) {
-			var callbacks = eventCallbacks[event];
-			if (callbacks && callbacks.length) {
-				callbacks.forEach(function (elem) {
-					elem.callback.call(elem.subscriber, payload);
-				});
-			}
+			deliveryStrategy.deliver(
+				event,
+				payload,
+				noop);
 		}
 	};
 }
