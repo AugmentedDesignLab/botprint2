@@ -28,7 +28,6 @@ describe('A chassis', function() {
 	});
 	
 	it('should serialize path and name', function() {
-debugger;
 		var cJSON = JSON.stringify(chassis1);
 		var pJSON = JSON.stringify(path1);
 		expect(cJSON.indexOf(pJSON)).not.toBeLessThan(0);
