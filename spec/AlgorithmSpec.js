@@ -75,7 +75,13 @@ describe("A PCG Algorithm", function(){
 			var FIVE  = [s3];
 
 			var clusters = [ONE, TWO, THREE, FOUR, FIVE];
-			var data     = {d: D, n: N, clusters: clusters};
+			var points   = new Points();
+			points.add(Point.make(1, 2));
+			points.add(Point.make(2, 2));
+			points.add(Point.make(2, 4));
+			points.add(Point.make(1, 4));
+			var rect     = new Rectangle(points);
+			var data     = {d: D, n: N, clusters: clusters, polygon: rect};
 
 			var opt      = ItemsPlacement(data);
 			expect(opt != null).toBe(true);
