@@ -155,8 +155,8 @@ function ItemsPlacement(/*d:int, n:int, clusters:array of parts*/data){
 				for(var j = 0; j < N; j++) {
 					if(q[i] == j){
 						var area = new Area();
-						area.x   = tl.x + x + gap;
-						area.y   = tl.y + y - gap;
+						area.x   = tl.x + x;// + gap;
+						area.y   = tl.y + y;// - gap;
 						area.w   = d;
 						area.h   = d;
 

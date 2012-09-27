@@ -41,7 +41,7 @@ function LayoutHandler(view, options) {
 	};
 
 	var Data	  = function(innerRectangle, vertices, radio, N){
-		var parts = MakeParts( { app: radio} ); // todo(Huascar) fix this bus vs radio stuff.
+		var parts = MakeParts( { app: radio} );
 		N = N || 5;
 		return {
 			n:N,
@@ -54,58 +54,6 @@ function LayoutHandler(view, options) {
 		};
 	};
 
-	var Translate = function(rectangle){
-		var gap      = Rectangle.GAP;
-		var upleft   = Rectangle.travel(rectangle, -(gap) - 35,  gap + 50);
-		var upright  = Rectangle.travel(rectangle,  gap + 40,  gap + 45);
-		var loright  = Rectangle.travel(rectangle,  gap + 50, -(gap) - 20);
-		var loleft   = Rectangle.travel(rectangle, -gap - 50, -gap - 20);
-		return [rectangle.clone(), upleft, upright, rectangle.clone(), loright, loleft];
-	};
-
-	var Outline  = function(allTranslated, rectangle, parts){
-
-		var deckopts = {
-			name:"top",
-			app: radio,
-			coordinates: {x: rectangle.topLeft().x, 	y: rectangle.topLeft().y 		},
-			dimensions:  {w: rectangle.width() , 	h: rectangle.height(), d:0 	        },
-			polygon: rectangle
-		};
-
-		var splitparts = Array.chunkIt(parts, 6);
-		// the idea is that len(valid) === len(splitparts)
-		var len = Math.max(allTranslated.length, splitparts.length);
-
-
-		for(var o = 0; o < len; o++){
-			var area  = allTranslated[o];
-			var ps    = splitparts[o];
-
-			var subject = {
-				x: area.topLeft().x,
-				y: area.topLeft().y,
-				w: area.width(),
-				h: area.height()
-			};
-
-			var packer = BinPacker(subject);
-			packer.fit(ps);
-		}
-
-		var deck = Deck(deckopts);
-		for(var n = 0 ; n < splitparts.length ; n++) {
-			var sparts = splitparts[n];
-			for(var m = 0 ; m < sparts.length ; m++) {
-				var part = sparts[m];
-				if (part.fit) {
-					deck.add(part);
-				}
-			}
-		}
-
-		return deck;
-	};
 
 	var vop = Cache();
 
@@ -121,7 +69,8 @@ function LayoutHandler(view, options) {
 
 			InR({rect:rectangle});
 
-			var outline = ItemsPlacement(Data(rectangle.inner, vertices, radio, 4));
+			var data    = Data(rectangle.inner, vertices, radio, 4);
+			var outline = ItemsPlacement(data);
 
 			self.generateLayout(view.draw, outline);
 		},
