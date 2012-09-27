@@ -14,7 +14,7 @@ var SpecSheet = {
 
 	parts : {
 		microcontroller: [
-			{name: "MC", width:100, height:80}
+			{name: "MC", width:20, height:15}
 		],
 
 		sensor: {
@@ -32,11 +32,11 @@ var SpecSheet = {
 		],
 
 		batteryPack: [
-			{name: "BP1", width:100, height:80}
+			{name: "BP1", width:45, height:35}
 		],
 
 		motor: [
-			{name: "MT1", width:70, height:40}
+			{name: "MT1", width:15, height:15}
 		]
 	}
 };

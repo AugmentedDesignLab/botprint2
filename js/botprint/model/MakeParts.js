@@ -3,7 +3,6 @@
  */
 function MakeParts(data) {
 	var radio 		= data.app; 				// data must have this radio...otherwise, we are doomed.
-	var bus	  		= data.bus; 				// data must have this bus ... otherwise, we are doomed ++
 	var sc			= data.sort || "minside"; 	// sorting criteria
 
 	// Helper object for sorting
@@ -45,7 +44,7 @@ function MakeParts(data) {
 			partsSpec.sensor[criteria].forEach(function(each){
 				var dimensions = { w:each.width, h:each.height, d:0 };
 				var name	   = each.name;
-				var part       = Sensor({name:name, app: radio, bus: bus, dimensions: dimensions});
+				var part       = Sensor({name:name, app: radio, dimensions: dimensions});
 				part.area	   = part.w * part.h;
 				parts.push(part);
 			});
@@ -57,7 +56,7 @@ function MakeParts(data) {
 			partsSpec.microcontroller.forEach(function(each){
 				var dimensions = { w:each.width, h:each.height, d:0 };
 				var name	   = each.name;
-				var part	   = Microcontroller({name:name, app: radio, bus: bus, dimensions: dimensions});
+				var part	   = Microcontroller({name:name, app: radio, dimensions: dimensions});
 				part.area	   = part.w * part.h;
 				ONE.push(part);
 			});
@@ -65,7 +64,7 @@ function MakeParts(data) {
 			partsSpec.batteryPack.forEach(function(each){
 				var dimensions = { w:each.width, h:each.height, d:0 };
 				var name	   = each.name;
-				var part	   = BatteryPack({name:name, app: radio, bus: bus, dimensions: dimensions});
+				var part	   = BatteryPack({name:name, app: radio, dimensions: dimensions});
 				part.area	   = part.w * part.h;
 				ONE.push(part);
 			});
@@ -88,7 +87,7 @@ function MakeParts(data) {
 			partsSpec.motor.forEach(function(each){
 				var dimensions = { w:each.width, h:each.height, d:0 };
 				var name	   = each.name;
-				var part	   = Motor({name:name, app: radio, bus: bus, dimensions: dimensions});
+				var part	   = Motor({name:name, app: radio, dimensions: dimensions});
 				FOUR.push(part);
 			});
 
@@ -107,7 +106,7 @@ function MakeParts(data) {
 			partsSpec.microcontroller.forEach(function(each){
 				var dimensions = { w:each.width, h:each.height, d:0 };
 				var name	   = each.name;
-				var part	   = Microcontroller({name:name, app: radio, bus: bus, dimensions: dimensions});
+				var part	   = Microcontroller({name:name, app: radio, dimensions: dimensions});
 				part.area	   = part.w * part.h;
 				parts.push(part);
 			});
@@ -120,7 +119,7 @@ function MakeParts(data) {
 			partsSpec.power.forEach(function(each){
 				var dimensions = { w:each.width, h:each.height, d:0 };
 				var name	   = each.name;
-				var part	   = PowerAmplifier({name:name, app: radio, bus: bus, dimensions: dimensions});
+				var part	   = PowerAmplifier({name:name, app: radio, dimensions: dimensions});
 				part.area	   = part.w * part.h;
 				parts.push(part);
 			});
@@ -129,7 +128,7 @@ function MakeParts(data) {
 			partsSpec.batteryPack.forEach(function(each){
 				var dimensions = { w:each.width, h:each.height, d:0 };
 				var name	   = each.name;
-				var part	   = BatteryPack({name:name, app: radio, bus: bus, dimensions: dimensions});
+				var part	   = BatteryPack({name:name, app: radio, dimensions: dimensions});
 				part.area	   = part.w * part.h;
 				parts.push(part);
 			});
@@ -137,7 +136,7 @@ function MakeParts(data) {
 			partsSpec.motor.forEach(function(each){
 				var dimensions = { w:each.width, h:each.height, d:0 };
 				var name	   = each.name;
-				var part	   = Motor({name:name, app: radio, bus: bus, dimensions: dimensions});
+				var part	   = Motor({name:name, app: radio, dimensions: dimensions});
 				part.area	   = part.w * part.h;
 				parts.push(part);
 			});

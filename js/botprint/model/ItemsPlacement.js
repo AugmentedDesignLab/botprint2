@@ -16,14 +16,15 @@ function ItemsPlacement(/*d:int, n:int, clusters:array of parts*/data){
 	var PackIt      = function(data, solution){
 		var opts  = {
 			name: 			"TOP",
-			app: 			data.radio,
-			bus: 			data.bus,
+			app: 			data.app,
 			coordinates: 	data.coordinates,
 			dimensions: 	data.dimensions,
 			polygon: 		data.polygon
 		};
 
 		var deck    = Deck(opts);
+
+		console.log(solution.current.length <= 0 ? "NO SOL" : "YES SOL");
 
 		solution.current.forEach(function(each){
 			var blocks = each.group;
@@ -33,9 +34,14 @@ function ItemsPlacement(/*d:int, n:int, clusters:array of parts*/data){
 			for(var i = 0; i < blocks.length; i++){
 				if(blocks[i].fit){
 					deck.add(blocks[i].fit);
+				} else {
+					console.log("counter=" + i + ", enter=NO");
 				}
 			}
 		});
+
+		var tobeDrawn   = deck.select();
+		console.log(tobeDrawn.length <= 0 ? "NOTHING" : "SOMETHING");
 
 		return deck;
 	};
@@ -136,6 +142,10 @@ function ItemsPlacement(/*d:int, n:int, clusters:array of parts*/data){
 			var areas = [];
 			var N     = q.length;
 
+			var tl    = this.data().polygon.topLeft();
+			var gap   = Rectangle.GAP;
+
+			// these values show how much we have traveled on x and on y.
 			var x	  = 0;
 			var y	  = 0;
 
@@ -145,9 +155,10 @@ function ItemsPlacement(/*d:int, n:int, clusters:array of parts*/data){
 				for(var j = 0; j < N; j++) {
 					if(q[i] == j){
 						var area = new Area();
-						area.x   = x;
-						area.y   = y;
+						area.x   = tl.x + x + gap;
+						area.y   = tl.y + y - gap;
 						area.w   = d;
+						area.h   = d;
 
 						areas.push(area);
 					}

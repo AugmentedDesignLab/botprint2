@@ -3,7 +3,6 @@
  */
 function LayoutHandler(view, options) {
 	var radio 		= options.app;
-	var bus			= view.bus;
 
 	// Helper object that encapsulates a result
 	var Result = function(a, c) {
@@ -41,6 +40,20 @@ function LayoutHandler(view, options) {
 		return result;
 	};
 
+	var Data	  = function(innerRectangle, vertices, radio, N){
+		var parts = MakeParts( { app: radio} ); // todo(Huascar) fix this bus vs radio stuff.
+		N = N || 5;
+		return {
+			n:N,
+			d:Math.ceil(Math.max (innerRectangle.width (), innerRectangle.height ()) / N),
+			polygon:innerRectangle,
+			clusters:parts,
+			app:radio,
+			coordinates:{x:innerRectangle.topLeft ().x, y:innerRectangle.topLeft ().y  },
+			dimensions:{w:innerRectangle.width (), h:innerRectangle.height (), d:0}
+		};
+	};
+
 	var Translate = function(rectangle){
 		var gap      = Rectangle.GAP;
 		var upleft   = Rectangle.travel(rectangle, -(gap) - 35,  gap + 50);
@@ -54,7 +67,6 @@ function LayoutHandler(view, options) {
 
 		var deckopts = {
 			name:"top",
-			bus: bus,
 			app: radio,
 			coordinates: {x: rectangle.topLeft().x, 	y: rectangle.topLeft().y 		},
 			dimensions:  {w: rectangle.width() , 	h: rectangle.height(), d:0 	        },
@@ -109,39 +121,31 @@ function LayoutHandler(view, options) {
 
 			InR({rect:rectangle});
 
-			var translatedRectangles = Translate(rectangle.inner);
+			var outline = ItemsPlacement(Data(rectangle.inner, vertices, radio, 4));
 
-			var parts       	= MakeParts(
-				{
-					app: radio,
-					bus: bus
-				}
-			);
-
-
-			var outline = Outline(translatedRectangles, rectangle, parts);
-
-			self.generateLayout(view.draw, outline, radio, bus);
+			self.generateLayout(view.draw, outline);
 		},
 
 		// similar to sketching handler, this handler handles the generation of layout.
-		generateLayout: function(paper, outline, radio, bus){
+		generateLayout: function(paper, outline){
+			var radio       = outline.radio;
 			var svgSet		= paper.set(); // use sets to group independent svgs...
+
 			outline.select().forEach(function(each){
 				console.log(each.x + "-" + each.y);
 				// get random color
 				var color = Raphael.getColor();
 				svgSet.push(
 					paper.rect(
-						each.fit.x, each.fit.y,
-						each.fit.w, each.fit.h
+						each.x, each.y,
+						each.w, each.h
 					).attr({fill: color, stroke: color})
 				);
 			});
 
 			var rendered = Result(outline, svgSet);
 			// show layout on canvas
-			var deck2D 		= Deck2D(rendered, {app: radio, bus:bus});
+			var deck2D 		= Deck2D(rendered, {app: radio});
 
 			// inform interested parties.
 			outline.update();
