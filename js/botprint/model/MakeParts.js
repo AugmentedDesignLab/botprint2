@@ -3,7 +3,6 @@
  */
 function MakeParts(data) {
 	var radio 		= data.app; 				// data must have this radio...otherwise, we are doomed.
-	var bus	  		= data.bus; 				// data must have this bus ... otherwise, we are doomed ++
 	var sc			= data.sort || "minside"; 	// sorting criteria
 
 	// Helper object for sorting
@@ -45,10 +44,60 @@ function MakeParts(data) {
 			partsSpec.sensor[criteria].forEach(function(each){
 				var dimensions = { w:each.width, h:each.height, d:0 };
 				var name	   = each.name;
-				var part       = Sensor({name:name, app: radio, bus: bus, dimensions: dimensions});
+				var part       = Sensor({name:name, app: radio, dimensions: dimensions});
 				part.area	   = part.w * part.h;
 				parts.push(part);
 			});
+		},
+
+		clusters: function(partsSpec){
+			// 1st cluster
+			var ONE = [];
+			partsSpec.microcontroller.forEach(function(each){
+				var dimensions = { w:each.width, h:each.height, d:0 };
+				var name	   = each.name;
+				var part	   = Microcontroller({name:name, app: radio, dimensions: dimensions});
+				part.area	   = part.w * part.h;
+				ONE.push(part);
+			});
+
+			partsSpec.batteryPack.forEach(function(each){
+				var dimensions = { w:each.width, h:each.height, d:0 };
+				var name	   = each.name;
+				var part	   = BatteryPack({name:name, app: radio, dimensions: dimensions});
+				part.area	   = part.w * part.h;
+				ONE.push(part);
+			});
+
+			// 2nd cluster
+			var w1 = Wheel({id: new Date().getTime(), app: radio});
+			var w2 = Wheel({id: new Date().getTime(), app: radio});
+			var TWO = [];
+			TWO.push(w1);
+			TWO.push(w2);
+
+			// 3rd cluster
+			var THREE = [];
+			this.makeSensor(THREE, 'light', partsSpec);
+			this.makeSensor(THREE, 'motion', partsSpec);
+
+			// 4th cluster
+			var FOUR = [];
+			var w3 = Wheel({id: new Date().getTime(), app: radio});
+			partsSpec.motor.forEach(function(each){
+				var dimensions = { w:each.width, h:each.height, d:0 };
+				var name	   = each.name;
+				var part	   = Motor({name:name, app: radio, dimensions: dimensions});
+				FOUR.push(part);
+			});
+
+			FOUR.push(w3);
+
+			// 5th cluster
+			var FIVE = [];
+			this.makeSensor(FIVE, 'light', partsSpec);
+
+			return [ONE, TWO, THREE, FOUR, FIVE];
 		},
 
 		now: function(partsSpec) {
@@ -57,7 +106,7 @@ function MakeParts(data) {
 			partsSpec.microcontroller.forEach(function(each){
 				var dimensions = { w:each.width, h:each.height, d:0 };
 				var name	   = each.name;
-				var part	   = Microcontroller({name:name, app: radio, bus: bus, dimensions: dimensions});
+				var part	   = Microcontroller({name:name, app: radio, dimensions: dimensions});
 				part.area	   = part.w * part.h;
 				parts.push(part);
 			});
@@ -70,7 +119,7 @@ function MakeParts(data) {
 			partsSpec.power.forEach(function(each){
 				var dimensions = { w:each.width, h:each.height, d:0 };
 				var name	   = each.name;
-				var part	   = PowerAmplifier({name:name, app: radio, bus: bus, dimensions: dimensions});
+				var part	   = PowerAmplifier({name:name, app: radio, dimensions: dimensions});
 				part.area	   = part.w * part.h;
 				parts.push(part);
 			});
@@ -79,7 +128,7 @@ function MakeParts(data) {
 			partsSpec.batteryPack.forEach(function(each){
 				var dimensions = { w:each.width, h:each.height, d:0 };
 				var name	   = each.name;
-				var part	   = BatteryPack({name:name, app: radio, bus: bus, dimensions: dimensions});
+				var part	   = BatteryPack({name:name, app: radio, dimensions: dimensions});
 				part.area	   = part.w * part.h;
 				parts.push(part);
 			});
@@ -87,7 +136,7 @@ function MakeParts(data) {
 			partsSpec.motor.forEach(function(each){
 				var dimensions = { w:each.width, h:each.height, d:0 };
 				var name	   = each.name;
-				var part	   = Motor({name:name, app: radio, bus: bus, dimensions: dimensions});
+				var part	   = Motor({name:name, app: radio, dimensions: dimensions});
 				part.area	   = part.w * part.h;
 				parts.push(part);
 			});
@@ -103,7 +152,7 @@ function MakeParts(data) {
 		},
 
 		make: function() {
-			return self.sort(Make.now(SpecSheet.parts));
+			return self.sort(Make.clusters(SpecSheet.parts));
 		}
 	};
 
