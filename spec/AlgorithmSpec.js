@@ -19,8 +19,8 @@ describe("A PCG Algorithm", function(){
 	});
 
 	it("should make its own input.", function(){
-		var parts = MakeParts({app: Bindable(), bus: EventBus()});
-		expect(parts.length).toBe(25); // Yeah! We have 25 parts to play with!
+		var clusters = MakeParts({app: Bindable(), bus: EventBus()});
+		expect(clusters.length).toBe(5); // Yeah! We have 25 parts to play with!
 	});
 
 	describe("Once given a 50x50 area", function(){
