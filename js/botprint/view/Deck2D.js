@@ -21,7 +21,7 @@ function Deck2D(rendered, options) {
 		},
 
 		lowlight: function() {
-			cartoon.animate({"fill-opacity": .4}, 200);
+			cartoon.animate({"fill-opacity": .9}, 200);
 		}
 	};
 
