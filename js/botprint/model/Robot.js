@@ -168,7 +168,7 @@ function Robot (opts/*e.g., {name: "RobotA", bus: EventBus(), algs: {wheel:W, ch
 				self.radio.trigger(ApplicationEvents.chassisSelfIntersecting, {});
 				return false;
 			} else {
-				self.radio.trigger(ApplicationEvents.chassisValidated, {});
+				self.radio.trigger(ApplicationEvents.chassisValidated, {chassis: self.chassis});
 				return true;
 			}
 		},
