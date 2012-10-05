@@ -21,6 +21,24 @@ function Chassis (opts){
 			return IntersectionDetection.isSelfIntersecting(self.path);
 		},
 		
+		isInsideChassis: function(point) {
+			var pathElem = document.createElement('path');
+			pathElem.setAttribute('d', self.path);
+			var lineElem = document.createElement('line');
+			lineElem.setAttribute('x1', 0);
+			lineElem.setAttribute('y1', 0);
+			lineElem.setAttribute('x2', point.x);
+			lineElem.setAttribute('y2', point.y);
+			
+			var intersect = Intersection.intersectShapes(new Path(pathElem), new Line(lineElem));
+			if(intersect.status == 'Intersection') {
+				var xPoints = intersect.points;
+				return xPoints.length % 2 == 1;
+			} else {
+				return false;
+			}
+		},
+		
 		get punchHoles() {
 			punchHoles = [];
 			// assuming the chassis consists of cubic bezier curves
@@ -40,8 +58,12 @@ function Chassis (opts){
 					var hole2 = {x: action[5]+distanceFromEdge*Math.cos(angle2),
 									y: action[6]+distanceFromEdge*Math.sin(angle2),
 									radius: SpecSheet.chassis.punchHoleRadius};
-					punchHoles.push(hole1, hole2);
-					// decide line to which point has fewer intersections with the chassis
+					if(self.isInsideChassis(hole1)){
+						punchHoles.push(hole1);
+					} else if(self.isInsideChassis(hole2)) {
+						punchHoles.push(hole2);
+					}
+					
 				}
 			});
 			return punchHoles;

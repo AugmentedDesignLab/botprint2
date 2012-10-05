@@ -39,16 +39,20 @@ describe('A chassis', function() {
 		expect(cJSON.indexOf('super')).toBeLessThan(0);
 	});
 	
-	it('should generate punch holes perpendicular to tangent lines', function() {
-		var holes = chassis1.punchHoles;
-		var i = 0;
-		chassis1.path.forEach(function(action) {
-			if(action[0]=='C'){
-				var h = holes[i];
-				var dotProduct = (action[5]-h.x)*(action[5]-action[3])+(action[6]-h.y)*(action[6]-action[4]);
-				expect(dotProduct).toBeCloseTo(0);
-				i++;
-			}
-		});
+	//it('should generate punch holes perpendicular to tangent lines', function() {
+	//	var holes = chassis1.punchHoles;
+	//	var i = 0;
+	//	chassis1.path.forEach(function(action) {
+	//		if(action[0]=='C'){
+	//			var h = holes[i];
+	//			var dotProduct = (action[5]-h.x)*(action[5]-action[3])+(action[6]-h.y)*(action[6]-action[4]);
+	//			expect(dotProduct).toBeCloseTo(0);
+	//			i++;
+	//		}
+	//	});
+	//});
+	
+	it('should detect if a point is inside the chassis shape', function() {
+		expect(chassis1.isInsideChassis({x:337, y:356})).toBeTruthy();
 	});
 });
