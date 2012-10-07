@@ -78,3 +78,17 @@ Points.of = function(pointsArray){
 
 	return ret;
 };
+
+Points.fromPath = function(pathArray) {
+	var ret = new Points();
+	pathArray.forEach(function(action) {
+		var length = action.length
+		if(length > 2) {
+			/* For all SVG paths we are using so far (M, C, L), the coordinates of vertices
+			 * are always the last two numbers of each path element
+			 */
+			ret.add(Point.make(action[length-2], action[length-1]));
+		}
+	});
+	return ret;
+};

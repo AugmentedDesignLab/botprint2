@@ -10,7 +10,7 @@ var ApplicationEvents = {
 	wheelDeleted: 'A wheel has been deleted, payload: {wheel: Wheel2D}',
 	robotUpdated: 'A new robot model is ready: {robot: json}',
 	chassisSelfIntersecting: 'The chassis shape is self-intersecting, {}',
-	chassisValidated: 'The chassis shape is validated, {}',
+	chassisValidated: 'The chassis shape is validated, {chassis: chassisModel}',
 	partAdded: 'A new part has been added, payload: {part: json}',
 	saveChassis: 'User wants to save the chassis. payload: {}',
 	layoutUpdated: 'A layout has been updated, payload: {layout: Deck2D}',

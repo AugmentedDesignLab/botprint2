@@ -9,7 +9,9 @@ var SpecSheet = {
 	},
 
 	chassis: {
-		height: 50
+		height: 50,
+		holeEdge: 20,
+		punchHoleRadius: 5
 	},
 
 	parts : {
