@@ -12,6 +12,7 @@ function Botprint() {
 		VERSION: '0.0.2',
 		play: function() {
 			preview.animate();
+			$('#splash').modal();
 		}
 	};
 	
