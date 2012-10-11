@@ -55,9 +55,7 @@ var Rectangle = function(points){
 	};
 
 	function calculateCenter(topleft, bottomright) {
-		var x = (topleft.x + (bottomright.x - topleft.x)/2) + Rectangle.GAP;
-		var y = (topleft.y - (topleft.y  - bottomright.y)/2) + Rectangle.GAP;
-		return new Point(x, y);
+		return CalculateCenter(topleft, bottomright, Rectangle.GAP);
 	}
 };
 
