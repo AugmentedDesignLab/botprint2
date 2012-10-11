@@ -1,4 +1,6 @@
 function Chassis2D(svg, options) {
+	var punchHole2Ds = [];
+	
 	var self = {
 		elem: svg,
 		vertices: [],
@@ -68,6 +70,23 @@ function Chassis2D(svg, options) {
 			});
 			path.push('Z');
 			svg.attr('path', path);
+		},
+		
+		removePunchHoles: function() {
+			// remove 2d view for old punch holes
+			for(var ph2D=punchHole2Ds.pop(); ph2D; ph2D=punchHole2Ds.pop()) {
+				ph2D.remove();
+			}			
+		},
+		
+		updatePunchHoles: function(punchHoles) {
+			self.removePunchHoles();
+			var paper = svg.paper;
+			punchHoles.forEach(function(ph) {
+				var ph2D = paper.circle(ph.x, ph.y, ph.radius);
+				ph2D.attr({fill: 'blue'});
+				punchHole2Ds.push(ph2D);
+			});
 		}
 	};
 	

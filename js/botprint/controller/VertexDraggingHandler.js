@@ -6,6 +6,11 @@
 function VertexDraggingHandler(view, options) {
 	
 	var self = {
+		dragStart: function(payload) {
+			self.super.dragStart(payload);
+			view.target.removePunchHoles();
+		},
+		
 		dragMove: function(payload) {
 			self.super.dragMove(payload);
 			var position = view.position;
