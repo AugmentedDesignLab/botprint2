@@ -39,5 +39,5 @@ function FindOptRotatedGrid(paper, chassis){
 		}
 	}
 
-        	return opt;
+    return opt;
 }
