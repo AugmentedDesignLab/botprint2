@@ -23,7 +23,7 @@ function VertexDraggingHandler(view, options) {
 		dragEnd: function(payload) {
 			self.super.dragEnd(payload);
 			var shape = view.target.elem;
-			var corners = Corners(view.draw, shape);
+			var corners = Corners(view.draw, shape, true);
 			var chassis = Chassis(
 				{
 					corners: corners,
