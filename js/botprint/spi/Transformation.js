@@ -11,10 +11,8 @@ var Transformation = {
 		return ft;
 	},
 
-	rotate: function(paper, shape, angle){
-		var ft = this.transform(paper, shape);
-		ft.attrs.rotate = angle;
-		ft.apply();
-		return ft.subject;
+	rotate: function(shape, angle){
+		shape.transform("r" + angle);
+		return $.extend(true, {}, shape);
 	}
 };
