@@ -3,9 +3,7 @@
  */
 function Corners (draw, shape){
 	// use Raphael.freetransform to get always acurate bounding box's corner points.
-	var ft = draw.freeTransform(shape);
-	ft.unplug();
-	ft = draw.freeTransform(shape);
+	var ft = Transformation.transform(draw, shape);
 	var corners = ft.getCorners();
 	var result  = [];
 	for(var i = 0; i < corners.length; i++){
