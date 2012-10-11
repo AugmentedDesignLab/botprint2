@@ -1,4 +1,4 @@
-var IntersectionDetection = {
+var Geometry = {
 	isSelfIntersecting: function(path){
 		function endPoint(path) {
 			var length = path.length;
@@ -38,5 +38,13 @@ var IntersectionDetection = {
 			}
 		}
 		return false;
+	},
+	
+	/* Decide if a point is inside a shape
+	 * shapePath: an array representing the path
+	 * point: any object that has x and y attributes
+	 */
+	isInside: function(shapePath, point) {
+		
 	}
 };

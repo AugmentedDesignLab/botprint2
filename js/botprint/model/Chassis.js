@@ -17,7 +17,7 @@ function Chassis (opts){
 		corners: options.corners,
 		
 		isSelfIntersecting: function() {
-			return IntersectionDetection.isSelfIntersecting(self.path);
+			return Geometry.isSelfIntersecting(self.path);
 		},
 
 		accept: function(visitor) {
