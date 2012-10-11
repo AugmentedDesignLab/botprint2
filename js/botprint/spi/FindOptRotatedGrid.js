@@ -14,26 +14,20 @@ function FindOptRotatedGrid(paper, chassis){
 	var path  = chassis.path;
 	var shape = paper.path(path).hide();
 
-    var angles 		= [45, 67, 90, 135, 180, 270, 360];
 	// for the corners, there is no need (i.e., false val) for a
 	// clean transformation.
 	var area    	= new Rectangle(Points.of(Corners(paper, shape, true)));
-
-	// shuffles the interesting angles
-	Shuffler().shuffle(angles);
-
-	var N 	= angles.length;
 
 	// initialize the opt result.
 	var opt	= {angle:0, area:area};
 
     var candidate = null, angle = 0;
-	for(var i = 0; i < N; i++){
+	for(var i = 0; i <= 360; i++){
 		// the idea is to get shape, rotate it, get the updated bbox and corners
 		// then convert those corner points into a rectangular area
 		// where one can use its height to determine which optimal grid one should
 		// use.
-		angle     = angles[i];
+		angle     = i;
 		shape 	  = Transformation.rotate(shape, angle);
 		// get BBox corner points
 		var corners = Corners(paper, shape, true);
@@ -45,5 +39,5 @@ function FindOptRotatedGrid(paper, chassis){
 		}
 	}
 
-	return opt;
+        	return opt;
 }
