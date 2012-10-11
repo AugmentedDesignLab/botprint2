@@ -48,7 +48,7 @@ function SketchingHandler(view, options) {
 				path.pop();
 				this.shape.attr({path: path +'Z', stroke: null});
 				var chassis2D = Chassis2D(this.shape, {app:options.app});
-				var corners   = Corners(view, this.shape);
+				var corners   = Corners(view.draw, this.shape);
 				view.doneSketching(chassis2D);
 				var chassis = Chassis(
 					{

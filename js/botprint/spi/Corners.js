@@ -1,11 +1,11 @@
 /**
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function Corners (view, shape){
+function Corners (draw, shape){
 	// use Raphael.freetransform to get always acurate bounding box's corner points.
-	var ft = view.draw.freeTransform(shape);
+	var ft = draw.freeTransform(shape);
 	ft.unplug();
-	ft = view.draw.freeTransform(shape);
+	ft = draw.freeTransform(shape);
 	var corners = ft.getCorners();
 	var result  = [];
 	for(var i = 0; i < corners.length; i++){
