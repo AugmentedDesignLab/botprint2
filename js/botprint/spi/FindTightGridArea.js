@@ -4,7 +4,7 @@
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  * @author lin.zhp@cs.ucsc.edu (Zhongpeng Lin)
  */
-function FindOptRotatedGrid(paper, chassis){
+function FindTightGridArea(paper, chassis){
 	// Create a svg element given the path of the chassis.
 	// Call Freetransform and determined the bounding box with the max height.
 	// cache the angle and the bbox of such rotated chassis.
