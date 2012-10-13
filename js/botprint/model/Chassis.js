@@ -18,25 +18,11 @@ function Chassis (opts){
 		corners: options.corners,
 		
 		isSelfIntersecting: function() {
-			return IntersectionDetection.isSelfIntersecting(self.path);
+			return Geometry.isSelfIntersecting(self.path);
 		},
 		
 		isInsideChassis: function(point) {
-			var pathElem = document.createElement('path');
-			pathElem.setAttribute('d', self.path);
-			var lineElem = document.createElement('line');
-			lineElem.setAttribute('x1', 0);
-			lineElem.setAttribute('y1', 0);
-			lineElem.setAttribute('x2', point.x);
-			lineElem.setAttribute('y2', point.y);
-			
-			var intersect = Intersection.intersectShapes(new Path(pathElem), new Line(lineElem));
-			if(intersect.status == 'Intersection') {
-				var xPoints = intersect.points;
-				return xPoints.length % 2 == 1;
-			} else {
-				return false;
-			}
+			return Geometry.isInside(self.path, point);
 		},
 		
 		get punchHoles() {
