@@ -60,5 +60,9 @@ var Geometry = {
 		} else {
 			return false;
 		}		
+	},
+	
+	getVertices: function(shapePath) {
+		
 	}
 };

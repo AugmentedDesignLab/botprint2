@@ -61,11 +61,6 @@ function SketchingHandler(view, options) {
 
 				chassis.create();
 
-				(function(chassis){
-					setTimeout(function(){
-						chassis.update();
-					}, 5);
-				}(chassis));
 				this.shape = null;
 			}
 		}

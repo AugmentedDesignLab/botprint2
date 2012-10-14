@@ -7,7 +7,7 @@ function Botprint() {
 	var canvas  	= Canvas2D({elemID: 'canvas2d', app: radio});
 	var preview 	= Preview3D({elemID:'preview3d', app: radio});
 	var sidePanel	= SidePanel({elemID: 'menu', elemClass: 'palette-set a', app: radio});
-	var splashScreen = SplashScreen({elemID: 'splash'});
+	var splashScreen = SplashScreen({elemID: 'splash', app: radio});
 
 	var self = {
 		VERSION: '0.0.2',
