@@ -2,6 +2,14 @@
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
 function Grid(dimension, area, path, max, angle){
+
+	var mdim = function(d, max){
+		var array = new Array(max);
+		for(var i = 0; i < max; i++){
+			array[i] = new Array(max);
+		} return array;
+	};
+
 	var space	= Math.floor(area.topLeft().distanceTo(area.topRight())/max);
 	var grid	= mdim(dimension, max);
 	var x		= area.topLeft().x;

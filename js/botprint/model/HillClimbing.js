@@ -26,13 +26,6 @@ function HillClimbing(data){
 		}
 	};
 
-	var mdim = function(d, max){
-		var array = new Array(max);
-		for(var i = 0; i < max; i++){
-			array[i] = new Array(max);
-		} return array;
-	};
-
 	var pack = function(elem){
 		var result = [];
 		result.push(elem);
@@ -43,32 +36,6 @@ function HillClimbing(data){
 		if (i < 1 || i >= N - 1) return false;    // invalid row
 		if (j < 1 || j >= N - 1) return false;    // invalid column
 		return true;
-	};
-
-
-	var setupGrid = function(dimension, area, path, max, angle){
-		var space	= Math.floor(area.topLeft().distanceTo(area.topRight())/max);
-		var grid	= mdim(dimension, max);
-		var x		= area.topLeft().x;
-		var y		= area.topLeft().y;
-
-		for(var i = 0; i < max; i++){
-			for(var j = 0; j < max; j++){
-				var cell = new Cell(x, y, i, j, angle, space);
-				if(!Cell.isValid(path, cell)){
-					cell.valid   = false;
-					grid[i][j]   = cell;
-				} else {
-					grid[i][j]   = cell;
-				}
-
-				y += space;
-			}
-
-			x += space;
-		}
-
-		return grid;
 	};
 
 
@@ -131,7 +98,7 @@ function HillClimbing(data){
 				for(var j = 1; j < hi; j++){
 					var sol  = Solution();
 					var each = grid[lo][j];
-					//if(!each.valid) continue;
+					if(!each.valid) continue;
 
 					// place cpu
 					part 		 = leftover.cpu;
