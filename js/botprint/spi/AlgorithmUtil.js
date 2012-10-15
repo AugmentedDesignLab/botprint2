@@ -61,6 +61,8 @@ var Solution = function(){
 		},
 
 		score: function(){
+			// todo(Huascar) once I found the problem with Geometry.isInside
+			// I will implement this.
 			return 1;
 		},
 
