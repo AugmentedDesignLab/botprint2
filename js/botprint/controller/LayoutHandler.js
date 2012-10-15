@@ -71,13 +71,12 @@ function LayoutHandler(view, options) {
 			var N  		= 6;
 			var parts 	= MakeParts({app: radio});
 			var optarea = FindTightGridArea(view.draw, chassisModel);
-
-			var grid = Grid.of(
-				N, 		  // NxN grid
-				optarea,  // optimal rectangular area to create grid from
-				parts 	 // parts to be placed inside the grid
-			);
-			// test
+			// todo(Huascar) use the Hillclimbing algo here once the
+			// the problem related to whether a cell in a grid is
+			// entirely inside the chassis.
+			// var optimalPlacement = HillClimbing(payload);
+			// var outline = optimalPlacement.place(Data(..));
+            // test
 
 			InR({rect:rectangle});
 
