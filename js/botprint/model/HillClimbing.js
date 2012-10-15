@@ -80,7 +80,7 @@ function HillClimbing(data){
 			var path  = data.path;
 
 			var full = Solution();
-			var grid = setupGrid(2, area, path, max, angle);
+			var grid = Grid.of(2, area, path, max, angle);
 
 
 			var wheels  = data.wheels;
