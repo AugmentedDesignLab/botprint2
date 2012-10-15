@@ -67,6 +67,18 @@ function LayoutHandler(view, options) {
 			var rectangle		= new Rectangle(corners);
 			var vertices		= Vertices(chassisModel.path);
 
+			// test
+			var N  		= 6;
+			var parts 	= MakeParts({app: radio});
+			var optarea = FindTightGridArea(view.draw, chassisModel);
+
+			var grid = Grid.of(
+				N, 		  // NxN grid
+				optarea,  // optimal rectangular area to create grid from
+				parts 	 // parts to be placed inside the grid
+			);
+			// test
+
 			InR({rect:rectangle});
 
 			var data    = Data(rectangle.inner, vertices, radio, 4);

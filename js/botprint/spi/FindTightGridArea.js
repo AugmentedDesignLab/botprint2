@@ -5,21 +5,16 @@
  * @author lin.zhp@cs.ucsc.edu (Zhongpeng Lin)
  */
 function FindTightGridArea(paper, chassis){
-	// Create a svg element given the path of the chassis.
-	// Call Freetransform and determined the bounding box with the max height.
-	// cache the angle and the bbox of such rotated chassis.
-	// after the above, then start plaching wheels, sensors, and servo heuristically.
-	// then do Jim's way to move the battery pack and microcontroller.
 
+	// Create a svg element given the path of the chassis.
 	var path  = chassis.path;
 	var shape = paper.path(path).hide();
 
-	// for the corners, there is no need (i.e., false val) for a
-	// clean transformation.
+	// FInd the corners of the BBox and cast them as a Rectangle.
 	var area    	= new Rectangle(Points.of(Corners(paper, shape, true)));
 
 	// initialize the opt result.
-	var opt	= {angle:0, area:area};
+	var opt	= {angle:0, area:area, path:path};
 
     var candidate = null, angle = 0;
 	for(var i = 0; i <= 360; i++){
@@ -36,6 +31,7 @@ function FindTightGridArea(paper, chassis){
 		if(candidate.height() > opt.area.height()){
 			opt.area  = candidate;
 			opt.angle = angle;
+			opt.path = shape.attrs.path;
 		}
 	}
 
