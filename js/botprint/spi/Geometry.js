@@ -63,6 +63,12 @@ var Geometry = {
 	},
 	
 	getVertices: function(shapePath) {
-		
+		var vertices = [];
+		shapePath.forEach(function(action) {
+			if(action.length >= 3) {
+				vertices.push({x: action[action.length-2], y: action[action.length-1]});
+			}
+		});
+		return vertices;
 	}
 };

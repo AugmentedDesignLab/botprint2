@@ -92,18 +92,7 @@ function Chassis2D(svg, options) {
 	
 	Mixable(self).mix(View());
 	
-	var polygonPath = svg.attrs.path;
-	polygonPath.forEach(function(action, index){
-		switch(action[0]){
-			case 'M':
-				self.points.push({x: action[1], y: action[2]});
-				break;
-			case 'L':
-				self.points.push({x: action[1], y: action[2]});
-				break;
-		}
-	});
-	self.redraw();
+	self.points = Geometry.getVertices(svg.attrs.path);
 	
 	var selectionHandler = SelectionHandler(Selectable(self), {app: options.app});
 	selectionHandler.enable();
