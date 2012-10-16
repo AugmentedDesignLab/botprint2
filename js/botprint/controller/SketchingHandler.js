@@ -5,7 +5,7 @@
 function SketchingHandler(view, options) {
 	var path;
 	var self = {
-		userEvents: ['click', 'mouseMove', 'dblClick'],
+		userEvents: ['click', 'mouseMove', 'enterPress'],
 		
 		click: function(payload) {
 			var x = payload.x;
@@ -37,14 +37,9 @@ function SketchingHandler(view, options) {
 			}
 		},
 		
-		dblClick: function(payload){
+		enterPress: function(payload){
 			if(this.shape){
-				/* click event handler is called twice
-				 * before this. Four pop operations from path
-				 * are to offset the effect of two click events
-				 */ 
-				path[1].pop();
-				path[1].pop();
+				// remove the last point
 				path[1].pop();
 				path[1].pop();
 				this.shape.attr({path: path, stroke: null});

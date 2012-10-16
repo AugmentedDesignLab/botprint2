@@ -3,7 +3,6 @@ function Canvas2DHandler(view, options) {
 		appEvents: ['chassisSelected'],
 		
 		chassisSelected: function(payload) {
-debugger;
 			var shape = view.draw.path(payload.path);
 			shape.attr(view.shapeAttributes);
 			

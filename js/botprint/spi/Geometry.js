@@ -6,17 +6,17 @@ var Geometry = {
 		}
 		
 		function equal(vect1, vect2) {
-			return vect1.x == vect2.x && vect1.y == vect2.y;
+			return Math.abs(vect1.x - vect2.x)< 0.001 && Math.abs(vect1.y - vect2.y) < 0.001;
 		}
 		
-		var intersect;
 		for(var i = 1; i < path.length; i++) {
 			var start1 = endPoint(path[i-1]);
-			var end1 = new Vector2D(path[i][5], path[i][6]);
+			var end1 = endPoint(path[i]);
 			for(var j = i+1; j < path.length; j++) {
+				var intersect = null;
 				var start2 = endPoint(path[j-1]);
 				if(path[i][0] == 'C' && path[j][0] == 'C'){
-					var end2 = new Vector2D(path[j][5], path[j][6]);
+					var end2 = endPoint(path[j]);
 					intersect = Intersection.intersectBezier3Bezier3(
 						start1,
 						new Vector2D(path[i][1], path[i][2]),
@@ -28,12 +28,14 @@ var Geometry = {
 						end2
 					);
 				} // other line intersections can be added here when needed
-				var crossPonts = intersect.points.select(function(p){
-					// return true only if p is not any of the vertices
-					return !(equal(p, start1) || equal(p, end1) || equal(p, start2) || equal(p, end2));
-				});
-				if(crossPonts.length > 0) {
-					return true;
+				if(intersect) {
+					var crossPonts = intersect.points.select(function(p){
+						// return true only if p is not any of the vertices
+						return !(equal(p, start1) || equal(p, end1) || equal(p, start2) || equal(p, end2));
+					});
+					if(crossPonts.length > 0) {
+						return true;
+					}					
 				}
 			}
 		}
