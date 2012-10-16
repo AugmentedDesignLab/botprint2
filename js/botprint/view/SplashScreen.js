@@ -21,6 +21,15 @@ function SplashScreen(options) {
 				path.click(function() {
 					self.trigger(UserEvents.click, {target: path});
 				});
+				
+				// a bit styling
+				path.node.style.cursor = 'pointer';
+				var glow;
+				path.hover(function() {
+					glow = path.glow({color: 'white'});
+				}, function() {
+					glow.remove();
+				});
 			});
 		}
 	};
