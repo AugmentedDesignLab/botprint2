@@ -26,14 +26,29 @@ var Cell = function(x, y, i, j, angle, space){
 	self.part    = null;
 	self.name    = self.part != null ? self.part.name : "none";
 
-}; Cell.isValid = function(path, cell){
+}; Cell.isValid = function(path, cell, N){
 	// return true if all the points are inside the chassis.
 	var result = false;
-	cell.corners.each(function(p){
-		if(Geometry.isInside(path, p)){
-			result = true;
-		}
-	});
+
+	if((cell.j == 0 || cell.j == N - 1) || (cell.i == N - 1)){
+		var counter = 0;
+		cell.corners.each(function(p){
+			if(Geometry.isInside(path, p)){
+				result = true;
+				counter++;
+			}
+		});
+
+		if(counter == 2) result = true;
+
+	} else {
+		cell.corners.each(function(p){
+			if(Geometry.isInside(path, p)){
+				result = true;
+			}
+		});
+	}
+
 
 	return result;
 };
@@ -120,4 +135,32 @@ var Solution = function(){
 	}
 
 	return all;
+};
+
+var walk = function(grid, full, t, horizontal, bag, SPACE){
+	var taken = null;
+	var N     = grid.length;
+	for(var f = 0; f < N; f++){
+		var each = horizontal ? grid[t][f] : grid[f][t];
+		if(!each.valid) continue;
+		if(!each.free)  continue;
+
+		if(taken != null){
+			if(taken.distanceTo(each) < SPACE) continue;
+		}
+
+		var part = bag.pop();
+		if(!part) continue;
+
+		each.free = false;
+		each.part = part;
+		taken     = each;
+		full.add(Cell.copy(taken));
+	}
+};
+
+var pack = function(elem){
+	var result = [];
+	result.push(elem);
+	return result;
 };

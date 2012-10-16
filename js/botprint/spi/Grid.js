@@ -18,17 +18,22 @@ function Grid(dimension, area, path, max, angle){
 	for(var i = 0; i < max; i++){
 		for(var j = 0; j < max; j++){
 			var cell = new Cell(x, y, i, j, angle, space);
-			if(!Cell.isValid(path, cell)){
+			if(!Cell.isValid(path, cell, max)){
 				cell.valid   = false;
 				grid[i][j]   = cell;
 			} else {
+				cell.valid   = true;
 				grid[i][j]   = cell;
 			}
 
-			y += space;
+			x += space;
+			if(j + 1 == max){
+				x  = area.topLeft().x;
+				y += space;
+			}
 		}
 
-		x += space;
+		y += space;
 	}
 
 	return grid;
