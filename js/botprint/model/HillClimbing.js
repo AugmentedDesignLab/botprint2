@@ -18,6 +18,8 @@ function HillClimbing(data){
 			var servos  = data.servos;
 			var sensors = data.sensors;
 
+			// todo(Zhongpeng) the valid cells on the first and last row may be getting
+			// set wrongly.
 			for(var flag = 0; flag < 2; flag++){
 				// walk rows
 				var row = flag == 0 ? 0 : grid.length - 1;
@@ -32,7 +34,7 @@ function HillClimbing(data){
 
 			var leftover = {cpu:data.cpu, battery:data.battery};
 
-			return this.findMax(grid, full, leftover, 1, max);
+			return this.findMax(grid, full, leftover, 5, max);
 
 		},
 
@@ -60,6 +62,8 @@ function HillClimbing(data){
 		},
 
 		enumerate: function(grid, full, leftover, lo, hi){
+			// TODO(Zhongpeng) another possible place to look at for problems related
+			// to invalid and valid cells.
 			return Enumerate.all(grid, full, leftover, lo, hi);
 		}
 	};

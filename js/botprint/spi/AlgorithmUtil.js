@@ -23,10 +23,12 @@ var Cell = function(x, y, i, j, angle, space){
 		self.corners.point(0), self.corners.point(2)
 	);
 	self.distanceTo = function(cell){
+		if(!cell) return 0;
 		return this.corners.point(0).distanceTo(cell.corners.point(0));
 	};
 
 	self.distanceFromCenterTo = function(cell){
+		if(!cell) return 0;
 		return this.center.distanceTo(cell.center);
 	};
 	self.part    = null;
@@ -78,6 +80,7 @@ var Solution = function(){
 		},
 
 		findBy: function(filter){
+			filter = filter || function(each){ return true};
 			return elements.select(filter);
 		},
 
@@ -93,6 +96,16 @@ var Solution = function(){
 				var sensors = this.findBy(function(each){ return each.name == "Sensor"; });
 				var cpu     = this.findBy(function(each){ return each.name == "Microcontroller"; });
 				var battery = this.findBy(function(each){ return each.name == "BatteryPack"; });
+
+				var w1      = wheels[0];
+				var w2      = wheels[1];
+				var srv     = servos[0];
+				var sr      = sensors[0];
+				var sr1     = sensors[1];
+				if(!w1 || !w2 || !srv || !sr || !sr1 ) {
+					score = 0;
+					return score;
+				}
 
 
 				var d1 = wheels[0].distanceFromCenterTo(wheels[1])/width;
@@ -173,7 +186,7 @@ var walk = function(grid, full, t, horizontal, bag, SPACE){
 		if(!each.free)  continue;
 
 		if(taken != null){
-			//if(taken.distanceTo(each) < SPACE) continue;
+			if(taken.distanceFromCenterTo(each) < SPACE) continue;
 		}
 
 		var part = bag.pop();
@@ -287,3 +300,24 @@ var Enumerate = {
 		return $.extend(true, [], solutions);
 	}
 };
+
+function PackIt(data, solution){
+	var opts  = {
+		name: 			"TOP",
+		app: 			data.app,
+		coordinates: 	data.coordinates,
+		dimensions: 	data.dimensions,
+		polygon: 		data.area
+	};
+
+	var deck    = Deck(opts);
+
+	solution.findBy().forEach(function(each){
+		deck.add(each);
+	});
+
+	var tobeDrawn   = deck.select();
+	console.log(tobeDrawn.length <= 0 ? "NOTHING" : "SOMETHING");
+
+	return deck;
+}

@@ -55,6 +55,28 @@ function LayoutHandler(view, options) {
 	};
 
 
+
+	var Payload = function(parts, optarea, radio){
+		var N  		 = 10;
+		var space    = Math.floor(optarea.area.topLeft().distanceTo(optarea.area.topRight())/N);
+		return {
+			max: N,
+			angle: optarea.angle,
+			area: optarea.area,
+			path: optarea.path,
+			wheels: parts.select(function(each){ return each.name == "Wheel";  }),
+			sensors:parts.select(function(each){ return each.name == "Sensor"; }),
+			servos: parts.select(function(each){ return each.name == "Servo"; }),
+			cpu:    parts.select(function(each){ return each.name == "Microcontroller"; })[0],
+			battery:parts.select(function(each){ return each.name == "BatteryPack"; })[0],
+			space: space,
+			app:radio,
+			coordinates:{x:optarea.area.topLeft ().x, y:optarea.area.topLeft ().y  },
+			dimensions:{w:optarea.area.width (), h:optarea.area.height (), d:0}
+		};
+	};
+
+
 	var vop = Cache();
 
 	var self = {
@@ -63,31 +85,21 @@ function LayoutHandler(view, options) {
 			var attr = JSON.parse(payload.part);
 			self.clear();
 			var chassisModel	= Chassis(attr);
-			var corners			= Points.of(chassisModel.corners);
-			var rectangle		= new Rectangle(corners);
-			var vertices		= Vertices(chassisModel.path);
 
-			// test
-			var N  		= 6;
-			var parts 	= MakeParts({app: radio});
-			var optarea = FindTightGridArea(view.draw, chassisModel);
-			// todo(Huascar) use the Hillclimbing algo here once the
-			// the problem related to whether a cell in a grid is
-			// entirely inside the chassis.
-			// var optimalPlacement = HillClimbing(payload);
-			// var outline = optimalPlacement.place(Data(..));
-            // test
+			var parts 	 = MakeParts({app: radio});
+			var optarea  = FindTightGridArea(view.draw, chassisModel);
+			var rect     = optarea.area;
+			InR({rect: rect});
+			optarea.area = rect.inner;
+			var data     = Payload(parts, optarea, radio);
+			var solution = HillClimbing(data).solve();
+			var outline  = PackIt(data, solution);
 
-			InR({rect:rectangle});
-
-			var data    = Data(rectangle.inner, vertices, radio, 4);
-			var outline = ItemsPlacement(data);
-
-			self.generateLayout(view.draw, outline);
+			self.generateLayout(view.draw, outline, optarea.angle);
 		},
 
 		// similar to sketching handler, this handler handles the generation of layout.
-		generateLayout: function(paper, outline){
+		generateLayout: function(paper, outline, angle){
 			var radio       = outline.radio;
 			var svgSet		= paper.set(); // use sets to group independent svgs...
 
@@ -99,7 +111,7 @@ function LayoutHandler(view, options) {
 					paper.rect(
 						each.x, each.y,
 						each.w, each.h
-					).attr({fill: color, stroke: color})
+					).attr({fill: color, stroke: color}).transform("r" + angle)
 				);
 			});
 

@@ -33,7 +33,9 @@ var TestUtil = {
 	},
 
 	gridArea: function(){
-		return new Rectangle(this.corners());
+		var rect = new Rectangle(this.corners());
+		InR({rect: rect});
+		return rect.inner;
 	},
 
 	robotParts: function(){
