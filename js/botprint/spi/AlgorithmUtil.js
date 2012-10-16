@@ -8,6 +8,8 @@ var Cell = function(x, y, i, j, angle, space){
 		Point.make(x, y + space)			// bottom left
 	];
 
+	self.x       = x;
+	self.y       = y;
 	self.angle   = angle;
 	self.free  	 = true;
 	self.taken   = !self.free;
@@ -21,7 +23,11 @@ var Cell = function(x, y, i, j, angle, space){
 		self.corners.point(0), self.corners.point(2)
 	);
 	self.distanceTo = function(cell){
-		this.corners.point(0).distanceTo(cell.corners.point(0));
+		return this.corners.point(0).distanceTo(cell.corners.point(0));
+	};
+
+	self.distanceFromCenterTo = function(cell){
+
 	};
 	self.part    = null;
 	self.name    = self.part != null ? self.part.name : "none";
@@ -54,7 +60,13 @@ var Cell = function(x, y, i, j, angle, space){
 };
 
 Cell.copy = function(cell){
-	return new Cell(cell.x, cell.y, cell.i, cell.j, cell.angle, cell.w);
+	var eachCell = new Cell(cell.x, cell.y, cell.i, cell.j, cell.angle, cell.w);
+	eachCell.part = $.extend(true, {}, cell.part);
+	eachCell.part.x = cell.x;
+	eachCell.part.y = cell.y;
+	eachCell.name = cell.name;
+	eachCell.free = cell.free;
+	return eachCell;
 };
 
 var Solution = function(){
@@ -64,20 +76,26 @@ var Solution = function(){
 			elements.push(cell);
 		},
 
-		find: function(i, j){
-			var result = null;
-			elements.forEach(function(each){
-				if(each.i == i && each.j == j){
-					result = each;
-				}
-			});
-
-			return result;
+		findBy: function(filter){
+			return elements.select(filter);
 		},
 
-		score: function(){
+		findByRowsAndColumns: function(i, j){
+			// this method returns null if element not fount
+			return this.findBy(function(each){ return (each.i == i && each.j == j);})[0] || null;
+		},
+
+		score: function(width, height){
 			// todo(Huascar) once I found the problem with Geometry.isInside
 			// I will implement this.
+			var wheels  = this.findBy(function(each){ return each.name == "Wheel";  });
+			var servos  = this.findBy(function(each){ return each.name == "Servo"; });
+			var sensors = this.findBy(function(each){ return each.name == "Sensor"; });
+			var cpu     = this.findBy(function(each){ return each.name == "Microcontroller"; });
+			var battery = this.findBy(function(each){ return each.name == "BatteryPack"; });
+
+
+
 			return 1;
 		},
 
@@ -91,7 +109,7 @@ var Solution = function(){
 
 		contains: function(i, j, name){
 			var result = false;
-			var part   = this.find(i, j);
+			var part   = this.findByRowsAndColumns(i, j);
 
 			if(part != null){
 				result = part.name == name;
@@ -146,7 +164,7 @@ var walk = function(grid, full, t, horizontal, bag, SPACE){
 		if(!each.free)  continue;
 
 		if(taken != null){
-			if(taken.distanceTo(each) < SPACE) continue;
+			//if(taken.distanceTo(each) < SPACE) continue;
 		}
 
 		var part = bag.pop();
@@ -154,6 +172,7 @@ var walk = function(grid, full, t, horizontal, bag, SPACE){
 
 		each.free = false;
 		each.part = part;
+		each.name = part.name;
 		taken     = each;
 		full.add(Cell.copy(taken));
 	}
@@ -186,6 +205,7 @@ var Enumerate = {
 				part 		 = leftover.cpu;
 				each.free = true;
 				each.part = part;
+				each.name = part.name;
 				sol.add(Cell.copy(each));
 
 				var eachBattery = null;
@@ -198,6 +218,7 @@ var Enumerate = {
 						part    	   		 = leftover.battery;
 						eachBattery.free     = true;
 						eachBattery.part     = part;
+						eachBattery.name = part.name;
 						eachSol.add(Cell.copy(eachBattery));
 						solutions.push(Solution.merge([full, sol, eachSol]));
 						eachSol				 = null;
@@ -211,6 +232,7 @@ var Enumerate = {
 						part    	   		 = leftover.battery;
 						eachBattery.free     = true;
 						eachBattery.part     = part;
+						eachBattery.name = part.name;
 						eachSol.add(Cell.copy(eachBattery));
 
 						solutions.push(Solution.merge([full, sol, eachSol]));
@@ -225,6 +247,7 @@ var Enumerate = {
 						part    	   		 = leftover.battery;
 						eachBattery.free     = true;
 						eachBattery.part     = part;
+						eachBattery.name = part.name;
 						eachSol.add(Cell.copy(eachBattery));
 
 						solutions.push(Solution.merge([full, sol, eachSol]));
@@ -240,6 +263,7 @@ var Enumerate = {
 						part    	   		 = leftover.battery;
 						eachBattery.free     = true;
 						eachBattery.part     = part;
+						eachBattery.name = part.name;
 						eachSol.add(Cell.copy(eachBattery));
 
 						solutions.push(Solution.merge([full, sol, eachSol]));
