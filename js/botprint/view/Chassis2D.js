@@ -64,7 +64,10 @@ function Chassis2D(svg, options) {
 			svg.attrs.path.forEach(function(p, index, originalPath) {
 				if(p[0].toUpperCase() == 'C') {
 					if(path[path.length-1][0]=='R') {
-						path[path.length-1].push(p[5], p[6]);
+						if(index == originalPath.length-1 || originalPath[index+1][0].toLowerCase() != 'z'){
+							// only push when it is NOT the last curve before z
+							path[path.length-1].push(p[5], p[6]);						
+						}
 						return;
 					} else if(index+1<originalPath.length && originalPath[index+1][0].toUpperCase() == 'C') {
 						path.push(['R', p[5], p[6]]);
@@ -73,7 +76,6 @@ function Chassis2D(svg, options) {
 				}
 				path.push(p);
 			});
-debugger;
 			svg.attr('path', path);
 		},
 		
