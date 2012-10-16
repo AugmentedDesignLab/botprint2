@@ -3,42 +3,6 @@
  */
 function HillClimbing(data){
 	var SPACE = 2 * data.space;
-
-	var walk = function(grid, full, t, horizontal, bag){
-		var taken = null;
-		var N     = grid.length;
-		for(var f = 0; f < N; f++){
-			var each = horizontal ? grid[t][f] : grid[f][t];
-			if(!each.valid) continue;
-			if(!each.free)  continue;
-
-			if(taken != null){
-				if(taken.distanceTo(each) < SPACE) continue;
-			}
-
-			var part = bag.pop();
-			if(!part) continue;
-
-			each.free = false;
-			each.part = part;
-			taken     = each;
-			full.add(Cell.copy(taken));
-		}
-	};
-
-	var pack = function(elem){
-		var result = [];
-		result.push(elem);
-		return result;
-	};
-
-	var isConsistent = function(i, j, N){
-		if (i < 1 || i >= N - 1) return false;    // invalid row
-		if (j < 1 || j >= N - 1) return false;    // invalid column
-		return true;
-	};
-
-
 	var self = {
 		solve: function(){
 			var max   = data.max;
@@ -56,11 +20,13 @@ function HillClimbing(data){
 
 			for(var flag = 0; flag < 2; flag++){
 				// walk rows
-				walk(grid, full, flag, true,
-					flag == 0 ? wheels : servos);
+				var row = flag == 0 ? 0 : grid.length - 1;
+				walk(grid, full, row, true,
+					(flag == 0 ? wheels : servos), SPACE);
 				// walk cols
-				walk(grid, full, flag, false,
-					flag == 0 ? pack(sensors.pop()) : pack(sensors.pop()));
+				var col = flag == 0 ? 0 : grid.length - 1;
+				walk(grid, full, col, false,
+					(flag == 0 ? pack(sensors.pop()) : pack(sensors.pop())), SPACE);
 
 			}
 
@@ -91,80 +57,10 @@ function HillClimbing(data){
 		},
 
 		enumerate: function(grid, full, leftover, lo, hi){
-			var solutions 	= [];
-			var N 			= grid.length;
-			var part        = null;
-			while(lo < N){
-				for(var j = 1; j < hi; j++){
-					var sol  = Solution();
-					var each = grid[lo][j];
-					if(!each.valid) continue;
-
-					// place cpu
-					part 		 = leftover.cpu;
-					each.free = true;
-					each.part = part;
-					sol.add(Cell.copy(each));
-
-					var eachBattery = null;
-					var eachSol		 = null;
-					// down
-					if(isConsistent(lo + 1, j, hi)){
-						eachSol				 = Solution();
-						eachBattery 		 = grid[lo + 1][j];
-						part    	   		 = leftover.battery;
-						eachBattery.free     = true;
-						eachBattery.part     = part;
-						eachSol.add(Cell.copy(eachBattery));
-						solutions.push(Solution.merge([full, sol, eachSol]));
-						eachSol				 = null;
-					}
-					// right
-					if(isConsistent(lo, j + 1, hi)){
-						eachSol				 = Solution();
-						eachBattery 		 = grid[lo][j + 1];
-						part    	   		 = leftover.battery;
-						eachBattery.free     = true;
-						eachBattery.part     = part;
-						eachSol.add(Cell.copy(eachBattery));
-
-						solutions.push(Solution.merge([full, sol, eachSol]));
-						eachSol				 = null;
-					}
-					// left
-					if(isConsistent(lo, j - 1, hi)){
-						eachSol				 = Solution();
-						eachBattery 		 = grid[lo][j - 1];
-						part    	   		 = leftover.battery;
-						eachBattery.free     = true;
-						eachBattery.part     = part;
-						eachSol.add(Cell.copy(eachBattery));
-
-						solutions.push(Solution.merge([full, sol, eachSol]));
-
-						eachSol				 = null;
-					}
-					// up
-					if(isConsistent(lo - 1, j, hi)){
-						eachSol				 = Solution();
-						eachBattery 		 = grid[lo - 1][j];
-						part    	   		 = leftover.battery;
-						eachBattery.free     = true;
-						eachBattery.part     = part;
-						eachSol.add(Cell.copy(eachBattery));
-
-						solutions.push(Solution.merge([full, sol, eachSol]));
-
-						eachSol				 = null;
-					}
-
-				} lo++;
-			}
-
-			return $.extend(true, [], solutions);
+			return Enumerate.all(grid, full, leftover, lo, hi);
 		}
 	};
 
 	Mixable(self).mix(Algorithm (data));
-	return self.solve();
+	return self;
 }

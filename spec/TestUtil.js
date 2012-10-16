@@ -70,6 +70,30 @@ var TestUtil = {
 		return Grid.of(2, this.gridArea(), this.payload().path, max, angle);
 	},
 
+	partialSolution: function(){
+		var full    = Solution();
+		var sensors = this.sensors();
+		var wheels  = this.wheels();
+		var servos  = this.servos();
+
+		var grid       = this.grid(10, 0);
+		var space      = 2 * this.space(10);
+
+		for(var flag = 0; flag < 2; flag++){
+			// walk rows
+			var row = flag == 0 ? 0 : grid.length - 1;
+			walk(grid, full, row, true,
+				(flag == 0 ? wheels : servos), space);
+
+			// walk columns
+			var col = flag == 0 ? 0 : grid.length - 1;
+			walk(grid, full, col, false,
+				(flag == 0 ? pack(sensors.pop()) : pack(sensors.pop())), space);
+		}
+
+		return full;
+	},
+
 	isInside: function(path, x, y){
 		return Geometry.isInside(path, Point.make(x, y));
 	}

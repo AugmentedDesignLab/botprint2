@@ -164,3 +164,93 @@ var pack = function(elem){
 	result.push(elem);
 	return result;
 };
+
+var isConsistent = function(i, j, N){
+	if (i < 1 || i >= N - 1) return false;    // invalid row
+	if (j < 1 || j >= N - 1) return false;    // invalid column
+	return true;
+};
+
+var Enumerate = {
+	all: function(grid, full, leftover, lo, hi){
+		var solutions 	= [];
+		var N 			= grid.length;
+		var part        = null;
+		while(lo < N){
+			for(var j = 1; j < hi; j++){
+				var sol  = Solution();
+				var each = grid[lo][j];
+				if(!each.valid) continue;
+
+				// place cpu
+				part 		 = leftover.cpu;
+				each.free = true;
+				each.part = part;
+				sol.add(Cell.copy(each));
+
+				var eachBattery = null;
+				var eachSol		 = null;
+				// down
+				if(isConsistent(lo + 1, j, hi)){
+					eachSol				 = Solution();
+					eachBattery 		 = grid[lo + 1][j];
+					if(eachBattery.free) {
+						part    	   		 = leftover.battery;
+						eachBattery.free     = true;
+						eachBattery.part     = part;
+						eachSol.add(Cell.copy(eachBattery));
+						solutions.push(Solution.merge([full, sol, eachSol]));
+						eachSol				 = null;
+					}
+				}
+				// right
+				if(isConsistent(lo, j + 1, hi)){
+					eachSol				 = Solution();
+					eachBattery 		 = grid[lo][j + 1];
+					if(eachBattery.free) {
+						part    	   		 = leftover.battery;
+						eachBattery.free     = true;
+						eachBattery.part     = part;
+						eachSol.add(Cell.copy(eachBattery));
+
+						solutions.push(Solution.merge([full, sol, eachSol]));
+						eachSol				 = null;
+					}
+				}
+				// left
+				if(isConsistent(lo, j - 1, hi)){
+					eachSol				 = Solution();
+					eachBattery 		 = grid[lo][j - 1];
+					if(eachBattery.free) {
+						part    	   		 = leftover.battery;
+						eachBattery.free     = true;
+						eachBattery.part     = part;
+						eachSol.add(Cell.copy(eachBattery));
+
+						solutions.push(Solution.merge([full, sol, eachSol]));
+
+						eachSol				 = null;
+					}
+				}
+				// up
+				if(isConsistent(lo - 1, j, hi)){
+					eachSol				 = Solution();
+					eachBattery 		 = grid[lo - 1][j];
+					if(eachBattery.free) {
+						part    	   		 = leftover.battery;
+						eachBattery.free     = true;
+						eachBattery.part     = part;
+						eachSol.add(Cell.copy(eachBattery));
+
+						solutions.push(Solution.merge([full, sol, eachSol]));
+
+						eachSol				 = null;
+					}
+				}
+
+			} lo++;
+		}
+
+		return $.extend(true, [], solutions);
+	}
+};
