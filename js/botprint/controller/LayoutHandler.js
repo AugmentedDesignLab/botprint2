@@ -58,7 +58,11 @@ function LayoutHandler(view, options) {
 	var vop = Cache();
 
 	var self = {
-		appEvents: ['partUpdated', 'layoutUpdated', 'layoutDeleted'],
+		appEvents: ['partAdded', 'partUpdated', 'layoutUpdated', 'layoutDeleted'],
+		partAdded: function(payload) {
+			self.partUpdated(payload);
+		},
+		
 		partUpdated: function(payload) {
 			var attr = JSON.parse(payload.part);
 			self.clear();
