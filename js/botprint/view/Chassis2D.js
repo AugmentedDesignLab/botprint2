@@ -107,9 +107,7 @@ function Chassis2D(svg, options) {
 	};
 	
 	Mixable(self).mix(View());
-	
-	self.redraw;
-	
+		
 	var selectionHandler = SelectionHandler(Selectable(self), {app: options.app});
 	selectionHandler.enable();
 	self.trigger(UserEvents.click, {});
