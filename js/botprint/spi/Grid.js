@@ -32,8 +32,6 @@ function Grid(dimension, area, path, max, angle){
 				y += space;
 			}
 		}
-
-		y += space;
 	}
 
 	return grid;
