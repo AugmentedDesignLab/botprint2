@@ -131,12 +131,15 @@ describe("A PCG Algorithm", function(){
 		it("Find the solution with the max utility function score", function(){
 			var full 	  = TestUtil.partialSolution();
 			var leftover  = {cpu:TestUtil.cpu(), battery:TestUtil.battery()};
+			var gridArea  = TestUtil.gridArea();
 			var grid	  = TestUtil.grid(10, 0);
-			var max       = HillClimbing({area: TestUtil.gridArea()}).findMax(
+			var max       = HillClimbing({area: gridArea}).findMax(
 				grid, full, leftover, 1, grid.length
 			);
 			var size      = max.size();
+			var score     = max.score(gridArea.width(), gridArea.height());
 			expect(size).toBe(7);
+			expect(score).toBe(3.3636678002498415);
 		});
 	});
 

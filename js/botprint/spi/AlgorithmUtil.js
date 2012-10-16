@@ -87,25 +87,24 @@ var Solution = function(){
 		},
 
 		score: function(width, height){
-			// todo(Huascar) once I found the problem with Geometry.isInside
-			// I will implement this.
-			var wheels  = this.findBy(function(each){ return each.name == "Wheel";  });
-			var servos  = this.findBy(function(each){ return each.name == "Servo"; });
-			var sensors = this.findBy(function(each){ return each.name == "Sensor"; });
-			var cpu     = this.findBy(function(each){ return each.name == "Microcontroller"; });
-			var battery = this.findBy(function(each){ return each.name == "BatteryPack"; });
-
-
-			var d1 = wheels[0].distanceFromCenterTo(wheels[1])/width;
-			var d2 = (servos[0].distanceFromCenterTo(wheels[0]) + servos[0].distanceFromCenterTo(wheels[1]))/height;
-			var d3 = sensors[0].distanceFromCenterTo(sensors[1])/width;
-			var d4 = ((wheels[0].distanceFromCenterTo(cpu[0])
-				     + wheels[1].distanceFromCenterTo(cpu[0]) + servos[0].distanceFromCenterTo(cpu[0]))
-			         - servos[0].distanceFromCenterTo(battery[0]))/(width/2);
-
 			if(score == 0){
+				var wheels  = this.findBy(function(each){ return each.name == "Wheel";  });
+				var servos  = this.findBy(function(each){ return each.name == "Servo"; });
+				var sensors = this.findBy(function(each){ return each.name == "Sensor"; });
+				var cpu     = this.findBy(function(each){ return each.name == "Microcontroller"; });
+				var battery = this.findBy(function(each){ return each.name == "BatteryPack"; });
+
+
+				var d1 = wheels[0].distanceFromCenterTo(wheels[1])/width;
+				var d2 = (servos[0].distanceFromCenterTo(wheels[0]) + servos[0].distanceFromCenterTo(wheels[1]))/height;
+				var d3 = sensors[0].distanceFromCenterTo(sensors[1])/width;
+				var d4 = ((wheels[0].distanceFromCenterTo(cpu[0])
+					+ wheels[1].distanceFromCenterTo(cpu[0]) + servos[0].distanceFromCenterTo(cpu[0]))
+					- servos[0].distanceFromCenterTo(battery[0]))/(width/2);
+
 				score = d1 + d2 + d3 + 1 - d4;
 			}
+
 			return score;
 		},
 
