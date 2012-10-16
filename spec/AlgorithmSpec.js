@@ -119,18 +119,22 @@ describe("A PCG Algorithm", function(){
 			var full 	  = TestUtil.partialSolution();
 			expect(full.size()).toBe(5);
 
-			var leftover  = [TestUtil.cpu(), TestUtil.battery()];
+			var leftover  = {cpu:TestUtil.cpu(), battery:TestUtil.battery()};
 			var grid	  = TestUtil.grid(10, 0);
-			var solutions = HillClimbing({}).enumerate(grid, full, leftover, 1, grid.length - 1);
+			var solutions = HillClimbing({area: TestUtil.gridArea()}).enumerate(
+				grid, full, leftover, 1, grid.length - 1
+			);
 			var size = solutions.length;
 			expect(size).toBe(139);
 		});
 
 		it("Find the solution with the max utility function score", function(){
 			var full 	  = TestUtil.partialSolution();
-			var leftover  = [TestUtil.cpu(), TestUtil.battery()];
+			var leftover  = {cpu:TestUtil.cpu(), battery:TestUtil.battery()};
 			var grid	  = TestUtil.grid(10, 0);
-			var max       = HillClimbing({}).findMax(grid, full, leftover, 1, grid.length);
+			var max       = HillClimbing({area: TestUtil.gridArea()}).findMax(
+				grid, full, leftover, 1, grid.length
+			);
 			var size      = max.size();
 			expect(size).toBe(7);
 		});

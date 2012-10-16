@@ -30,7 +30,7 @@ function HillClimbing(data){
 
 			}
 
-			var leftover = [data.cpu, data.battery];
+			var leftover = {cpu:data.cpu, battery:data.battery};
 
 			return this.findMax(grid, full, leftover, 1, max);
 
@@ -41,6 +41,9 @@ function HillClimbing(data){
 			// right to place battery pack.
 			// everytime I do that, I can calculate the score.
 
+			var width  = data.area.width();
+			var height = data.area.height();
+
 			var solutions = this.enumerate(
 				grid, full, leftover, lo, hi - 1
 			);
@@ -48,7 +51,7 @@ function HillClimbing(data){
 			var max = solutions[0];
 			for(var s = 1; s < solutions.length; s++){
 				var candidate = solutions[s];
-				if(candidate.score() > max.score()){
+				if(candidate.score(width, height) > max.score(width, height)){
 					max = candidate;
 				}
 			}
