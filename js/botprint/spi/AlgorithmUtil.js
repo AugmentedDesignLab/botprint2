@@ -27,7 +27,7 @@ var Cell = function(x, y, i, j, angle, space){
 	};
 
 	self.distanceFromCenterTo = function(cell){
-
+		return this.center.distanceTo(cell.center);
 	};
 	self.part    = null;
 	self.name    = self.part != null ? self.part.name : "none";
@@ -71,6 +71,7 @@ Cell.copy = function(cell){
 
 var Solution = function(){
 	var elements = [];
+	var score    = 0;
 	return {
 		add: function(cell){
 			elements.push(cell);
@@ -95,8 +96,17 @@ var Solution = function(){
 			var battery = this.findBy(function(each){ return each.name == "BatteryPack"; });
 
 
+			var d1 = wheels[0].distanceFromCenterTo(wheels[1])/width;
+			var d2 = (servos[0].distanceFromCenterTo(wheels[0]) + servos[0].distanceFromCenterTo(wheels[1]))/height;
+			var d3 = sensors[0].distanceFromCenterTo(sensors[1])/width;
+			var d4 = ((wheels[0].distanceFromCenterTo(cpu[0])
+				     + wheels[1].distanceFromCenterTo(cpu[0]) + servos[0].distanceFromCenterTo(cpu[0]))
+			         - servos[0].distanceFromCenterTo(battery[0]))/(width/2);
 
-			return 1;
+			if(score == 0){
+				score = d1 + d2 + d3 + 1 - d4;
+			}
+			return score;
 		},
 
 		size: function(){
