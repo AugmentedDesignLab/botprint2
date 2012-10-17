@@ -43,7 +43,7 @@ function MakeParts(data) {
 		makeSensor: function(parts, criteria, partsSpec) {
 			partsSpec.sensor[criteria].forEach(function(each){
 				var dimensions = { w:each.width, h:each.height, d:0 };
-				var name	   = each.name;
+				var name	   = "Sensor";
 				var part       = Sensor({name:name, app: radio, dimensions: dimensions});
 				part.area	   = part.w * part.h;
 				parts.push(part);
@@ -142,6 +142,44 @@ function MakeParts(data) {
 			});
 
 			return parts;
+		},
+
+		necessary: function(partsSpec){
+			var ONE = [];
+			partsSpec.microcontroller.forEach(function(each){
+				var dimensions = { w:each.width, h:each.height, d:0 };
+				var name	   = "Microcontroller";
+				var part	   = Microcontroller({name:name, app: radio, dimensions: dimensions});
+				part.area	   = part.w * part.h;
+				ONE.push(part);
+			});
+
+			partsSpec.batteryPack.forEach(function(each){
+				var dimensions = { w:each.width, h:each.height, d:0 };
+				var name	   = "BatteryPack";
+				var part	   = BatteryPack({name:name, app: radio, dimensions: dimensions});
+				part.area	   = part.w * part.h;
+				ONE.push(part);
+			});
+
+			var w1 = Wheel({id: new Date().getTime(), app: radio});
+			var w2 = Wheel({id: new Date().getTime(), app: radio});
+			ONE.push(w1);
+			ONE.push(w2);
+
+			this.makeSensor(ONE, 'light', partsSpec);
+			this.makeSensor(ONE, 'motion', partsSpec);
+
+
+			partsSpec.motor.forEach(function(each){
+				var dimensions = { w:each.width, h:each.height, d:0 };
+				var name	   = "Servo";
+				var part	   = Motor({name:name, app: radio, dimensions: dimensions});
+				ONE.push(part);
+			});
+
+
+			return ONE;
 		}
 	};
 
@@ -152,7 +190,7 @@ function MakeParts(data) {
 		},
 
 		make: function() {
-			return self.sort(Make.clusters(SpecSheet.parts));
+			return self.sort(Make.necessary(SpecSheet.parts));
 		}
 	};
 
