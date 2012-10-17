@@ -101,21 +101,40 @@ function LayoutHandler(view, options) {
 		// similar to sketching handler, this handler handles the generation of layout.
 		generateLayout: function(paper, outline, angle){
 			var radio       = outline.radio;
-			var svgSet		= paper.set(); // use sets to group independent svgs...
+			var peripheral  = paper.set(); // use sets to group independent svgs...
+			var core        = paper.set();
+
+			var climb       = 35;
+			var slide       = 10;
 
 			outline.select().forEach(function(each){
 				console.log(each.x + "-" + each.y);
 				// get random color
 				var color = Raphael.getColor();
-				svgSet.push(
-					paper.rect(
-						each.x, each.y,
-						each.w, each.h
-					).attr({fill: color, stroke: color}).transform("r" + angle)
-				);
+				var isCPUorPack = each.name == "Microcontroller" || each.name == "BatteryPack";
+				if(!isCPUorPack){
+					peripheral.push(
+						paper.rect(
+							each.x, each.y + climb,
+							each.w, each.h
+						).attr({fill: color, stroke: color}).transform("r" + angle)
+					);
+
+				} else {
+					// excluding the cpu and battery pack seems to be play nicer than
+					// applying an angle > 0, especially since they live close to the center.
+					core.push(
+						paper.rect(
+							each.x + slide, each.y,
+							each.w, each.h
+						).attr({fill: color, stroke: color}).transform("r" + 0)
+					);
+				}
+
 			});
 
-			var rendered = Result(outline, svgSet);
+			var allTogether = peripheral.push(core);
+			var rendered = Result(outline, allTogether);
 			// show layout on canvas
 			var deck2D 		= Deck2D(rendered, {app: radio});
 

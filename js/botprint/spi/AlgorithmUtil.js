@@ -218,7 +218,7 @@ var Enumerate = {
 		var N 			= grid.length;
 		var part        = null;
 		while(lo < N){
-			for(var j = 1; j < hi; j++){
+			for(var j = 3; j < hi; j++){
 				var sol  = Solution();
 				var each = grid[lo][j];
 				if(!each.valid) continue;

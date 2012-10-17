@@ -17,16 +17,22 @@ function FindTightGridArea(paper, chassis){
 	var opt	= {angle:0, area:area, path:path};
 
 	// TODO(Zhongpeng) the angle may be also important to look at.
-    var candidate = null, angle = 0;
+	var candidate = null, angle = 0;
 	for(var i = 0; i <= 360; i++){
 		// the idea is to get shape, rotate it, get the updated bbox and corners
 		// then convert those corner points into a rectangular area
 		// where one can use its height to determine which optimal grid one should
 		// use.
 		angle     = i;
-		shape 	  = Transformation.rotate(shape, angle);
+		shape.transform('r'+angle);
+		var bBox = shape.getBBox();
 		// get BBox corner points
-		var corners = Corners(paper, shape, true);
+		var corners = [
+			{x: bBox.x, y: bBox.y},
+			{x: bBox.x + bBox.width, y: bBox.y},
+			{x: bBox.x + bBox.width, y: bBox.y + bBox.height},
+			{x: bBox.x, y: bBox.y + bBox.height}];
+
 		candidate   = new Rectangle(Points.of(corners));
 
 		if(candidate.height() > opt.area.height()){
@@ -36,5 +42,5 @@ function FindTightGridArea(paper, chassis){
 		}
 	}
 
-    return opt;
+	return opt;
 }
