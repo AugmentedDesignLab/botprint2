@@ -56,23 +56,6 @@ function ItemsPlacement(/*d:int, n:int, clusters:array of parts*/data){
 		self.group = [];
 	};
 
-	var Shuffler    = function(){
-		return {
-			uniform: function(N){
-				return Math.floor(Math.random() * N);
-			},
-
-			shuffle: function(a){
-				var N = a.length;
-				for(var i = 0; i < N; i++){
-					var r = i + this.uniform(N - i); // btw i and N - 1
-					var temp = a[i];
-					a[i]     = a[r];
-					a[r]     = temp;
-				}
-			}
-		};
-	};
 
 	var Solution	= function(){
 		var self = this;
