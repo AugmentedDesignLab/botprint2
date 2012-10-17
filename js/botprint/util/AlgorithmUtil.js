@@ -79,9 +79,33 @@ Cell.tune = function(cell, slide, climb){
 	return eachCell;
 };
 
+function PointToCenterLine(centerline, c){
+	var A = centerline[0];
+	var B = centerline[1];
+	var normalLength = Math.sqrt(Math.pow(B.x - A.x, 2), Math.pow(B.y - A.y));
+	return Math.abs((c.x - A.x) * (B.y - A.y) - (c.y - A.y) * (B.x - A.x)) / normalLength;
+}
+
+var ScoringFormula = function(back1, back2, servo, sen1, sen2, cpu, battery, width, height, centerline){
+	var illegalWheels  = !back1 || !back2;
+	var illegalServo   = !servo && illegalWheels;
+	var illegalSensors = !sen1 || !sen2;
+	var illegalCore    = (!cpu || !battery) || (illegalWheels || !servo);
+
+	var d1 = illegalWheels  ? 0 : back1.distanceTo(back2)/width;
+	var d2 = illegalServo   ? 0 : (servo.distanceFromCenterTo(back1) + servo.distanceFromCenterTo(back2))/height;
+	var d3 = illegalSensors ? 0 :sen1.distanceFromCenterTo(sen2)/width;
+
+	var d4 = illegalServo   ? 0 : PointToCenterLine(centerline, Point.make(servo.x, servo.y)) / (width/2);
+	this.score = function(){
+		return d1 + d2 + d3 + 1 - d4;
+	}
+};
+
 var Solution = function(){
 	var elements = [];
 	var score    = 0;
+
 	return {
 		add: function(cell){
 			elements.push(cell);
@@ -97,7 +121,7 @@ var Solution = function(){
 			return this.findBy(function(each){ return (each.i == i && each.j == j);})[0] || null;
 		},
 
-		score: function(width, height){
+		score: function(width, height, centerline){
 			if(score == 0){
 				var wheels  = this.findBy(function(each){ return each.name == "Wheel";  });
 				var servos  = this.findBy(function(each){ return each.name == "Servo"; });
@@ -105,25 +129,14 @@ var Solution = function(){
 				var cpu     = this.findBy(function(each){ return each.name == "Microcontroller"; });
 				var battery = this.findBy(function(each){ return each.name == "BatteryPack"; });
 
-				var w1      = wheels[0];
-				var w2      = wheels[1];
-				var srv     = servos[0];
-				var sr      = sensors[0];
-				var sr1     = sensors[1];
-				if(!w1 || !w2 || !srv || !sr || !sr1 ) {
-					score = 0;
-					return score;
-				}
+				var back1   = wheels[0];
+				var back2   = wheels[1];
+				var servo   = servos[0];
+				var sen1    = sensors[0];
+				var sen2    = sensors[1];
 
-
-				var d1 = wheels[0].distanceFromCenterTo(wheels[1])/width;
-				var d2 = (servos[0].distanceFromCenterTo(wheels[0]) + servos[0].distanceFromCenterTo(wheels[1]))/height;
-				var d3 = sensors[0].distanceFromCenterTo(sensors[1])/width;
-				var d4 = ((wheels[0].distanceFromCenterTo(cpu[0])
-					+ wheels[1].distanceFromCenterTo(cpu[0]) + servos[0].distanceFromCenterTo(cpu[0]))
-					- servos[0].distanceFromCenterTo(battery[0]))/(width/2);
-
-				score = d1 + d2 + d3 + 1 - d4;
+				score = new ScoringFormula(back1, back2, servo, sen1, sen2,
+					cpu[0], battery[0], width, height, centerline).score();
 			}
 
 			return score;
