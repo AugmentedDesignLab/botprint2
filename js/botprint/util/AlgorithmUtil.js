@@ -66,7 +66,7 @@ Cell.copy = function(cell){
 };
 
 Cell.from = function(obj, angle){
-	return new Cell(cell.x, cell.y , 0, 0, angle, obj.w);
+	return new Cell(obj.x, obj.y , 0, 0, angle, obj.w);
 };
 
 Cell.tune = function(cell, slide, climb){

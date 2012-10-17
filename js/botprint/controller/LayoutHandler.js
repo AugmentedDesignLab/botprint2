@@ -108,7 +108,6 @@ function LayoutHandler(view, options) {
 			var slide       = 10;
 
 			outline.select().forEach(function(each){
-				console.log(each.x + "-" + each.y);
 				// get random color
 				var color = Raphael.getColor();
 				var isCPUorPack = each.name == "Microcontroller" || each.name == "BatteryPack";
