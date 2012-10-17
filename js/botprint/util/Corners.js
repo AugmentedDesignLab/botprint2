@@ -1,10 +1,14 @@
 /**
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  */
-function Corners (draw, shape, forced/*avoids any optimation on transformation; re-do it from scratch*/){
-	// use Raphael.freetransform to get always acurate bounding box's corner points.
-	var ft = Transformation.transform(draw, shape, forced);
-	var corners = ft.getCorners();
+function Corners (shape){
+	var bBox = shape.getBBox();
+	// get BBox corner points
+	var corners = [
+		{x: bBox.x, y: bBox.y},
+		{x: bBox.x + bBox.width, y: bBox.y},
+		{x: bBox.x + bBox.width, y: bBox.y + bBox.height},
+		{x: bBox.x, y: bBox.y + bBox.height}];
 	var result  = [];
 	for(var i = 0; i < corners.length; i++){
 		if(i < 4){

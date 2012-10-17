@@ -9,6 +9,10 @@ function Shuffler(){
 			return Math.floor(Math.random() * N);
 		},
 
+		bernoulli: function(p){
+			return Math.random() < p;
+		},
+
 		shuffle: function(a/*array*/){
 			var N = a.length;
 			for(var i = 0; i < N; i++){

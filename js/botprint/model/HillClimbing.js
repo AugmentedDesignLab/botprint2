@@ -4,6 +4,25 @@
 function HillClimbing(data){
 	var SPACE = 2 * data.space;
 	var self = {
+		postprocessing: function(solution){
+			var path   = data.path;
+			var newSol = Solution();
+			var slide  = 0, climb = 0;
+			var max    = max;
+
+			solution.findBy().forEach(function(each){
+				var taken = each;
+				while(!Cell.isValid(path, taken, max)){
+					taken = Cell.tune(taken, slide, climb);
+					// to be fair
+					if(Shuffler().bernoulli(0.5)) {slide += 1;} else {climb += 1;}
+				}
+				newSol.add(taken);
+			});
+
+			return newSol;
+		},
+
 		solve: function(){
 			var max   = data.max;
 			var angle = data.angle;
@@ -18,8 +37,6 @@ function HillClimbing(data){
 			var servos  = data.servos;
 			var sensors = data.sensors;
 
-			// todo(Zhongpeng) the valid cells on the first and last row may be getting
-			// set wrongly.
 			for(var flag = 0; flag < 2; flag++){
 				// walk rows
 				var row = flag == 0 ? 0 : grid.length - 1;
@@ -34,7 +51,7 @@ function HillClimbing(data){
 
 			var leftover = {cpu:data.cpu, battery:data.battery};
 
-			return this.findMax(grid, full, leftover, 5, max);
+			return this.postprocessing(this.findMax(grid, full, leftover, 5, max));
 
 		},
 
@@ -62,8 +79,6 @@ function HillClimbing(data){
 		},
 
 		enumerate: function(grid, full, leftover, lo, hi){
-			// TODO(Zhongpeng) another possible place to look at for problems related
-			// to invalid and valid cells.
 			return Enumerate.all(grid, full, leftover, lo, hi);
 		}
 	};

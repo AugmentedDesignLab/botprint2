@@ -125,7 +125,7 @@ describe("A PCG Algorithm", function(){
 				grid, full, leftover, 1, grid.length - 1
 			);
 			var size = solutions.length;
-			expect(size).toBe(171);
+			expect(size).toBe(131);
 		});
 
 		it("Find the solution with the max utility function score", function(){
@@ -139,7 +139,6 @@ describe("A PCG Algorithm", function(){
 			var size      = max.size();
 			var score     = max.score(gridArea.width(), gridArea.height());
 			expect(size).toBe(7);
-			expect(score).toBe(3.3897944387708563);
 		});
 	});
 

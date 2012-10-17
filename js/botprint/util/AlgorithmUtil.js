@@ -62,7 +62,15 @@ var Cell = function(x, y, i, j, angle, space){
 };
 
 Cell.copy = function(cell){
-	var eachCell = new Cell(cell.x, cell.y, cell.i, cell.j, cell.angle, cell.w);
+	return Cell.tune(cell, 0, 0);
+};
+
+Cell.from = function(obj, angle){
+	return new Cell(cell.x, cell.y , 0, 0, angle, obj.w);
+};
+
+Cell.tune = function(cell, slide, climb){
+	var eachCell = new Cell(cell.x + slide, cell.y + climb, cell.i, cell.j, cell.angle, cell.w);
 	eachCell.part = $.extend(true, {}, cell.part);
 	eachCell.part.x = cell.x;
 	eachCell.part.y = cell.y;
@@ -180,8 +188,12 @@ var Solution = function(){
 var walk = function(grid, full, t, horizontal, bag, SPACE){
 	var taken = null;
 	var N     = grid.length;
+	var lo    = 0;
+	var hi    = N - 1;
 	for(var f = 0; f < N; f++){
-		var each = horizontal ? grid[t][f] : grid[f][t];
+		var r = lo + Math.floor((hi - lo) / 2);
+		while((r > 2 && r < 6)) { r = 1 + Shuffler().uniform(N - 1); }
+		var each = horizontal ? grid[t][(t == N - 1) ? r : f] : grid[f][t];
 		if(!each.valid) continue;
 		if(!each.free)  continue;
 
@@ -231,7 +243,7 @@ var Enumerate = {
 				sol.add(Cell.copy(each));
 
 				var eachBattery = null;
-				var eachSol		 = null;
+				var eachSol		= null;
 				// down
 				if(isConsistent(lo + 1, j, hi)){
 					eachSol				 = Solution();
@@ -240,7 +252,7 @@ var Enumerate = {
 						part    	   		 = leftover.battery;
 						eachBattery.free     = true;
 						eachBattery.part     = part;
-						eachBattery.name = part.name;
+						eachBattery.name     = part.name;
 						eachSol.add(Cell.copy(eachBattery));
 						solutions.push(Solution.merge([full, sol, eachSol]));
 						eachSol				 = null;

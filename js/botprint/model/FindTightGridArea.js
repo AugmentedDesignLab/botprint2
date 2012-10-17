@@ -11,7 +11,7 @@ function FindTightGridArea(paper, chassis){
 	var shape = paper.path(path).hide();
 
 	// FInd the corners of the BBox and cast them as a Rectangle.
-	var area    	= new Rectangle(Points.of(Corners(paper, shape, true)));
+	var area    	= new Rectangle(Points.of(Corners(shape)));
 
 	// initialize the opt result.
 	var opt	= {angle:0, area:area, path:path};
@@ -25,15 +25,7 @@ function FindTightGridArea(paper, chassis){
 		// use.
 		angle     = i;
 		shape.transform('r'+angle);
-		var bBox = shape.getBBox();
-		// get BBox corner points
-		var corners = [
-			{x: bBox.x, y: bBox.y},
-			{x: bBox.x + bBox.width, y: bBox.y},
-			{x: bBox.x + bBox.width, y: bBox.y + bBox.height},
-			{x: bBox.x, y: bBox.y + bBox.height}];
-
-		candidate   = new Rectangle(Points.of(corners));
+		candidate   = new Rectangle(Points.of(Corners(shape)));
 
 		if(candidate.height() > opt.area.height()){
 			opt.area  = candidate;
