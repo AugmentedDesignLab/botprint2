@@ -3,7 +3,43 @@
  */
 function HillClimbing(data){
 	var SPACE = 2 * data.space;
+
+	function CenterLine(area){
+		var tl = area.topLeft();
+		var tr = area.topRight();
+		var br = area.bottomRight();
+		var bl = area.bottomLeft();
+
+		var lmidx = (tl.x + bl.x) / 2;
+		var lmidy = (tl.y + bl.y) / 2;
+
+		var rmidx = (tr.x + br.x) / 2;
+		var rmidy = (tr.y + br.y) / 2;
+
+		return [Point.make(lmidx, lmidy), Point.make(rmidx, rmidy)];
+
+	}
+
 	var self = {
+		postprocessing: function(solution){
+			var path   = data.path;
+			var newSol = Solution();
+			var slide  = 0, climb = 0;
+			var max    = max;
+
+			solution.findBy().forEach(function(each){
+				var taken = each;
+				while(!Cell.isValid(path, taken, max)){
+					taken = Cell.tune(taken, slide, climb);
+					// to be fair
+					if(Shuffler().bernoulli(0.5)) {slide += 1;} else {climb += 1;}
+				}
+				newSol.add(taken);
+			});
+
+			return newSol;
+		},
+
 		solve: function(){
 			var max   = data.max;
 			var angle = data.angle;
@@ -18,8 +54,6 @@ function HillClimbing(data){
 			var servos  = data.servos;
 			var sensors = data.sensors;
 
-			// todo(Zhongpeng) the valid cells on the first and last row may be getting
-			// set wrongly.
 			for(var flag = 0; flag < 2; flag++){
 				// walk rows
 				var row = flag == 0 ? 0 : grid.length - 1;
@@ -34,7 +68,7 @@ function HillClimbing(data){
 
 			var leftover = {cpu:data.cpu, battery:data.battery};
 
-			return this.findMax(grid, full, leftover, 5, max);
+			return this.postprocessing(this.findMax(grid, full, leftover, 5, max));
 
 		},
 
@@ -43,8 +77,9 @@ function HillClimbing(data){
 			// right to place battery pack.
 			// everytime I do that, I can calculate the score.
 
-			var width  = data.area.width();
-			var height = data.area.height();
+			var width      = data.area.width();
+			var height     = data.area.height();
+			var centerLine = CenterLine(data.area);
 
 			var solutions = this.enumerate(
 				grid, full, leftover, lo, hi - 1
@@ -53,7 +88,9 @@ function HillClimbing(data){
 			var max = solutions[0];
 			for(var s = 1; s < solutions.length; s++){
 				var candidate = solutions[s];
-				if(candidate.score(width, height) > max.score(width, height)){
+				var candScore = candidate.score(width, height, centerLine);
+				var maxScore  = max.score(width, height, centerLine);
+				if(candScore > maxScore){
 					max = candidate;
 				}
 			}
@@ -62,8 +99,6 @@ function HillClimbing(data){
 		},
 
 		enumerate: function(grid, full, leftover, lo, hi){
-			// TODO(Zhongpeng) another possible place to look at for problems related
-			// to invalid and valid cells.
 			return Enumerate.all(grid, full, leftover, lo, hi);
 		}
 	};
