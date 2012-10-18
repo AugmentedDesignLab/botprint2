@@ -5,10 +5,6 @@ var Geometry = {
 			return new Vector2D(path[length-2], path[length-1]);
 		}
 		
-		function equal(vect1, vect2) {
-			return Math.abs(vect1.x - vect2.x)< 0.001 && Math.abs(vect1.y - vect2.y) < 0.001;
-		}
-		
 		for(var i = 1; i < path.length; i++) {
 			var start1 = endPoint(path[i-1]);
 			var end1 = endPoint(path[i]);
@@ -31,7 +27,7 @@ var Geometry = {
 				if(intersect) {
 					var crossPonts = intersect.points.select(function(p){
 						// return true only if p is not any of the vertices
-						return !(equal(p, start1) || equal(p, end1) || equal(p, start2) || equal(p, end2));
+						return !(Geometry.equal(p, start1) || Geometry.equal(p, end1) || Geometry.equal(p, start2) || Geometry.equal(p, end2));
 					});
 					if(crossPonts.length > 0) {
 						return true;
@@ -64,11 +60,22 @@ var Geometry = {
 		}		
 	},
 	
+	equal: function (vect1, vect2) {
+		return Math.abs(vect1.x - vect2.x)< 0.001 && Math.abs(vect1.y - vect2.y) < 0.001;
+	},
+	
 	getVertices: function(shapePath) {
+		var start;
 		var vertices = [];
 		shapePath.forEach(function(action) {
 			if(action.length >= 3) {
-				vertices.push({x: action[action.length-2], y: action[action.length-1]});
+				var v = {x: action[action.length-2], y: action[action.length-1]};
+				if(!start) {
+					start = v;
+					vertices.push(v);
+				} else if(!Geometry.equal(v, start)){
+					vertices.push(v);
+				}
 			}
 		});
 		return vertices;
