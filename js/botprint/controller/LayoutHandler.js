@@ -122,12 +122,14 @@ function LayoutHandler(view, options) {
 				var color = Raphael.getColor();
 				var name  = each.name;
 				var isCPUorPack = name == "Microcontroller" || name == "BatteryPack";
+				// since wheels don't have a w and h, we do this.
+				var width  = name == "Wheel" || name == "Sensor"  ? each.w : each.part.w;
+				var height = name == "Wheel" || name == "Sensor"  ? each.h : each.part.h;
 				if(!isCPUorPack){
-
 					peripheral.push(
 						paper.rect(
 							each.x, each.y + climb,
-							each.w, each.h
+							width, height
 						).attr({fill: color, stroke: color}).transform("r" + angle)
 					);
 
@@ -142,17 +144,25 @@ function LayoutHandler(view, options) {
 				} else {
 					// excluding the cpu and battery pack seems to be play nicer than
 					// applying an angle > 0, especially since they live close to the center.
+
 					core.push(
 						paper.rect(
 							each.x + slide, each.y,
-							each.w, each.h
+							width, height
 						).attr({fill: color, stroke: color}).transform("r" + 0)
 					);
 
+					// since we are dealing with actual w and h of the robot part, then for placing
+					// the text indicator, we need to recalculate the center, so that we can
+					// accurately place this text.
+					var center = CalculateCenter(
+						Point.make(each.x + slide, each.y),
+						Point.make(each.x + each.part.w + slide, each.y + each.part.h)
+					);
 					core.push(
 						paper.text(
-							each.center.x + slide,
-							each.center.y,
+							center.x,
+							center.y,
 							initial(name)
 						).attr({fill: '#ffffff', 'font-size':'14px'})
 					);
