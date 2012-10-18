@@ -11,17 +11,44 @@ describe('The layout algorithm', function() {
 	});
 	
 	it('should have all parts inside the chassis', function() {
-		var fakeChassis = {path: path};
+		var N           = 10;
+		var fakeChassis = {path: path1};
 		var optimal = FindTightGridArea(paper, fakeChassis);
-		var grid = Grid.of(2, optimal.area, path1, 10, optimal.angle);
-		var wheels = TestUtil.wheels();
-		var sensors = TestUtil.sensors();
-		var cpu = TestUtil.cpu();
+		optimal.area = InR({rect: optimal.area});
+		var grid 	 = Grid.of(2, optimal.area, path1, N, optimal.angle);
+		var wheels 	 = TestUtil.wheels();
+		var sensors  = TestUtil.sensors();
+		var cpu 	 = TestUtil.cpu();
+		var battery  = TestUtil.battery();
+		var servos   = TestUtil.servos();
+		var space    = Math.floor(optimal.area.topLeft().distanceTo(optimal.area.topRight())/N);
+		var radio    = Bindable();
 		// initialize other parts
-		// ...
+
+		var payload = {
+			max: N,
+			angle: optimal.angle,
+			area:  optimal.area,
+			path:  optimal.path,
+			wheels: wheels,
+			sensors:sensors,
+			servos: servos,
+			cpu:    cpu,
+			battery:battery,
+			space: space,
+			app:radio
+		};
 		
 		// call layout algorithm to decide the coordinates for all parts
-		
+
+		var solution = HillClimbing(payload).solve();
+		solution.findBy().forEach(function(each){
+			var i = each.i;
+			var j = each.j;
+			expect(grid[i][j].valid == each.valid).toBe(true);
+			expect(Cell.isValid(path1, each, N)).toBe(true);
+		});
+
 		// expect each part is at least partially inside the chassis
 	});
 });

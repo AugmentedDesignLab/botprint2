@@ -87,7 +87,7 @@ function LayoutHandler(view, options) {
 			var chassisModel	= Chassis(attr);
 
 			var parts 	 = MakeParts({app: radio});
-			var optarea  = FindTightGridArea(view.draw, chassisModel);
+			var optarea  = FindTightGridArea(view.draw, chassisModel, 0);
 			var rect     = optarea.area;
 			InR({rect: rect});
 			optarea.area = rect.inner;

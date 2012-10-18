@@ -4,7 +4,7 @@
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  * @author lin.zhp@cs.ucsc.edu (Zhongpeng Lin)
  */
-function FindTightGridArea(paper, chassis){
+function FindTightGridArea(paper, chassis, angleval){
 
 	// Create a svg element given the path of the chassis.
 	var path  = chassis.path;
@@ -29,7 +29,7 @@ function FindTightGridArea(paper, chassis){
 
 		if(candidate.height() > opt.area.height()){
 			opt.area  = candidate;
-			opt.angle = angle;
+			opt.angle = angleval > 0 ? angle : angleval;
 			opt.path = shape.attrs.path;
 		}
 	}
