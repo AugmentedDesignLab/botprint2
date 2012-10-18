@@ -107,16 +107,36 @@ function LayoutHandler(view, options) {
 			var climb       = 35;
 			var slide       = 10;
 
+			function initial(name){
+				switch(name){
+					case "Microcontroller": return "c";
+					case "BatteryPack": return "p";
+					case "Wheel": return "b";
+					case "Servo": return "f";
+					case "Sensor": return "s";
+				}
+			}
+
 			outline.select().forEach(function(each){
 				// get random color
 				var color = Raphael.getColor();
-				var isCPUorPack = each.name == "Microcontroller" || each.name == "BatteryPack";
+				var name  = each.name;
+				var isCPUorPack = name == "Microcontroller" || name == "BatteryPack";
 				if(!isCPUorPack){
+
 					peripheral.push(
 						paper.rect(
 							each.x, each.y + climb,
 							each.w, each.h
 						).attr({fill: color, stroke: color}).transform("r" + angle)
+					);
+
+					peripheral.push(
+						paper.text(
+							each.center.x,
+							each.center.y + climb,
+							initial(name)
+						).attr({fill: '#ffffff', 'font-size':'14px'})
 					);
 
 				} else {
@@ -128,6 +148,16 @@ function LayoutHandler(view, options) {
 							each.w, each.h
 						).attr({fill: color, stroke: color}).transform("r" + 0)
 					);
+
+					core.push(
+						paper.text(
+							each.center.x + slide,
+							each.center.y,
+							initial(name)
+						).attr({fill: '#ffffff', 'font-size':'14px'})
+					);
+
+
 				}
 
 			});
