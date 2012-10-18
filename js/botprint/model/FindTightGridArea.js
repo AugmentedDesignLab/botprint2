@@ -6,6 +6,9 @@
  */
 function FindTightGridArea(paper, chassis, angleval){
 
+	angleval = angleval < 0 ? 0 : angleval;
+	angleval = angleval > 1 ? 1 : angleval;
+
 	// Create a svg element given the path of the chassis.
 	var path  = chassis.path;
 	var shape = paper.path(path).hide();
