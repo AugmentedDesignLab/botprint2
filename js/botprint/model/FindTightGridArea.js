@@ -4,7 +4,7 @@
  * @author hsanchez@cs.ucsc.edu (Huascar A. Sanchez)
  * @author lin.zhp@cs.ucsc.edu (Zhongpeng Lin)
  */
-function FindTightGridArea(paper, chassis){
+function FindTightGridArea(paper, chassis, angleval){
 
 	// Create a svg element given the path of the chassis.
 	var path  = chassis.path;
@@ -16,9 +16,8 @@ function FindTightGridArea(paper, chassis){
 	// initialize the opt result.
 	var opt	= {angle:0, area:area, path:path};
 
-	// TODO(Zhongpeng) the angle may be also important to look at.
 	var candidate = null, angle = 0;
-	for(var i = 0; i <= 360; i++){
+	for(var i = 0; i <180; i++){
 		// the idea is to get shape, rotate it, get the updated bbox and corners
 		// then convert those corner points into a rectangular area
 		// where one can use its height to determine which optimal grid one should
@@ -29,7 +28,7 @@ function FindTightGridArea(paper, chassis){
 
 		if(candidate.height() > opt.area.height()){
 			opt.area  = candidate;
-			opt.angle = angle;
+			opt.angle = angleval > 0 ? angle : angleval;
 			opt.path = shape.attrs.path;
 		}
 	}

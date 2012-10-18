@@ -71,11 +71,12 @@ Cell.from = function(obj, angle){
 
 Cell.tune = function(cell, slide, climb){
 	var eachCell = new Cell(cell.x + slide, cell.y + climb, cell.i, cell.j, cell.angle, cell.w);
-	eachCell.part = $.extend(true, {}, cell.part);
+	eachCell.part   = $.extend(true, {}, cell.part);
 	eachCell.part.x = cell.x;
 	eachCell.part.y = cell.y;
-	eachCell.name = cell.name;
-	eachCell.free = cell.free;
+	eachCell.name   = cell.name;
+	eachCell.free   = cell.free;
+	eachCell.valid  = cell.valid;
 	return eachCell;
 };
 

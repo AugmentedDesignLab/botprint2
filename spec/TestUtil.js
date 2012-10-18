@@ -1,4 +1,5 @@
 var TestUtil = {
+	// TODO (Huascar): rename this to indicate that these test data is only used for AlgorithmSpec. Change the data structure to allow adding more chassis
 	payload: function(){
 		return {id:1350324371746,
 			name:"Chassis",
