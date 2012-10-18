@@ -14,5 +14,6 @@ var ApplicationEvents = {
 	partAdded: 'A new part has been added, payload: {part: json}',
 	saveChassis: 'User wants to save the chassis. payload: {}',
 	layoutUpdated: 'A layout has been updated, payload: {layout: Deck2D}',
-	layoutDeleted: 'A layout has been deleted, payload: {}'
+	layoutDeleted: 'A layout has been deleted, payload: {}',
+	chassisSelected: 'A pre-defined chassis is selected, payload: {path: path string}'
 };

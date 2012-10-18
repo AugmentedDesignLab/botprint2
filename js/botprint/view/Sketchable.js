@@ -12,10 +12,11 @@ function Sketchable(object2D) {
 				 {x: relativeEvent.relativeX, y: relativeEvent.relativeY});
 	});
 	
-	object2D.elem.dblclick(function(event){
-		var relativeEvent = RelativeCoordEvent(event);
-		object2D.trigger(UserEvents.dblClick,
-				 {x: relativeEvent.relativeX, y: relativeEvent.relativeY});
+	$(document.activeElement).keypress(function(event) {
+		if(event.which == 13) {// enter key
+	        event.stopPropagation();
+			object2D.trigger(UserEvents.enterPress);
+		}
 	});
 	return object2D;
 }

@@ -35,10 +35,7 @@ function Preview3D(options) {
 		camera.lookAt(new THREE.Vector3(0, 0, 0));
 	};
 
-	var render = function() {
-		updateCameraPosition();
-		renderer.render(scene, camera);	
-	};
+
 	
 	// predefined shape to be previewed by the Botprint app
 	var geometry = new THREE.CubeGeometry( 100, 100, 100 );
@@ -47,12 +44,21 @@ function Preview3D(options) {
 	scene.add(object);
 	
 	var self = {
+		shouldAnimate: false,
 		elem: stage,
 		animate: function() {
-			rotation += Math.PI / 300;
-			render();
-			requestAnimationFrame(self.animate);
+			if(self.shouldAnimate) {
+				rotation += Math.PI / 300;
+				self.render();
+			}
+			requestAnimationFrame(self.animate);				
 		},
+		
+		render: function() {
+			updateCameraPosition();
+			renderer.render(scene, camera);	
+		},
+		
 		updateRobot: function(robot) {
 			if(object) {
 				scene.remove(object);
@@ -68,5 +74,7 @@ function Preview3D(options) {
 	// Making it Sketchable without defining handlers to it is
 	// essentially disable the sketch events on it
 	self = Sketchable(self);
+	
+	self = Hoverable2D(self);
 	return self;
 }
