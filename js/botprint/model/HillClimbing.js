@@ -58,7 +58,7 @@ function HillClimbing(data){
 				// walk rows
 				var row = flag == 0 ? 0 : grid.length - 1;
 				walk(grid, full, row, true,
-					(flag == 0 ? wheels : servos), SPACE);
+					(flag == 0 ? servos : wheels), SPACE);
 				// walk cols
 				var col = flag == 0 ? 0 : grid.length - 1;
 				walk(grid, full, col, false,
