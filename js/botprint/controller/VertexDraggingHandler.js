@@ -16,8 +16,7 @@ function VertexDraggingHandler(view, options) {
 			var position = view.position;
 			var target = view.target;
 			// modify the target shape, which is the chassis
-			target.points[options.pathIndex] = position;
-			target.redraw();
+			target.updateVertexAt(options.pathIndex, position);
 		},
 		
 		dragEnd: function(payload) {

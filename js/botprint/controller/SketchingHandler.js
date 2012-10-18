@@ -3,9 +3,9 @@
  */
 
 function SketchingHandler(view, options) {
-
+	var path;
 	var self = {
-		userEvents: ['click', 'mouseMove', 'dblClick'],
+		userEvents: ['click', 'mouseMove', 'enterPress'],
 		
 		click: function(payload) {
 			var x = payload.x;
@@ -13,12 +13,14 @@ function SketchingHandler(view, options) {
 
 			if(this.shape){
 				// Extend the path
-				var path = this.shape.attrs.path;
-				this.shape.attr('path', path +' L ' + x + ' ' + y);
+				path[1][0] = 'R';
+				path[1].push(x, y);
+				this.shape.attr('path', path);
 			}else{
 				// Create a new path
 				var draw = view.draw;
-				this.shape = draw.path('M '+x+' '+y+' L ' + x + ' ' + y);
+				path = [['M', x, y], ['L', x, y], ['z']];
+				this.shape = draw.path(path);
 				this.shape.attr(view.shapeAttributes);
 			}
 		},
@@ -26,27 +28,21 @@ function SketchingHandler(view, options) {
 		mouseMove: function(payload) {
 			var x = payload.x;
 			var y = payload.y;
-
 			if(this.shape){
 				// Modify the last path element
-				var path = this.shape.attrs.path;
-				var last = path[path.length - 1];
-				last[1] = x;
-				last[2] = y;
+				var length = path[1].length;
+				path[1][length-2] = x;
+				path[1][length-1] = y;
 				this.shape.attr('path', path);
 			}
 		},
 		
-		dblClick: function(payload){
+		enterPress: function(payload){
 			if(this.shape){
-				var path = this.shape.attrs.path;
-				/* click event handler is called twice
-				 * before this. Two pop operations from path
-				 * are to offset the effect of two click events
-				 */ 
-				path.pop();
-				path.pop();
-				this.shape.attr({path: path +'Z', stroke: null});
+				// remove the last point
+				path[1].pop();
+				path[1].pop();
+				this.shape.attr({path: path, stroke: null});
 				var chassis2D = Chassis2D(this.shape, {app:options.app});
 				var corners   = Corners(view, this.shape);
 				view.doneSketching(chassis2D);
@@ -61,11 +57,6 @@ function SketchingHandler(view, options) {
 
 				chassis.create();
 
-				(function(chassis){
-					setTimeout(function(){
-						chassis.update();
-					}, 5);
-				}(chassis));
 				this.shape = null;
 			}
 		}

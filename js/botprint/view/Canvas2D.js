@@ -47,8 +47,8 @@ function Canvas2D(options) {
 			}
 		},
 		
-		doneSketching: function(chassis) {
-			this.chassis = chassis;
+		doneSketching: function(chassis2D) {
+			this.chassis = chassis2D;
 			// Automatically switch to SelectionHandler
 			this.sketchingHandler.disable();
 			var selectionHandler = SelectionHandler(this, {app:options.app});
@@ -76,8 +76,11 @@ function Canvas2D(options) {
 	self.sketchingHandler = SketchingHandler(self, {app: options.app});
 	self.sketchingHandler.enable();
 	
+	var handler = Canvas2DHandler(self, {app:options.app});
+	handler.enable();
+	
 	self.router = Router(self, {app: options.app});
 	self.router.enable();
-	Automator(self).play();
+
 	return self;
 }

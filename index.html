@@ -69,6 +69,11 @@
 			</div>
 		</div>
 
+		<!-- Splash screen -->
+		<div id="splash">
+			<h2>Please choose a chassis design to start with:</h2>
+			<div id="predefined-shapes"></div>
+		</div>
 		<!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
 		<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
 		<script>
@@ -80,6 +85,7 @@
 		<script src="js/vendor/KevLinDev/Intersection.js"></script>
 		<script type="text/javascript" src="js/vendor/FileSaver.js"></script>
 		<script type="text/javascript" src="js/vendor/BlobBuilder.js"></script>
+		<script type="text/javascript" src="js/vendor/jquery.simplemodal-1.4.3.js"></script>
 		
 		<!-- spi -->
 		<script src="js/botprint/spi/Enumerable.js"></script>
@@ -96,14 +102,14 @@
         <script src="js/vendor/raphael.shapes.js"></script>
         <script src="js/vendor/raphael.backward-forward.js"></script>
         <script src="js/vendor/raphael.freeTransform.js"></script>
-        <script src="js/botprint/spi/Automator.js"></script>
         <script src="js/botprint/spi/Point.js"></script>
         <script src="js/botprint/spi/Points.js"></script>
         <script src="js/botprint/spi/Corners.js"></script>
         <script src="js/botprint/spi/Geometry.js"></script>
         <script src="js/botprint/spi/Rectangle.js"></script>
         <script src="js/botprint/spi/DeliveryStrategy.js"></script>
-
+		<script type="text/javascript" src="js/botprint/spi/SVGPathElement.js"></script>
+		
 
         <!-- Model -->
 
@@ -126,7 +132,8 @@
         <script src="js/botprint/model/InnerRectangle.js"></script>
         <script src="js/botprint/model/InR.js"></script>
         <script src="js/botprint/model/ItemsPlacement.js"></script>
-
+		<script type="text/javascript" src="js/botprint/model/PunchHoleStrategies.js"></script>
+		
 
         <!-- Controllers -->
 		<script src="js/botprint/controller/EventHandler.js"></script>
@@ -145,6 +152,8 @@
 		<script type="text/javascript" src="js/botprint/controller/WheelValidationHandler.js"></script>
 		<script type="text/javascript" src="js/botprint/controller/Router.js"></script>
         <script type="text/javascript" src="js/botprint/controller/LayoutHandler.js"></script>
+		<script type="text/javascript" src="js/botprint/controller/Canvas2DHandler.js"></script>
+		<script type="text/javascript" src="js/botprint/controller/SplashScreenHandler.js"></script>
 		
 		<!-- Views -->
 		<script src="js/botprint/view/View.js"></script>
@@ -166,6 +175,7 @@
 		<script src="js/botprint/view/RemoveButton.js"></script>
 		<script src="js/botprint/view/Edge2D.js"></script>
         <script src="js/botprint/view/Deck2D.js"></script>
+		<script type="text/javascript" src="js/botprint/view/SplashScreen.js"></script>
 
 
 		<!-- scripts concatenated and minified via build script -->
