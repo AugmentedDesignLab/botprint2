@@ -27,7 +27,7 @@ function Chassis (opts){
 		
 		// assuming the chassis is a Catmull-rom curve
 		get punchHoles() {
-			return InwardNormalStrategy.getPunchHoles(self.path);
+			return ScaledDownChassisStrategy.getPunchHoles(self.path);
 		},
 
 		accept: function(visitor) {

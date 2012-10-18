@@ -7,7 +7,7 @@ function Canvas2DHandler(view, options) {
 			shape.attr(view.shapeAttributes);
 			
 			var chassis2D = Chassis2D(shape, {app:options.app});
-			var corners   = Corners(view, shape);
+			var corners   = Corners(shape);
 			view.doneSketching(chassis2D);
 			var chassis = Chassis(
 				{

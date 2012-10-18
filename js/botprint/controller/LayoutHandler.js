@@ -55,6 +55,28 @@ function LayoutHandler(view, options) {
 	};
 
 
+
+	var Payload = function(parts, optarea, radio){
+		var N  		 = 10;
+		var space    = Math.floor(optarea.area.topLeft().distanceTo(optarea.area.topRight())/N);
+		return {
+			max: N,
+			angle: optarea.angle,
+			area: optarea.area,
+			path: optarea.path,
+			wheels: parts.select(function(each){ return each.name == "Wheel";  }),
+			sensors:parts.select(function(each){ return each.name == "Sensor"; }),
+			servos: parts.select(function(each){ return each.name == "Servo"; }),
+			cpu:    parts.select(function(each){ return each.name == "Microcontroller"; })[0],
+			battery:parts.select(function(each){ return each.name == "BatteryPack"; })[0],
+			space: space,
+			app:radio,
+			coordinates:{x:optarea.area.topLeft ().x, y:optarea.area.topLeft ().y  },
+			dimensions:{w:optarea.area.width (), h:optarea.area.height (), d:0}
+		};
+	};
+
+
 	var vop = Cache();
 
 	var self = {
@@ -67,36 +89,85 @@ function LayoutHandler(view, options) {
 			var attr = JSON.parse(payload.part);
 			self.clear();
 			var chassisModel	= Chassis(attr);
-			var corners			= Points.of(chassisModel.corners);
-			var rectangle		= new Rectangle(corners);
-			var vertices		= Vertices(chassisModel.path);
 
-			InR({rect:rectangle});
+			var parts 	 = MakeParts({app: radio});
+			var optarea  = FindTightGridArea(view.draw, chassisModel, 0);
+			var rect     = optarea.area;
+			InR({rect: rect});
+			optarea.area = rect.inner;
+			var data     = Payload(parts, optarea, radio);
+			var solution = HillClimbing(data).solve();
+			var outline  = PackIt(data, solution);
 
-			var data    = Data(rectangle.inner, vertices, radio, 4);
-			var outline = ItemsPlacement(data);
-
-			self.generateLayout(view.draw, outline);
+			self.generateLayout(view.draw, outline, optarea.angle);
 		},
 
 		// similar to sketching handler, this handler handles the generation of layout.
-		generateLayout: function(paper, outline){
+		generateLayout: function(paper, outline, angle){
 			var radio       = outline.radio;
-			var svgSet		= paper.set(); // use sets to group independent svgs...
+			var peripheral  = paper.set(); // use sets to group independent svgs...
+			var core        = paper.set();
+
+			var climb       = 35;
+			var slide       = 10;
+
+			function initial(name){
+				switch(name){
+					case "Microcontroller": return "c";
+					case "BatteryPack": return "p";
+					case "Wheel": return "b";
+					case "Servo": return "f";
+					case "Sensor": return "s";
+				}
+			}
 
 			outline.select().forEach(function(each){
-				console.log(each.x + "-" + each.y);
 				// get random color
 				var color = Raphael.getColor();
-				svgSet.push(
-					paper.rect(
-						each.x, each.y,
-						each.w, each.h
-					).attr({fill: color, stroke: color})
-				);
+				var name  = each.name;
+				var isCPUorPack = name == "Microcontroller" || name == "BatteryPack";
+				if(!isCPUorPack){
+
+					peripheral.push(
+						paper.rect(
+							each.x, each.y + climb,
+							each.w, each.h
+						).attr({fill: color, stroke: color}).transform("r" + angle)
+					);
+
+					peripheral.push(
+						paper.text(
+							each.center.x,
+							each.center.y + climb,
+							initial(name)
+						).attr({fill: '#ffffff', 'font-size':'14px'})
+					);
+
+				} else {
+					// excluding the cpu and battery pack seems to be play nicer than
+					// applying an angle > 0, especially since they live close to the center.
+					core.push(
+						paper.rect(
+							each.x + slide, each.y,
+							each.w, each.h
+						).attr({fill: color, stroke: color}).transform("r" + 0)
+					);
+
+					core.push(
+						paper.text(
+							each.center.x + slide,
+							each.center.y,
+							initial(name)
+						).attr({fill: '#ffffff', 'font-size':'14px'})
+					);
+
+
+				}
+
 			});
 
-			var rendered = Result(outline, svgSet);
+			var allTogether = peripheral.push(core);
+			var rendered = Result(outline, allTogether);
 			// show layout on canvas
 			var deck2D 		= Deck2D(rendered, {app: radio});
 
