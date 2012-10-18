@@ -16,7 +16,6 @@ function FindTightGridArea(paper, chassis, angleval){
 	// initialize the opt result.
 	var opt	= {angle:0, area:area, path:path};
 
-	// TODO(Zhongpeng) the angle may be also important to look at.
 	var candidate = null, angle = 0;
 	for(var i = 0; i <180; i++){
 		// the idea is to get shape, rotate it, get the updated bbox and corners
