@@ -29,7 +29,7 @@ function Edge2DHandler(view, options) {
 		click: function(payload) {
 			view.target.deselect();
 			var points = view.target.points;
-			points.splice(options.pathIndex+1, 0, {x: payload.x, y: payload.y});
+			points.insertAt(options.pathIndex+1, Point.make(payload.x, payload.y));
 			view.target.redraw();
 			
 			view.target.select();

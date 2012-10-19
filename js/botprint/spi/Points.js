@@ -68,6 +68,16 @@ var Points = function() {
 		}
 	};
 
+	self.forEach = function(callback) {
+		/* TODO: (Huascar) is it possible to merge self.each into this method?
+		 * index is needed sometimes, but self.each doesn't provide that
+		 */
+		_points.forEach(callback);
+	};
+	
+	self.insertAt = function(index, point) {
+		_points.splice(index, 0, point);
+	}
 };
 
 Points.of = function(pointsArray){
@@ -80,15 +90,38 @@ Points.of = function(pointsArray){
 };
 
 Points.fromPath = function(pathArray) {
-	var ret = new Points();
+	var start;
+	var vertices = Points.make();
 	pathArray.forEach(function(action) {
+debugger;
 		var length = action.length;
-		if(length > 2) {
+		if(length >= 3) {
 			/* For all SVG paths we are using so far (M, C, L), the coordinates of vertices
 			 * are always the last two numbers of each path element
 			 */
-			ret.add(Point.make(action[length-2], action[length-1]));
+			var v = Point.make(action[length-2], action[length-1]);
+			if(!start) {
+				start = v;
+				vertices.add(v);
+			} else if(!Points.isEqual(v, start)){
+				vertices.add(v);
+			}
 		}
 	});
-	return ret;
+	return vertices;
+};
+
+Points.distance = function(point1, point2) {
+	return Math.sqrt((point1.x-point2.x)*(point1.x-point2.x) + (point1.y-point2.y)*(point1.y-point2.y));
+};
+
+Points.isEqual = function(point1, point2, precision) {
+	if(!precision) {
+		precision = 0.001;
+	}
+	return Math.abs(point1.x - point2.x)< precision && Math.abs(point1.y - point2.y) < precision;
+};
+
+Points.make = function() {
+	return new Points();
 };

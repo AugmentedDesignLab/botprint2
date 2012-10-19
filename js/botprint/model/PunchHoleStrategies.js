@@ -111,7 +111,7 @@ var InwardNormalStrategy = {
 					// decide if the candidiate is too close to other punch holes
 					var tooClose = false;
 					punchHoles.forEach(function(h) {
-						if(Geometry.distanceBetween(h, candidate) < distanceFromEdge-1)
+						if(Points.distance(h, candidate) < distanceFromEdge-1)
 							tooClose = true;
 					});
 					if(!tooClose) {

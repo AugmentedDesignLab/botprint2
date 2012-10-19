@@ -20,8 +20,7 @@ function Chassis2D(svg, options) {
 			// todo(Huascar) fix this.. glow on original sketch wont go away.
 			//self.glow = svg.glow({color: self.color});
 			var path = svg.attrs.path;
-			var points = Geometry.getVertices(path);
-			points.forEach(function(p, index){
+			self.points.forEach(function(p, index){
 				var widgetOptions = {app: options.app, pathIndex: index};
 				var vertex = Vertex2D(p,
 					self,
@@ -90,14 +89,15 @@ function Chassis2D(svg, options) {
 		},
 		
 		updateVertexAt: function(index, coord) {
-			self.points[index] = coord;
+			var p = self.points.point(index);
+			p.x = coord.x;
+			p.y = coord.y;
 			self.redraw();
 		}
 	};
 	
 	Mixable(self).mix(View());
-	
-	self.points = Geometry.getVertices(svg.attrs.path);
+	self.points = Points.fromPath(svg.attrs.path);
 	
 	var selectionHandler = SelectionHandler(Selectable(self), {app: options.app});
 	selectionHandler.enable();

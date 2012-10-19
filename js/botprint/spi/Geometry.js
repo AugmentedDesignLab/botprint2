@@ -27,7 +27,7 @@ var Geometry = {
 				if(intersect) {
 					var crossPonts = intersect.points.select(function(p){
 						// return true only if p is not any of the vertices
-						return !(Geometry.equal(p, start1) || Geometry.equal(p, end1) || Geometry.equal(p, start2) || Geometry.equal(p, end2));
+						return !(Points.isEqual(p, start1) || Points.isEqual(p, end1) || Points.isEqual(p, start2) || Points.isEqual(p, end2));
 					});
 					if(crossPonts.length > 0) {
 						return true;
@@ -58,33 +58,5 @@ var Geometry = {
 		} else {
 			return false;
 		}		
-	},
-	
-	equal: function (vect1, vect2, precision) {
-		if(!precision) {
-			precision = 0.001;
-		}
-		return Math.abs(vect1.x - vect2.x)< precision && Math.abs(vect1.y - vect2.y) < precision;
-	},
-	
-	getVertices: function(shapePath) {
-		var start;
-		var vertices = [];
-		shapePath.forEach(function(action) {
-			if(action.length >= 3) {
-				var v = {x: action[action.length-2], y: action[action.length-1]};
-				if(!start) {
-					start = v;
-					vertices.push(v);
-				} else if(!Geometry.equal(v, start)){
-					vertices.push(v);
-				}
-			}
-		});
-		return vertices;
-	},
-	
-	distanceBetween: function(point1, point2) {
-		return Math.sqrt((point1.x-point2.x)*(point1.x-point2.x) + (point1.y-point2.y)*(point1.y-point2.y));
 	}
 };
