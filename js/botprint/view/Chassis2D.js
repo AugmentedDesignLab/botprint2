@@ -21,6 +21,9 @@ function Chassis2D(svg, options) {
 			//self.glow = svg.glow({color: self.color});
 			var path = svg.attrs.path;
 			self.points.forEach(function(p, index){
+				/* FIXME (Huascar) I can't use self.points.each(function(p, p, index){...});
+				 * because p is always 0 instead of an instance of Point
+				 */
 				var widgetOptions = {app: options.app, pathIndex: index};
 				var vertex = Vertex2D(p,
 					self,

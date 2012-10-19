@@ -36,27 +36,5 @@ var Geometry = {
 			}
 		}
 		return false;
-	},
-	
-	/* Decide if a point is inside a shape
-	 * shapePath: an array representing the path, or an SVG path string
-	 * point: any object that has x and y attributes
-	 */
-	isInside: function(shapePath, point) {
-		var pathElem = document.createElement('path');
-		pathElem.setAttribute('d', shapePath);
-		var lineElem = document.createElement('line');
-		lineElem.setAttribute('x1', 0);
-		lineElem.setAttribute('y1', 0);
-		lineElem.setAttribute('x2', point.x);
-		lineElem.setAttribute('y2', point.y);
-		
-		var intersect = Intersection.intersectShapes(new Path(pathElem), new Line(lineElem));
-		if(intersect.status == 'Intersection') {
-			var xPoints = intersect.points;
-			return xPoints.length % 2 == 1;
-		} else {
-			return false;
-		}		
 	}
 };
