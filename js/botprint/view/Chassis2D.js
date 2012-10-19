@@ -60,22 +60,15 @@ function Chassis2D(svg, options) {
 		
 		redraw: function() {
 			// Redraw a Catmull-Rom curve
-			var path = [];
-			svg.attrs.path.forEach(function(p, index, originalPath) {
-				if(p[0].toUpperCase() == 'C') {
-					if(path[path.length-1][0]=='R') {
-						if(index == originalPath.length-1 || originalPath[index+1][0].toLowerCase() != 'z'){
-							// only push when it is NOT the last curve before z
-							path[path.length-1].push(p[5], p[6]);						
-						}
-						return;
-					} else if(index+1<originalPath.length && originalPath[index+1][0].toUpperCase() == 'C') {
-						path.push(['R', p[5], p[6]]);
-						return;
-					}
+			var path;
+			self.points.forEach(function(p, index) {
+				if(index == 0) {
+					path = ['M', p.x, p.y, 'R'];
+				} else {
+					path.push(p.x, p.y);
 				}
-				path.push(p);
 			});
+			path.push('z');
 			svg.attr('path', path);
 		},
 		
@@ -97,17 +90,15 @@ function Chassis2D(svg, options) {
 		},
 		
 		updateVertexAt: function(index, coord) {
-			var path = svg.attrs.path;
-			var action = path[index];
-			action[action.length-2] = coord.x;
-			action[action.length-1] = coord.y;
-			svg.attr({path: path});
+			self.points[index] = coord;
 			self.redraw();
 		}
 	};
 	
 	Mixable(self).mix(View());
-		
+	
+	self.points = Geometry.getVertices(svg.attrs.path);
+	
 	var selectionHandler = SelectionHandler(Selectable(self), {app: options.app});
 	selectionHandler.enable();
 	self.trigger(UserEvents.click, {});
