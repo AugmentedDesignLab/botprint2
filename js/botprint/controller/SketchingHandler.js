@@ -39,10 +39,7 @@ function SketchingHandler(view, options) {
 		
 		enterPress: function(payload){
 			if(this.shape){
-				// remove the last point
-				//path[1].pop();
-				//path[1].pop();
-				this.shape.attr({path: path, stroke: null});
+				this.shape.attr({stroke: null});
 				var chassis2D = Chassis2D(this.shape, {app:options.app});
 				var corners   = Corners(this.shape);
 				view.doneSketching(chassis2D);

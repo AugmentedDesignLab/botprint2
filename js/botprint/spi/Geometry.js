@@ -60,8 +60,11 @@ var Geometry = {
 		}		
 	},
 	
-	equal: function (vect1, vect2) {
-		return Math.abs(vect1.x - vect2.x)< 0.001 && Math.abs(vect1.y - vect2.y) < 0.001;
+	equal: function (vect1, vect2, precision) {
+		if(!precision) {
+			precision = 0.001;
+		}
+		return Math.abs(vect1.x - vect2.x)< precision && Math.abs(vect1.y - vect2.y) < precision;
 	},
 	
 	getVertices: function(shapePath) {
@@ -79,5 +82,9 @@ var Geometry = {
 			}
 		});
 		return vertices;
+	},
+	
+	distanceBetween: function(point1, point2) {
+		return Math.sqrt((point1.x-point2.x)*(point1.x-point2.x) + (point1.y-point2.y)*(point1.y-point2.y));
 	}
 };

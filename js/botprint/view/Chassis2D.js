@@ -69,7 +69,7 @@ function Chassis2D(svg, options) {
 				}
 			});
 			path.push('z');
-			svg.attr('path', path);
+			svg.attr({path: path, stroke: 'red'});
 		},
 		
 		removePunchHoles: function() {
@@ -84,7 +84,7 @@ function Chassis2D(svg, options) {
 			var paper = svg.paper;
 			punchHoles.forEach(function(ph) {
 				var ph2D = paper.circle(ph.x, ph.y, ph.radius);
-				ph2D.attr({fill: 'black'});
+				ph2D.attr({fill: 'black', stroke: 'blue'});
 				punchHole2Ds.push(ph2D);
 			});
 		},

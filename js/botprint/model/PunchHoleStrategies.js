@@ -84,7 +84,7 @@ var InwardNormalStrategy = {
 		var totalLength = pathElem.getTotalLength();
 		var distanceFromEdge = SpecSheet.chassis.holeEdge;
 		// get points along the inner path
-		for(var length = 1; length < totalLength; length += SpecSheet.chassis.holeDistance) {
+		for(var length = 1; length < totalLength; length += distanceFromEdge) {
 			var point = pathElem.getPointAtLength(length);
 			var angle = point.alpha/180*Math.PI+Math.PI/2;
 			var hole1 = {x: point.x + distanceFromEdge*Math.cos(angle),
@@ -96,10 +96,28 @@ var InwardNormalStrategy = {
 						radius: SpecSheet.chassis.punchHoleRadius
 			};
 			
+			var candidate = null;
 			if(Geometry.isInside(chassisPath, hole1)){
-				punchHoles.push(hole1);
+				candidate = hole1;
 			} else if(Geometry.isInside(chassisPath, hole2)) {
-				punchHoles.push(hole2);
+				candidate = hole2;
+			}
+			if(candidate) {
+				// decide if the candidate is too close to the edge
+				var circleElem = paper.circle(candidate.x, candidate.y, distanceFromEdge-1);
+				var intersect = Intersection.intersectShapes(new Circle(circleElem.node), new Path(pathElem.node));
+				var points = intersect.points;
+				if(points.length <= 1) {
+					// decide if the candidiate is too close to other punch holes
+					var tooClose = false;
+					punchHoles.forEach(function(h) {
+						if(Geometry.distanceBetween(h, candidate) < distanceFromEdge-1)
+							tooClose = true;
+					});
+					if(!tooClose) {
+						punchHoles.push(candidate);						
+					}
+				}
 			}
 		}
 		return punchHoles;
