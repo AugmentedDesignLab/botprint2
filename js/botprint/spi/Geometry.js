@@ -27,7 +27,7 @@ var Geometry = {
 				if(intersect) {
 					var crossPonts = intersect.points.select(function(p){
 						// return true only if p is not any of the vertices
-						return !(Geometry.equal(p, start1) || Geometry.equal(p, end1) || Geometry.equal(p, start2) || Geometry.equal(p, end2));
+						return !(Point.isEqual(p, start1) || Point.isEqual(p, end1) || Point.isEqual(p, start2) || Point.isEqual(p, end2));
 					});
 					if(crossPonts.length > 0) {
 						return true;
@@ -36,48 +36,5 @@ var Geometry = {
 			}
 		}
 		return false;
-	},
-	
-	/* Decide if a point is inside a shape
-	 * shapePath: an array representing the path, or an SVG path string
-	 * point: any object that has x and y attributes
-	 */
-	isInside: function(shapePath, point) {
-		var pathElem = document.createElement('path');
-		pathElem.setAttribute('d', shapePath);
-		var lineElem = document.createElement('line');
-		lineElem.setAttribute('x1', 0);
-		lineElem.setAttribute('y1', 0);
-		lineElem.setAttribute('x2', point.x);
-		lineElem.setAttribute('y2', point.y);
-		
-		var intersect = Intersection.intersectShapes(new Path(pathElem), new Line(lineElem));
-		if(intersect.status == 'Intersection') {
-			var xPoints = intersect.points;
-			return xPoints.length % 2 == 1;
-		} else {
-			return false;
-		}		
-	},
-	
-	equal: function (vect1, vect2) {
-		return Math.abs(vect1.x - vect2.x)< 0.001 && Math.abs(vect1.y - vect2.y) < 0.001;
-	},
-	
-	getVertices: function(shapePath) {
-		var start;
-		var vertices = [];
-		shapePath.forEach(function(action) {
-			if(action.length >= 3) {
-				var v = {x: action[action.length-2], y: action[action.length-1]};
-				if(!start) {
-					start = v;
-					vertices.push(v);
-				} else if(!Geometry.equal(v, start)){
-					vertices.push(v);
-				}
-			}
-		});
-		return vertices;
 	}
 };

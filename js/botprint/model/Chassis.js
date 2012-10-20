@@ -21,13 +21,9 @@ function Chassis (opts){
 			return Geometry.isSelfIntersecting(self.path);
 		},
 		
-		isInsideChassis: function(point) {
-			return Geometry.isInside(self.path, point);
-		},
-		
 		// assuming the chassis is a Catmull-rom curve
 		get punchHoles() {
-			return ScaledDownChassisStrategy.getPunchHoles(self.path);
+			return InwardNormalStrategy.getPunchHoles(self.path);
 		},
 
 		accept: function(visitor) {

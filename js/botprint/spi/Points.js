@@ -56,6 +56,11 @@ var Points = function() {
 		var len = _points.length;
 		for(var i = 0; i < len; i++){
 			var p = _points[i];
+			/* TODO (Huascar): passing the SAME parameter twice in the same
+			 * method call is SO wierd and unnecessary. In fact, Komodo even
+			 * warned me when I tried to do that. Please update the
+			 * callback argument list. 
+			 */
 			callback.call(p, p, i, i === 0, i === len-1);
 		}
 	};
@@ -67,7 +72,15 @@ var Points = function() {
 			callback.call(p, p, i, i === 0, i === len-1);
 		}
 	};
-
+		
+	// TODO: delete this after fixing the FIXME in Chassis2D
+	self.forEach = function(callback) {
+		_points.forEach(callback);
+	};
+	
+	self.insertAt = function(index, point) {
+		_points.splice(index, 0, point);
+	};
 };
 
 Points.of = function(pointsArray){
@@ -80,15 +93,26 @@ Points.of = function(pointsArray){
 };
 
 Points.fromPath = function(pathArray) {
-	var ret = new Points();
+	var start;
+	var vertices = Points.make();
 	pathArray.forEach(function(action) {
 		var length = action.length;
-		if(length > 2) {
+		if(length >= 3) {
 			/* For all SVG paths we are using so far (M, C, L), the coordinates of vertices
 			 * are always the last two numbers of each path element
 			 */
-			ret.add(Point.make(action[length-2], action[length-1]));
+			var v = Point.make(action[length-2], action[length-1]);
+			if(!start) {
+				start = v;
+				vertices.add(v);
+			} else if(!Point.isEqual(v, start)){
+				vertices.add(v);
+			}
 		}
 	});
-	return ret;
+	return vertices;
+};
+
+Points.make = function() {
+	return new Points();
 };
