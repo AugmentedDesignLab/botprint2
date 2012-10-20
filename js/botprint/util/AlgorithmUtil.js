@@ -82,7 +82,7 @@ function PointToCenterLine(centerline, c){
 
 var ScoringFormula = function(back1, back2, servo, sen1, sen2, cpu, battery, width, height, centerline){
 	var illegalWheels  = !back1 || !back2;
-	var illegalServo   = !servo && illegalWheels;
+	var illegalServo   = !servo || illegalWheels;
 	var illegalSensors = !sen1 || !sen2;
 	var illegalCore    = (!cpu || !battery) || (illegalWheels || !servo);
 
