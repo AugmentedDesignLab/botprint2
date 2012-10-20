@@ -20,6 +20,7 @@ function Grid(dimension, area, path, max, angle){
 			var cell = new Cell(x, y, i, j, angle, space);
 			if(!Cell.isValid(path, cell, max)){
 				cell.valid   = false;
+				cell.free    = false;
 				grid[i][j]   = cell;
 			} else {
 				cell.valid   = true;

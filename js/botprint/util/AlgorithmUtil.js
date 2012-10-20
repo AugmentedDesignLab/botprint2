@@ -37,14 +37,18 @@ var Cell = function(x, y, i, j, angle, space){
 }; Cell.isValid = function(path, cell, N){
 	// return true if all the points are inside the chassis.
 	var result   = false;
-	var isSensor = (cell.j == 0 || cell.j == N - 1);
+	var isSensor     = (cell.j == 0 || cell.j == N - 1);
+	var isGridCorner = (cell.i == 0 || cell.i == N - 1);
+
+	if(isSensor && isGridCorner) return false; // avoid corners
+
 	var counter = 0;
 	cell.corners.each(function(p){
 		result = Geometry.isInside(path, p);
 		if(result) counter++;
 	});
 
-	if(isSensor) { if(counter == 2) result = true; }  else { if(counter == 4) result = true;}
+	if(isSensor && !isGridCorner) { if(counter == 2) result = true; }  else { if(counter == 4) result = true;}
 
 
 	return result;
