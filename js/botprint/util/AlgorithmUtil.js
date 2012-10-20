@@ -44,7 +44,7 @@ var Cell = function(x, y, i, j, angle, space){
 
 	var counter = 0;
 	cell.corners.each(function(p){
-		result = Geometry.isInside(path, p);
+		result = p.isInside(path, p);
 		if(result) counter++;
 	});
 
@@ -82,7 +82,7 @@ function PointToCenterLine(centerline, c){
 
 var ScoringFormula = function(back1, back2, servo, sen1, sen2, cpu, battery, width, height, centerline){
 	var illegalWheels  = !back1 || !back2;
-	var illegalServo   = !servo || illegalWheels;
+	var illegalServo   = !servo && illegalWheels;
 	var illegalSensors = !sen1 || !sen2;
 	var illegalCore    = (!cpu || !battery) || (illegalWheels || !servo);
 

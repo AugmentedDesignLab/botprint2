@@ -13,6 +13,29 @@ var Point = function(x, y){
 		var y = self.y;
 		return Math.sqrt(Math.pow(x - q.x, 2) +  Math.pow(y - q.y, 2));
 	};
+	
+	/* Decide if a point is inside a shape
+	 * shapePath: an array representing the path, or an SVG path string
+	 * point: any object that has x and y attributes
+	 */
+	self.isInside = function(shapePath) {
+		var pathElem = document.createElement('path');
+		pathElem.setAttribute('d', shapePath);
+		var lineElem = document.createElement('line');
+		lineElem.setAttribute('x1', 0);
+		lineElem.setAttribute('y1', 0);
+		lineElem.setAttribute('x2', this.x);
+		lineElem.setAttribute('y2', this.y);
+		
+		var intersect = Intersection.intersectShapes(new Path(pathElem), new Line(lineElem));
+		if(intersect.status == 'Intersection') {
+			var xPoints = intersect.points;
+			return xPoints.length % 2 == 1;
+		} else {
+			return false;
+		}		
+
+	};
 };
 
 /**
@@ -42,4 +65,11 @@ Point.of = function(p){
 
 Point.make = function(x, y){
 	return new Point(x, y);
+};
+
+Point.isEqual = function(point1, point2, precision) {
+	if(!precision) {
+		precision = 0.001;
+	}
+	return Math.abs(point1.x - point2.x)< precision && Math.abs(point1.y - point2.y) < precision;
 };

@@ -20,8 +20,7 @@ function Chassis2D(svg, options) {
 			// todo(Huascar) fix this.. glow on original sketch wont go away.
 			//self.glow = svg.glow({color: self.color});
 			var path = svg.attrs.path;
-			var points = Geometry.getVertices(path);
-			points.forEach(function(p, index){
+			self.points.each(function(p, index){
 				var widgetOptions = {app: options.app, pathIndex: index};
 				var vertex = Vertex2D(p,
 					self,
@@ -60,23 +59,16 @@ function Chassis2D(svg, options) {
 		
 		redraw: function() {
 			// Redraw a Catmull-Rom curve
-			var path = [];
-			svg.attrs.path.forEach(function(p, index, originalPath) {
-				if(p[0].toUpperCase() == 'C') {
-					if(path[path.length-1][0]=='R') {
-						if(index == originalPath.length-1 || originalPath[index+1][0].toLowerCase() != 'z'){
-							// only push when it is NOT the last curve before z
-							path[path.length-1].push(p[5], p[6]);						
-						}
-						return;
-					} else if(index+1<originalPath.length && originalPath[index+1][0].toUpperCase() == 'C') {
-						path.push(['R', p[5], p[6]]);
-						return;
-					}
+			var path;
+			self.points.forEach(function(p, index) {
+				if(index == 0) {
+					path = ['M', p.x, p.y, 'R'];
+				} else {
+					path.push(p.x, p.y);
 				}
-				path.push(p);
 			});
-			svg.attr('path', path);
+			path.push('z');
+			svg.attr({path: path, stroke: 'red'});
 		},
 		
 		removePunchHoles: function() {
@@ -91,23 +83,22 @@ function Chassis2D(svg, options) {
 			var paper = svg.paper;
 			punchHoles.forEach(function(ph) {
 				var ph2D = paper.circle(ph.x, ph.y, ph.radius);
-				ph2D.attr({fill: 'black'});
+				ph2D.attr({fill: 'black', stroke: 'blue'});
 				punchHole2Ds.push(ph2D);
 			});
 		},
 		
 		updateVertexAt: function(index, coord) {
-			var path = svg.attrs.path;
-			var action = path[index];
-			action[action.length-2] = coord.x;
-			action[action.length-1] = coord.y;
-			svg.attr({path: path});
+			var p = self.points.point(index);
+			p.x = coord.x;
+			p.y = coord.y;
 			self.redraw();
 		}
 	};
 	
 	Mixable(self).mix(View());
-		
+	self.points = Points.fromPath(svg.attrs.path);
+	
 	var selectionHandler = SelectionHandler(Selectable(self), {app: options.app});
 	selectionHandler.enable();
 	self.trigger(UserEvents.click, {});
