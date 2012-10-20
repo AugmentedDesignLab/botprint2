@@ -66,3 +66,10 @@ Point.of = function(p){
 Point.make = function(x, y){
 	return new Point(x, y);
 };
+
+Point.isEqual = function(point1, point2, precision) {
+	if(!precision) {
+		precision = 0.001;
+	}
+	return Math.abs(point1.x - point2.x)< precision && Math.abs(point1.y - point2.y) < precision;
+};

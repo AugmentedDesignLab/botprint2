@@ -27,7 +27,7 @@ var Geometry = {
 				if(intersect) {
 					var crossPonts = intersect.points.select(function(p){
 						// return true only if p is not any of the vertices
-						return !(Points.isEqual(p, start1) || Points.isEqual(p, end1) || Points.isEqual(p, start2) || Points.isEqual(p, end2));
+						return !(Point.isEqual(p, start1) || Point.isEqual(p, end1) || Point.isEqual(p, start2) || Point.isEqual(p, end2));
 					});
 					if(crossPonts.length > 0) {
 						return true;

@@ -105,19 +105,12 @@ Points.fromPath = function(pathArray) {
 			if(!start) {
 				start = v;
 				vertices.add(v);
-			} else if(!Points.isEqual(v, start)){
+			} else if(!Point.isEqual(v, start)){
 				vertices.add(v);
 			}
 		}
 	});
 	return vertices;
-};
-
-Points.isEqual = function(point1, point2, precision) {
-	if(!precision) {
-		precision = 0.001;
-	}
-	return Math.abs(point1.x - point2.x)< precision && Math.abs(point1.y - point2.y) < precision;
 };
 
 Points.make = function() {
