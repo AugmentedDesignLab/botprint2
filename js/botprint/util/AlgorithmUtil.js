@@ -41,7 +41,7 @@ var Cell = function(x, y, i, j, angle, space){
 	if((cell.j == 0 || cell.j == N - 1) || (cell.i == N - 1)){
 		var counter = 0;
 		cell.corners.each(function(p){
-			if(Geometry.isInside(path, p)){
+			if(p.isInside(path)){
 				result = true;
 				counter++;
 			}
@@ -51,7 +51,7 @@ var Cell = function(x, y, i, j, angle, space){
 
 	} else {
 		cell.corners.each(function(p){
-			if(Geometry.isInside(path, p)){
+			if(p.isInside(path)){
 				result = true;
 			}
 		});

@@ -13,7 +13,7 @@ function Corners (shape){
 	for(var i = 0; i < corners.length; i++){
 		if(i < 4){
 			var each  = corners[i];
-			var point = {x: each.x, y: each.y};
+			var point = Point.make(each.x, each.y);
 			result.push(point);
 		}
 	}
