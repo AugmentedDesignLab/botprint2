@@ -18,10 +18,9 @@ function Grid(dimension, area, path, max, angle){
 	for(var i = 0; i < max; i++){
 		for(var j = 0; j < max; j++){
 			var cell = new Cell(x, y, i, j, angle, space);
-			// TODO(Zhongpeng) another possible place related to cells being marked
-			// as valid and they should be invalid.
 			if(!Cell.isValid(path, cell, max)){
 				cell.valid   = false;
+				cell.free    = false;
 				grid[i][j]   = cell;
 			} else {
 				cell.valid   = true;

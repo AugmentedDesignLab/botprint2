@@ -108,7 +108,7 @@ function LayoutHandler(view, options) {
 			var peripheral  = paper.set(); // use sets to group independent svgs...
 			var core        = paper.set();
 
-			var climb       = 35;
+			var climb       = 25;
 			var slide       = 10;
 
 			function initial(name){
