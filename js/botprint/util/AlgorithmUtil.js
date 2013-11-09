@@ -35,23 +35,21 @@ var Cell = function(x, y, i, j, angle, space){
 	self.name    = self.part != null ? self.part.name : "none";
 
 }; Cell.isValid = function(path, cell, N){
-	// return true if all the points are inside the chassis.
-	var result   = false;
-	var isSensor     = (cell.j == 0 || cell.j == N - 1);
-	var isGridCorner = (cell.i == 0 || cell.i == N - 1);
+    // return true if all the points are inside the chassis.
+    var isSensor     = (cell.j == 0 || cell.j == N - 1);
+    var isGridCorner = (cell.i == 0 || cell.i == N - 1);
 
-	if(isSensor && isGridCorner) return false; // avoid corners
+    if(isSensor && isGridCorner) return false; // avoid corners
 
-	var counter = 0;
-	cell.corners.each(function(p){
-		result = p.isInside(path, p);
-		if(result) counter++;
-	});
+    var len = cell.corners.length;
+    for (var i = 0; i < len; i++){
+        var point = cell.corners[i];
+        if(!point.isInside(path)){
+            return false;
+        }
+    }
 
-	if(isSensor && !isGridCorner) { if(counter == 2) result = true; }  else { if(counter == 4) result = true;}
-
-
-	return result;
+    return true;
 };
 
 Cell.copy = function(cell){

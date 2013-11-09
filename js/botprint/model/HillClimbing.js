@@ -73,9 +73,9 @@ function HillClimbing(data){
 		},
 
 		findMax: function(grid, full, leftover, lo, hi){
-			// everytime I place the cpu, I should try up, down, left,
+			// every time I place the cpu, I should try up, down, left,
 			// right to place battery pack.
-			// everytime I do that, I can calculate the score.
+			// every time I do that, I can calculate the score.
 
 			var width      = data.area.width();
 			var height     = data.area.height();
