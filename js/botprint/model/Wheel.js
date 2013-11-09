@@ -19,7 +19,7 @@ function Wheel (opts){
 			return snappedAt;
 		},
 
-		delete: function() {
+		remove: function() {
 			self.radio.trigger(ApplicationEvents.wheelDeleted, {id: self.id});
 		},
 		
