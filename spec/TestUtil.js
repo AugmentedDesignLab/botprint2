@@ -98,6 +98,6 @@ var TestUtil = {
 	},
 
 	isInside: function(path, x, y){
-		return Geometry.isInside(path, Point.make(x, y));
+        return Point.make(x, y).isInside(path);
 	}
 };

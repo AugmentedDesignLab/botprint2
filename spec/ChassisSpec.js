@@ -53,6 +53,7 @@ describe('A chassis', function() {
 	//});
 	
 	it('should detect if a point is inside the chassis shape', function() {
-		expect(chassis1.isInsideChassis({x:337, y:356})).toBeTruthy();
+        var point = Point.make(337, 356);
+		expect(point.isInside(chassis1.path)).toBeTruthy();
 	});
 });

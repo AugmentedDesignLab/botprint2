@@ -19,7 +19,7 @@ function LayoutHandler(view, options) {
 	var Cache		= function(deck2D, outline) {
 		return {
 			deck2D:  deck2D  || {remove: function(){}},
-			outline: outline || {delete: function(){}},
+			outline: outline || {remove: function(){}},
 			update: function(deck2D, outline) {
 				this.deck2D 	= deck2D;
 				this.outline	= outline;
@@ -192,7 +192,7 @@ function LayoutHandler(view, options) {
 
 		clear: function (){
 			vop.deck2D.remove();
-			vop.outline.delete();
+			vop.outline.remove();
 		},
 
 		layoutDeleted: function(payload) {

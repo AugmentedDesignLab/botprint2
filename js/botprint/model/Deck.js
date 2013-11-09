@@ -14,7 +14,7 @@ function Deck (opts){
 			self.radio.trigger(event, payload);
 		},
 
-		delete: function() {
+		remove: function() {
 			self.radio.trigger(ApplicationEvents.layoutDeleted, {});
 		}
 	};

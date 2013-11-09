@@ -12,7 +12,7 @@ function RemovingHandler(view, options) {
 				view.target.remove();
 				view.remove();
 				var wheel = Wheel({id: view.target.id, app: options.app});
-				wheel.delete();
+				wheel.remove();
 			} else {
 				view.target.color = color;
 			}
